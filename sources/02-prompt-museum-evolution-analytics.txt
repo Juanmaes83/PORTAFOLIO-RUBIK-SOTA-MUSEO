@@ -1,0 +1,458 @@
+The existing 3D museum frontend is working and approved as the current baseline.
+
+Implement:
+
+1. The backend and analytics layer described below.
+2. Only the limited lighting and artwork-label refinements explicitly requested below.
+
+Do not rebuild or fundamentally redesign the existing project.
+
+DO NOT:
+- rebuild the frontend from scratch
+- change the existing architecture unnecessarily
+- replace the current museum layout
+- change the camera or movement system
+- change the keyboard or mouse controls
+- change the project information panels
+- replace the existing procedural artwork
+- invent or rename projects
+- add rooms, floors, corridors or a maze
+- add characters, jumping, physics or new gameplay systems
+- add large external 3D assets
+- deploy publicly yet
+
+Preserve all existing working frontend functionality.
+
+Public deployment will be requested later, after the remaining visual revisions have been reviewed.
+
+────────────────────────────────────────
+LIMITED VISUAL REFINEMENTS
+────────────────────────────────────────
+
+Apply only the following focused visual changes.
+
+Do not redesign unrelated parts of the museum.
+
+1. ARTWORK LABELS
+
+The existing project titles are currently positioned below the artwork
+and appear too close to the floor.
+
+Remove the large titles currently displayed underneath the frames.
+
+Replace each one with a small, elegant museum-style information plaque
+positioned beside its corresponding artwork.
+
+The plaque should:
+
+- be mounted on the wall
+- sit beside the artwork, not underneath it
+- be positioned at a natural readable height
+- remain visually close enough to clearly belong to its artwork
+- never overlap the artwork or another plaque
+- use consistent dimensions and spacing throughout the gallery
+- remain readable when the visitor approaches the artwork
+- remain restrained and secondary to the artwork itself
+
+Each plaque should display:
+
+- Project title
+- Category
+- Year
+
+Use clean, understated typography.
+
+Do not use large floating 3D text.
+Do not place project text on the floor.
+Do not move the actual artworks unless a very small alignment adjustment
+is required to make room for the plaque.
+
+2. LIGHTING AND GALLERY COLOR
+
+Improve the lighting without changing the existing museum structure.
+
+The current gallery should feel brighter, cleaner and more like a
+premium contemporary museum.
+
+Make the following controlled adjustments:
+
+- Increase the overall ambient illumination moderately.
+- Change the walls to a clean warm off-white or light neutral cream.
+- Remove the muddy yellow or brown cast from the overall scene.
+- Preserve a warm museum atmosphere without tinting the entire room yellow.
+- Keep the ceiling darker than the walls, but ensure it does not make
+  the gallery feel excessively dark.
+- Improve the visibility of the wooden floor and preserve its natural color.
+- Add or refine one efficient warm spotlight for each artwork.
+- Aim each spotlight at its corresponding artwork.
+- Create a soft, controlled pool of light around every frame.
+- Keep lighting balanced across all six projects.
+- Preserve soft shadows where technically reasonable.
+- Avoid harsh highlights and overexposure.
+- Avoid expensive post-processing.
+- Avoid excessive bloom.
+- Do not add colored neon lighting.
+
+The target appearance is:
+
+- warm
+- clean
+- premium
+- contemporary
+- calm
+- cinematic
+- readable
+
+It must not look:
+
+- muddy
+- orange
+- excessively yellow
+- extremely dark
+- overexposed
+- like a nightclub or science-fiction environment
+
+Do not change the approved welcome modal, information panel design,
+procedural artworks, controls or project interaction behavior while
+making these visual adjustments.
+
+────────────────────────────────────────
+BACKEND
+────────────────────────────────────────
+
+Set up a real PostgreSQL database inside this SuperComputer environment.
+
+Do not use:
+
+- mock data
+- local JSON files
+- browser-only storage as the database
+- an in-memory database
+- SQLite
+
+Use a DATABASE_URL environment variable.
+
+Expected format:
+
+DATABASE_URL=postgresql://<username>:buraya şifre gelecek@localhost:5432/<database_name>
+
+Keep database usernames, passwords and connection credentials out of
+the source code and out of files that would be committed publicly.
+
+Create a table for project attention analytics.
+
+The table must record:
+
+- id
+- project_id
+- session_id
+- started_at
+- dwell_ms
+- source: "artwork" or "panel"
+- created_at
+
+Use appropriate PostgreSQL data types, indexes and constraints.
+
+Do not collect:
+
+- names
+- email addresses
+- IP addresses
+- precise device identifiers
+- browser fingerprints
+- location data
+- any other personally identifiable information
+
+────────────────────────────────────────
+SESSION
+────────────────────────────────────────
+
+Create one anonymous UUID session identifier in the visitor's browser.
+
+- Generate it using a reliable UUID method.
+- Store it in localStorage.
+- Reuse it when the same visitor returns.
+- Do not use fingerprinting.
+- Do not send personal data.
+- Do not treat this anonymous session identifier as a user account.
+
+The complete museum must still function if localStorage is unavailable.
+
+────────────────────────────────────────
+ARTWORK ATTENTION TRACKING
+────────────────────────────────────────
+
+Track how long each artwork is meaningfully viewed.
+
+An artwork is considered actively viewed only when all of the following
+conditions are true:
+
+1. The visitor is within the existing interaction distance.
+2. The camera is facing the artwork.
+3. The conditions remain true continuously for at least 800 milliseconds.
+4. The browser tab is visible and active.
+5. No project information panel is currently covering the experience.
+
+Start the artwork dwell timer only after these conditions have remained
+true for at least 800 milliseconds.
+
+Stop and record the active dwell period when:
+
+- the visitor turns away
+- the visitor moves out of range
+- another project becomes focused
+- a project panel opens
+- the browser tab becomes hidden
+- the page is closed
+- the visitor navigates away
+
+Ignore attention periods shorter than 800 milliseconds.
+
+Do not create a database request on every animation frame.
+
+Accumulate a complete uninterrupted attention period and write one
+record when that period ends.
+
+Use a reasonable facing-direction dot-product threshold.
+
+Tune the threshold against the existing museum and artwork positions.
+
+If the facing-direction check proves genuinely unreliable, use a
+distance-and-screen-center calculation instead.
+
+If you make that fallback, state clearly in the final report that you
+changed the method and explain why.
+
+Do not silently remove the facing requirement.
+
+────────────────────────────────────────
+PROJECT PANEL TRACKING
+────────────────────────────────────────
+
+Track project information-panel viewing separately.
+
+- Start a panel dwell timer when a project panel opens.
+- Stop it when the panel closes.
+- Stop it when the browser tab becomes hidden.
+- Stop it when the visitor leaves the page.
+- Store the record with source: "panel".
+- Do not create duplicate records for one uninterrupted panel visit.
+- Ignore accidental panel visits shorter than 800 milliseconds.
+
+Use navigator.sendBeacon or fetch with keepalive where appropriate so
+the final dwell period can still be recorded when the page closes.
+
+Do not block or delay the interface while an analytics record is being sent.
+
+Analytics failures must never prevent the project panel from opening
+or closing.
+
+────────────────────────────────────────
+API
+────────────────────────────────────────
+
+Implement:
+
+POST /api/inspections
+
+Accept:
+
+- projectId
+- sessionId
+- dwellMs
+- source
+- startedAt, if required by the implementation
+
+Validate all incoming data on the server.
+
+Validation requirements:
+
+- projectId must match an existing project from content.ts
+- sessionId must be a valid UUID
+- source must be exactly "artwork" or "panel"
+- dwellMs must be a positive integer
+- reject values shorter than the accepted minimum
+- reject clearly unreasonable dwell values
+- reject missing or malformed payloads
+- do not trust client-provided values without validation
+
+Return clear JSON responses for:
+
+- successful creation
+- invalid project
+- invalid session
+- invalid dwell duration
+- invalid source
+- malformed request
+- internal database failure
+
+Do not return database credentials or internal stack traces to the browser.
+
+Implement:
+
+GET /api/stats
+
+Return aggregate statistics for every existing project:
+
+- projectId
+- totalArtworkDwellMs
+- totalPanelDwellMs
+- totalDwellMs
+- inspectionCount
+- uniqueSessions
+
+Also return:
+
+- mostViewedProjectId
+
+Determine the most-viewed project primarily by totalDwellMs.
+
+Use inspectionCount only as a tie-breaker.
+
+If no genuine analytics records exist, return:
+
+- empty or zeroed statistics
+- mostViewedProjectId: null
+
+Do not invent a winner when no records exist.
+
+────────────────────────────────────────
+TEST DATA
+────────────────────────────────────────
+
+Do not insert fictional production analytics.
+
+Do not leave plausible sample records in the final database.
+
+For terminal verification, you may insert clearly labelled temporary
+test records only when necessary.
+
+All temporary test records must be deleted before completion.
+
+Show the command and result proving that the test records were removed.
+
+────────────────────────────────────────
+FRONTEND INTEGRATION
+────────────────────────────────────────
+
+Connect the existing museum to the new API routes while preserving the
+current design and interactions.
+
+Do not make database requests inside the render loop.
+
+The existing featured wall may display a small and restrained label:
+
+"Most Viewed Project"
+
+for the project returned by the stats API.
+
+Only display this label when mostViewedProjectId is not null.
+
+Do not display fake statistics while the database is empty.
+
+Do not substantially change spotlight intensity based on statistics.
+
+At most, increase the most-viewed project's spotlight intensity by
+10 percent compared with its normal value.
+
+This difference must remain subtle.
+
+If the stats API or database is temporarily unavailable:
+
+- the complete 3D museum must still load
+- movement must continue working
+- project interactions must continue working
+- the project information panels must continue working
+- use the normal default lighting
+- do not display broken or misleading statistics
+- log a clear non-fatal error
+- do not show a disruptive error modal to the visitor
+
+────────────────────────────────────────
+VERIFICATION
+────────────────────────────────────────
+
+Be precise about what you verify.
+
+Perform the following steps and show the real raw results:
+
+1. Install and configure PostgreSQL.
+2. Show the PostgreSQL service status.
+3. Show the database and table names.
+4. Show the table schema.
+5. Show the relevant indexes and constraints.
+6. Start the application.
+7. Inspect the terminal for runtime errors.
+8. Inspect the browser console for runtime errors.
+9. Call POST /api/inspections from the terminal using curl.
+10. Show the complete raw JSON response.
+11. Query PostgreSQL directly.
+12. Show the exact row created by the POST request.
+13. Call GET /api/stats using curl.
+14. Show the complete raw aggregate response.
+15. Confirm that mostViewedProjectId matches the inserted test data.
+16. Test an invalid projectId and show the validation response.
+17. Test an invalid sessionId and show the validation response.
+18. Test an invalid dwellMs and show the validation response.
+19. Delete all temporary test analytics records.
+20. Query the database again and prove that the test records are gone.
+21. Run the production build.
+22. Show the complete raw production-build result.
+23. Fix every database, API, runtime or build error introduced by this work.
+
+Do not run public deployment yet.
+
+Do not claim that the following items have been verified automatically:
+
+- movement feel
+- camera comfort
+- lighting quality
+- visual polish
+- museum composition
+- mobile fallback appearance
+- physical usability of the artwork plaques
+
+Mark these items explicitly as requiring manual review.
+
+────────────────────────────────────────
+FINAL REPORT
+────────────────────────────────────────
+
+At the end, provide a concise factual report containing:
+
+- database status
+- database name
+- table name
+- environment-variable configuration
+- API routes created
+- files created or modified
+- artwork-attention tracking method
+- facing-direction threshold used
+- whether a fallback method was required
+- raw verification commands
+- raw test results
+- validation-test results
+- production-build result
+- confirmation that temporary test records were removed
+- unresolved issues, if any
+- items requiring manual review
+
+Also state explicitly:
+
+- whether the existing movement system was preserved
+- whether all six project panels still open
+- whether the visited-project progress still works
+- whether the visual changes were limited to artwork labels and lighting
+- whether any unrelated frontend behavior was changed
+
+Do not hide errors.
+Do not skip failing steps.
+Do not describe unfinished functionality as working.
+Do not replace broken functionality with a written description.
+
+If something cannot be completed, state exactly:
+
+- what is broken
+- the raw error
+- what you attempted
+- what remains unresolved
