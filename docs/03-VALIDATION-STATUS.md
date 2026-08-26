@@ -21,6 +21,8 @@ Pull request CI must pass:
 - TypeScript typecheck;
 - Next.js production build.
 
+The first CI attempt failed before dependency installation because `actions/setup-node` was configured with npm caching before a lockfile existed. That CI configuration error has been removed; the next run is the authoritative code/build check.
+
 ## Not yet verified
 
 These require a real browser and/or the production video:
