@@ -1,0 +1,266 @@
+You are acting as a senior creative developer and 3D web engineer.
+
+Build a complete, working interactive 3D portfolio museum inside this SuperComputer environment.
+
+Before writing code, briefly outline:
+1. The technical architecture
+2. The movement and camera system
+3. The project interaction system
+4. The file/component structure
+5. The mobile fallback approach
+
+Keep the plan concise. After the plan, immediately begin building the project. Do not wait for additional approval.
+
+PROJECT NAME
+The Interactive Project Museum
+
+CORE IDEA
+Create a simple, polished 3D museum that works as an interactive portfolio website.
+
+The visitor enters a single elegant gallery hall and explores it using keyboard and mouse controls. Framed portfolio projects are displayed on the museum walls. When the visitor approaches or looks at a project, the frame becomes highlighted and a clear interaction indicator appears.
+
+The visitor can press E or click the project to open a detailed information panel.
+
+This should feel like a premium interactive website, not a large or complicated video game.
+
+VISUAL REFERENCE
+Use the attached museum screenshots only as structural inspiration:
+- One long gallery hall
+- White or warm off-white walls
+- Warm museum spotlights
+- Framed artwork displayed on both walls
+- Wooden or subtle stone floor
+- Minimal dark ceiling details
+- A few simple benches
+- Calm, premium museum atmosphere
+
+Do not copy the reference exactly.
+Do not use copyrighted paintings or famous artwork.
+The framed pieces must represent original fictional portfolio projects.
+
+VISUAL DIRECTION
+- Premium
+- Elegant
+- Minimal
+- Cinematic
+- Warm museum lighting
+- Soft shadows
+- Subtle reflections
+- Clean typography
+- Smooth transitions
+- Realistic enough to feel immersive, but lightweight enough for the browser
+
+Avoid:
+- Excessive neon
+- Sci-fi effects
+- Childish game graphics
+- Complex characters
+- Heavy physics
+- Huge environments
+- Overly detailed 3D models
+- Visual clutter
+- Generic AI-generated dashboard design
+
+TECH STACK
+Use:
+- Next.js
+- TypeScript
+- React
+- Three.js
+- React Three Fiber
+- @react-three/drei
+- Zustand only if it is genuinely useful
+- Framer Motion or GSAP for interface transitions
+- Clean modular CSS or Tailwind CSS
+
+Keep the architecture modular and readable.
+Do not create one enormous component.
+
+DESKTOP CONTROLS
+- WASD or arrow keys: move
+- Mouse movement: look around
+- E key: inspect the focused project
+- Mouse click: inspect the focused project
+- Escape: close the project panel or release camera controls
+
+Show a minimal instruction overlay when the experience begins:
+WASD to move
+Mouse to look
+E to inspect
+
+The instruction overlay should fade out after the visitor begins moving.
+
+MOVEMENT SYSTEM
+Create a simple first-person exploration system.
+
+Requirements:
+- Smooth keyboard movement
+- Smooth mouse camera movement
+- The visitor must remain inside the gallery
+- Prevent walking through walls
+- Prevent leaving the intended environment
+- Do not add jumping
+- Do not use complicated character animation
+- Do not add unnecessary physics unless there is a strong technical reason
+
+A lightweight collision or boundary system is enough.
+
+MUSEUM STRUCTURE
+Create one main gallery hall.
+
+Include:
+- A clear entrance
+- Projects arranged along both walls
+- Warm spotlights above each project
+- Two or three simple benches
+- A visual focal point at the far end of the gallery
+- A final featured project or contact area at the end
+
+Do not create multiple floors or a large maze.
+
+PORTFOLIO PROJECTS
+Create six fictional portfolio projects:
+
+1. Cinematic Aviation Portfolio
+Category: Creative Development
+Tech: Next.js, Three.js, GSAP
+
+2. AI Design Workspace
+Category: AI Product
+Tech: React, TypeScript, AI APIs
+
+3. Interactive Fashion Experience
+Category: E-Commerce
+Tech: Next.js, WebGL, Headless CMS
+
+4. Immersive Architecture Studio
+Category: 3D Website
+Tech: React Three Fiber, Blender, GSAP
+
+5. Intelligent Analytics Platform
+Category: SaaS Dashboard
+Tech: React, TypeScript, Data Visualization
+
+6. Creative Coding Laboratory
+Category: Experimental Web
+Tech: Three.js, GLSL, Web Audio
+
+Use original abstract visuals or elegant generated placeholder compositions inside the frames.
+
+Do not use lorem ipsum.
+
+PROJECT INTERACTION
+Each project frame must have:
+- Project image or abstract artwork
+- Project title
+- Subtle hover or focus effect
+- A warm light or outline when the visitor is close enough
+- A small "Press E to inspect" indicator
+
+The interaction must only activate when:
+- The visitor is within a reasonable distance
+- The visitor is facing the project
+
+When opened, show a premium interface panel containing:
+- Project title
+- Category
+- Short project description
+- Technology list
+- Role
+- Year
+- "View Project" button
+- Close button
+
+The panel should animate smoothly.
+Camera movement must pause while the panel is open.
+Closing the panel must return control to the museum.
+
+VISITED PROJECT STATE
+Track which projects have been inspected.
+
+Show a minimal progress indicator:
+Projects explored: 0 / 6
+
+After all six projects have been inspected:
+- Activate the featured wall or contact installation at the end of the gallery
+- Change its lighting subtly
+- Display a message such as:
+  "You have explored the complete collection."
+- Allow the visitor to open a final About / Contact panel
+
+Do not add collectible fragments, scores, enemies, timers or game-over states.
+
+FINAL ABOUT / CONTACT AREA
+The final area should include:
+- Yıldız Dikme
+- Full-Stack Developer
+- Creative Developer
+- Technology Content Creator
+- React
+- Next.js
+- TypeScript
+- Three.js
+- React Three Fiber
+- AI-assisted development
+
+Include fictional placeholder links for:
+- YouTube
+- GitHub
+- LinkedIn
+- Email
+
+MOBILE FALLBACK
+Do not attempt to shrink the desktop WASD experience directly onto mobile.
+
+For mobile devices:
+- Display a polished 2D museum-inspired project gallery
+- Show the same six projects as interactive cards
+- Preserve the museum typography, lighting and visual identity
+- Allow cards to open the same project information panels
+- Clearly communicate that the full 3D museum is available on desktop
+
+PERFORMANCE
+Prioritize browser performance.
+
+Requirements:
+- Avoid large external 3D assets
+- Use procedural geometry and simple materials where possible
+- Reuse geometries and materials
+- Keep lighting efficient
+- Avoid excessive post-processing
+- Avoid very high-resolution textures
+- Lazy-load the 3D scene where appropriate
+- Show a clean loading screen
+- Handle WebGL failure gracefully
+
+TESTING AND COMPLETION
+Do not stop after generating the files.
+
+You must:
+1. Install all required dependencies
+2. Run the application
+3. Open the browser preview
+4. Inspect terminal errors
+5. Inspect browser console errors
+6. Fix every build error
+7. Fix every runtime error you can identify
+8. Test keyboard movement
+9. Test mouse camera movement
+10. Confirm the visitor cannot leave the museum
+11. Confirm projects only activate at the correct distance
+12. Confirm E and click interactions work
+13. Confirm project panels open and close correctly
+14. Confirm camera controls pause while a panel is open
+15. Confirm visited-project progress updates correctly
+16. Confirm the final contact installation activates only after 6 / 6 projects
+17. Confirm the mobile fallback works
+18. Run the production build
+19. Fix production build errors
+20. Provide a working browser preview
+
+If this SuperComputer environment supports deployment or a public shareable URL, deploy the completed project and provide the link.
+
+Do not claim that a feature works without testing it.
+Do not hide errors.
+Do not replace broken functionality with a written description.
+Keep working until the core experience is genuinely functional.
