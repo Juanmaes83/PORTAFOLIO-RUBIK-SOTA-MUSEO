@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "name": "Rubik Sota Portfolio Museum DNA v1",
+    "description": "Original premium editorial-to-museum design system derived from the three museum sources plus Pear as pacing reference; not a copy of Pear.",
+    "source_references": [
+      "sources/01-prompt-museum-genesis.txt",
+      "sources/02-prompt-museum-evolution-analytics.txt",
+      "sources/03-analysis-video-museum-claude-abacus.md",
+      "https://pear.no/",
+      "Juanmaes83/design-dna",
+      "Juanmaes83/harness-design"
+    ],
+    "created_at": "2026-08-26"
+  },
+  "design_system": {
+    "color": {
+      "palette_type": "neutral-led with warm museum accent",
+      "primary": {"hex": "#F2F0EA", "role": "warm gallery surface / editorial field"},
+      "secondary": {"hex": "#101010", "role": "primary typography / dark spatial anchor"},
+      "accent": {"hex": "#C69B63", "role": "restrained museum-light accent only"},
+      "neutral": {"scale": ["#FFFFFF", "#F2F0EA", "#D8D4CB", "#8A867E", "#333333", "#101010"], "usage": "large quiet surfaces, strong dark type, subtle spatial depth"},
+      "semantic": {"success": "#2F6B4F", "warning": "#9A6A22", "error": "#9A3E38", "info": "#3C5F78"},
+      "surface": {"background": "#F2F0EA", "card": "#ECE9E2", "elevated": "#FFFFFF"},
+      "contrast_strategy": "high-contrast editorial typography on warm neutral fields; dark museum ceiling separated by luminance not saturation"
+    },
+    "typography": {
+      "type_scale": {
+        "display": {"size": "clamp(4.75rem, 12vw, 12rem)", "weight": "700", "line_height": "0.88", "tracking": "-0.055em"},
+        "heading_1": {"size": "clamp(3rem, 7vw, 7rem)", "weight": "650", "line_height": "0.92", "tracking": "-0.045em"},
+        "heading_2": {"size": "clamp(2rem, 4vw, 4rem)", "weight": "600", "line_height": "1", "tracking": "-0.035em"},
+        "heading_3": {"size": "1.5rem", "weight": "600", "line_height": "1.15", "tracking": "-0.02em"},
+        "body": {"size": "1rem", "weight": "400", "line_height": "1.55", "tracking": "-0.01em"},
+        "body_small": {"size": "0.875rem", "weight": "400", "line_height": "1.45", "tracking": "0"},
+        "caption": {"size": "0.75rem", "weight": "500", "line_height": "1.35", "tracking": "0.08em"},
+        "overline": {"size": "0.6875rem", "weight": "600", "line_height": "1.2", "tracking": "0.16em"}
+      },
+      "font_families": {"heading": "system-ui, Helvetica Neue, Arial, sans-serif", "body": "system-ui, Helvetica Neue, Arial, sans-serif", "mono": "ui-monospace, SFMono-Regular, Menlo, monospace"},
+      "font_style_notes": "editorial grotesk feeling, tight large-scale tracking, calm utility copy; exact Pear font is not copied"
+    },
+    "spacing": {"base_unit": "8px", "scale": ["8px", "16px", "24px", "32px", "48px", "64px", "96px", "128px", "192px"], "content_density": "spacious", "section_rhythm": "variable editorial rhythm; long breathing zones around primary statements, tighter transitions around narrative cues"},
+    "layout": {"grid_system": "12-column fluid editorial grid", "max_content_width": "1600px", "columns": 12, "gutter": "clamp(16px, 2.4vw, 40px)", "breakpoints": ["640px", "960px", "1280px", "1600px"], "alignment_tendency": "asymmetric editorial alignment with strong shared edges"},
+    "shape": {"border_radius": {"small": "2px", "medium": "8px", "large": "18px", "pill": "999px"}, "border_usage": "rare; thin museum/plaque and utility separators only", "divider_style": "1px low-contrast neutral rule"},
+    "elevation": {"shadow_style": "soft diffused and sparse", "levels": {"low": "0 8px 30px rgba(0,0,0,.06)", "medium": "0 20px 60px rgba(0,0,0,.10)", "high": "0 40px 110px rgba(0,0,0,.16)"}, "depth_cues": "spatial overlap, light falloff, scale, selective blur, museum perspective"},
+    "iconography": {"style": "minimal geometric line", "stroke_weight": "1.25px", "size_scale": ["16px", "20px", "24px"], "preferred_set": "custom minimal SVG where needed"},
+    "motion": {"easing": "cubic-bezier(0.22,1,0.36,1)", "duration_scale": {"micro": "180ms", "normal": "520ms", "macro": "1100ms"}, "entrance_pattern": "clip reveal + 12-24px vertical drift + opacity", "exit_pattern": "clip close + subtle translation + opacity", "philosophy": "cinematic continuity; one progress authority; never bouncy or decorative for its own sake"},
+    "components": {"button_style": "text-led minimal CTA with subtle rule/arrow", "input_style": "quiet high-contrast fields, minimal chrome", "card_style": "avoid card-first composition; project surfaces are artworks/panels", "navigation_pattern": "small fixed editorial chapter/utility navigation", "modal_style": "premium museum information panel with camera/input pause", "list_style": "clean typographic lists with restrained separators", "component_notes": "UI remains secondary to film and museum; no generic AI dashboard visual language"}
+  },
+  "design_style": {
+    "aesthetic": {"mood": ["cinematic", "calm", "precise", "premium", "curatorial"], "visual_metaphor": "an editorial film acting as the foyer to a contemporary digital museum", "era_influence": "contemporary editorial web + modern gallery architecture", "genre": "luxury editorial immersive portfolio", "personality_traits": ["confident", "restrained", "meticulous", "curious"], "adjectives": ["fluid", "architectural", "minimal", "warm", "distinctive"]},
+    "visual_language": {"complexity": "moderate", "ornamentation": "minimal", "whitespace_usage": "generous and strategic", "visual_weight_distribution": "one dominant focal element per beat", "focal_strategy": "progressive reveal", "contrast_level": "high hierarchy / restrained palette", "texture_usage": "subtle film grain and natural material texture only when justified"},
+    "composition": {"hierarchy_method": "scale contrast + spatial isolation + controlled overlap", "balance_type": "asymmetric", "flow_direction": "vertical editorial flow transitioning into spatial 3D exploration", "grouping_strategy": "scene-based narrative beats", "negative_space_role": "primary pacing and emphasis device"},
+    "imagery": {"photo_treatment": "cinematic full-bleed video with preserved blacks/highlights; no generic overlays", "illustration_style": "original abstract/procedural artworks for placeholders only", "graphic_elements": "large typography, fine rules, restrained labels", "pattern_usage": "none by default", "image_shape": "full-bleed cinematic field in intro; framed rectangular artworks in museum"},
+    "interaction_feel": {"feedback_style": "quiet immediate confirmation", "hover_behavior": "subtle light/contrast shift", "transition_personality": "smooth glide", "loading_style": "minimal editorial loading state", "microinteraction_density": "low"},
+    "brand_voice_in_ui": {"tone": "curatorial and direct", "formality": "refined but human", "cta_style": "short invitational imperative", "empty_state_approach": "transparent factual message", "error_tone": "calm, non-disruptive and explicit"}
+  },
+  "visual_effects": {
+    "overview": {"effect_intensity": "moderate", "performance_tier": "medium-to-heavy", "fallback_strategy": "reduce to CSS/2D editorial sequence and static media on constrained/mobile devices", "primary_technology": "scroll-linked DOM/video + React Three Fiber for museum"},
+    "background_effects": {"type": "video-bg", "description": "master cinematic video scrubbed by scroll with a subtle proxy gradient when the production asset is absent", "technology": "HTMLVideoElement + requestAnimationFrame", "params": {"color_palette": ["#101010", "#F2F0EA", "#C69B63"], "speed": "scroll-linked", "density": "n/a", "opacity": "1", "blend_mode": "normal"}},
+    "particle_systems": {"enabled": false, "type": "none", "description": "No decorative particles", "technology": "none", "params": {"count": 0, "shape": "none", "size_range": "none", "movement_pattern": "none", "color_behavior": "none", "interaction": "none", "spawn_area": "none"}},
+    "3d_elements": {"enabled": true, "type": "scene-bg", "description": "single elegant museum hall with framed Rubik Sota projects", "technology": "Three.js / React Three Fiber / drei", "params": {"renderer": "WebGL", "lighting": "warm ambient + efficient artwork spotlights", "camera": "first-person desktop; designed 2D mobile fallback", "materials": "simple PBR/standard materials", "geometry": "procedural/reused architectural geometry", "post_processing": "minimal or none", "interaction_model": "WASD/mouse + E/click focus"}},
+    "shader_effects": {"enabled": false, "type": "none", "description": "No shader dependency in V1; introduce only if evidence shows clear value", "technology": "none", "params": {"uniforms": {}, "vertex_manipulation": "none", "fragment_output": "none", "noise_type": "none", "distortion": "none"}},
+    "scroll_effects": {"parallax": {"enabled": true, "layers": "2-3", "depth_range": "subtle", "speed_curve": "0.85-1.05 relative"}, "scroll_triggered_animations": {"enabled": true, "trigger_points": "normalized cue windows", "animation_type": "clip-reveal / line-reveal / opacity / small translate", "scrub_behavior": "reversible and tied to a single normalized progress"}, "scroll_morphing": {"enabled": true, "description": "editorial film state transitions into museum threshold without snap navigation"}},
+    "text_effects": {"type": "split-line-animate", "description": "scene-specific copy reveals through clipping, line offsets and controlled opacity", "technology": "CSS + scroll progress JS", "params": {"split_strategy": "by-line", "animation_per_unit": "12-24px vertical reveal", "stagger": "40-80ms equivalent where appropriate", "effect_style": "masked editorial reveal"}},
+    "cursor_effects": {"enabled": false, "type": "none", "description": "native cursor in V1 for reliability", "params": {"shape": "native", "size": "native", "blend_mode": "normal", "trail": "none", "interaction_zone": "n/a"}},
+    "image_effects": {"type": "reveal-clip", "description": "media and artwork entrances use restrained clipping/scale only", "technology": "CSS/DOM", "params": {"filter_pipeline": "none", "hover_transform": "scale <= 1.015", "reveal_animation": "clip + opacity", "distortion_type": "none"}},
+    "glassmorphism_neumorphism": {"enabled": false, "style": "none", "params": {"blur_radius": "0", "transparency": "0", "border_treatment": "none", "shadow_type": "none", "light_source_angle": "n/a"}},
+    "canvas_drawings": {"enabled": false, "type": "none", "description": "not required for V1", "technology": "none", "params": {"draw_method": "none", "animation_loop": "none", "color_scheme": "none", "responsiveness": "none", "interaction": "none"}},
+    "svg_animations": {"enabled": false, "type": "none", "description": "reserved for identity marks only if later required", "params": {"animation_method": "none", "path_morphing": "none", "stroke_animation": "none", "filter_effects": "none"}},
+    "composite_notes": "The critical composite effect is not decorative: scroll progress, video time and copy cue state are one coordinated timeline. The museum remains a separate interaction mode entered after the editorial threshold. The absent production video must not be silently replaced."
+  }
+}
