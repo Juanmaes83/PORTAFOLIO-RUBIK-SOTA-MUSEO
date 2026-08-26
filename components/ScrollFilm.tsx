@@ -17,6 +17,7 @@ export default function ScrollFilm({ lab = false }: ScrollFilmProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const targetRef = useRef(0);
   const renderedRef = useRef(0);
+  const committedProgressRef = useRef(0);
   const frameRef = useRef<number | null>(null);
   const geometryRef = useRef({ start: 0, distance: 1 });
   const [progress, setProgress] = useState(0);
@@ -83,7 +84,8 @@ export default function ScrollFilm({ lab = false }: ScrollFilmProps) {
         }
       }
 
-      if (Math.abs(next - progress) > 0.0015 || next === 0 || next === 1) {
+      if (Math.abs(next - committedProgressRef.current) > 0.0015 || next === 0 || next === 1) {
+        committedProgressRef.current = next;
         setProgress(next);
       }
 
@@ -101,7 +103,7 @@ export default function ScrollFilm({ lab = false }: ScrollFilmProps) {
       window.removeEventListener("scroll", readScroll);
       if (frameRef.current) window.cancelAnimationFrame(frameRef.current);
     };
-  }, [isMobile, mediaState, progress, reducedMotion]);
+  }, [isMobile, mediaState, reducedMotion]);
 
   const portalStrength = clamp01((progress - 0.86) / 0.14);
   const stageStyle = { "--timeline": progress } as CSSProperties;
