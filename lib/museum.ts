@@ -19,6 +19,7 @@ export type MuseumTuning = {
   interactionDistance: number;
   facingThreshold: number;
   mouseSensitivity: number;
+  keyboardTurnSpeed: number;
 };
 
 export const DEFAULT_MUSEUM_TUNING: MuseumTuning = {
@@ -29,6 +30,7 @@ export const DEFAULT_MUSEUM_TUNING: MuseumTuning = {
   interactionDistance: 5.6,
   facingThreshold: 0.84,
   mouseSensitivity: 0.72,
+  keyboardTurnSpeed: 1.65,
 };
 
 export const GALLERY_BOUNDS = {
@@ -37,6 +39,9 @@ export const GALLERY_BOUNDS = {
   minZ: -14.6,
   maxZ: 13.6,
 };
+
+export const FINAL_INSTALLATION_ID = "final-installation";
+export const FINAL_INSTALLATION_POSITION = { x: 0, y: 1.9, z: -14.55 };
 
 export const museumProjects: MuseumProject[] = [
   {
@@ -49,8 +54,34 @@ export const museumProjects: MuseumProject[] = [
     role: "Creative Developer",
     year: "2026",
     side: "left",
-    z: 4.5,
+    z: 8.0,
     palette: ["#d5c2a6", "#2f3f48", "#8d5f3f"],
+  },
+  {
+    id: "ai-workspace",
+    title: "AI Design Workspace",
+    category: "AI Product",
+    description:
+      "A focused workspace for human-directed AI creation, balancing speed, traceability and an interface that keeps decisions visible.",
+    technologies: ["React", "TypeScript", "AI APIs"],
+    role: "Product & Creative Developer",
+    year: "2026",
+    side: "right",
+    z: 6.0,
+    palette: ["#d9d2c4", "#5c6f70", "#25282a"],
+  },
+  {
+    id: "fashion",
+    title: "Interactive Fashion Experience",
+    category: "E-Commerce",
+    description:
+      "An editorial commerce experience where product, motion and interaction behave as one visual system instead of a conventional catalogue.",
+    technologies: ["Next.js", "WebGL", "Headless CMS"],
+    role: "Experience Designer & Developer",
+    year: "2026",
+    side: "left",
+    z: 1.6,
+    palette: ["#d8c8c1", "#7f4f4b", "#29201f"],
   },
   {
     id: "architecture",
@@ -62,7 +93,33 @@ export const museumProjects: MuseumProject[] = [
     role: "3D Web Developer",
     year: "2026",
     side: "right",
-    z: -2.4,
+    z: -0.6,
     palette: ["#d8d2c5", "#827263", "#22201d"],
+  },
+  {
+    id: "analytics",
+    title: "Intelligent Analytics Platform",
+    category: "SaaS Interface",
+    description:
+      "A decision-oriented analytics environment that reduces dashboard noise and turns complex signals into a legible operating picture.",
+    technologies: ["React", "TypeScript", "Data Visualization"],
+    role: "Product Designer & Frontend Developer",
+    year: "2026",
+    side: "left",
+    z: -6.8,
+    palette: ["#c9d1cd", "#3c5f78", "#1f292d"],
+  },
+  {
+    id: "creative-coding",
+    title: "Creative Coding Laboratory",
+    category: "Experimental Web",
+    description:
+      "A browser laboratory for spatial interaction, sound and procedural graphics, built to turn technical experiments into reusable creative capabilities.",
+    technologies: ["Three.js", "GLSL", "Web Audio"],
+    role: "Creative Technologist",
+    year: "2026",
+    side: "right",
+    z: -8.8,
+    palette: ["#cfc5af", "#7a6952", "#24221e"],
   },
 ];

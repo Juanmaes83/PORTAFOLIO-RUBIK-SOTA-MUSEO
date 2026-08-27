@@ -4,6 +4,8 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import {
+  FINAL_INSTALLATION_ID,
+  FINAL_INSTALLATION_POSITION,
   GALLERY_BOUNDS,
   type MuseumProject,
   type MuseumTuning,
@@ -14,6 +16,7 @@ type Props = {
   tuning: MuseumTuning;
   paused: boolean;
   focusedId: string | null;
+  finalUnlocked: boolean;
   onFocusChange: (projectId: string | null) => void;
   onInspect: (projectId: string) => void;
   onMovementStarted: () => void;
@@ -27,6 +30,7 @@ export default function FirstPersonRig({
   tuning,
   paused,
   focusedId,
+  finalUnlocked,
   onFocusChange,
   onInspect,
   onMovementStarted,
@@ -62,23 +66,23 @@ export default function FirstPersonRig({
 
   useEffect(() => {
     const canvas = gl.domElement;
-
-    const isMovementKey = (code: string) =>
-      [
-        "KeyW",
-        "KeyA",
-        "KeyS",
-        "KeyD",
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
-      ].includes(code);
+    const controlKeys = new Set([
+      "KeyW",
+      "KeyA",
+      "KeyS",
+      "KeyD",
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "KeyQ",
+      "KeyR",
+    ]);
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (paused) return;
 
-      if (isMovementKey(event.code)) {
+      if (controlKeys.has(event.code)) {
         event.preventDefault();
         keysRef.current.add(event.code);
         if (!movementStartedRef.current) {
@@ -147,15 +151,24 @@ export default function FirstPersonRig({
     }
   }, [gl, paused]);
 
-  useFrame((_, delta) => {
+  useFrame((_, rawDelta) => {
     if (paused) return;
+    const delta = Math.min(rawDelta, 0.05);
+    const keys = keysRef.current;
+
+    const keyboardTurnInput =
+      (keys.has("KeyR") ? 1 : 0) - (keys.has("KeyQ") ? 1 : 0);
+    if (keyboardTurnInput !== 0) {
+      yawRef.current -= keyboardTurnInput * tuning.keyboardTurnSpeed * delta;
+      camera.rotation.y = yawRef.current;
+      camera.rotation.x = pitchRef.current;
+    }
 
     camera.getWorldDirection(forwardRef.current);
     forwardRef.current.y = 0;
     if (forwardRef.current.lengthSq() > 0.0001) forwardRef.current.normalize();
     rightRef.current.crossVectors(forwardRef.current, UP).normalize();
 
-    const keys = keysRef.current;
     const forwardInput =
       (keys.has("KeyW") || keys.has("ArrowUp") ? 1 : 0) -
       (keys.has("KeyS") || keys.has("ArrowDown") ? 1 : 0);
@@ -206,6 +219,23 @@ export default function FirstPersonRig({
       if (score > bestScore) {
         bestScore = score;
         bestId = project.id;
+      }
+    }
+
+    if (finalUnlocked) {
+      focusDirectionRef.current.set(
+        FINAL_INSTALLATION_POSITION.x - camera.position.x,
+        FINAL_INSTALLATION_POSITION.y - camera.position.y,
+        FINAL_INSTALLATION_POSITION.z - camera.position.z,
+      );
+      const distance = focusDirectionRef.current.length();
+      if (distance <= tuning.interactionDistance + 1.25 && distance > 0.001) {
+        focusDirectionRef.current.normalize();
+        const facing = cameraDirectionRef.current.dot(focusDirectionRef.current);
+        if (facing >= tuning.facingThreshold - 0.08) {
+          const score = facing * 2.2 - distance * 0.05;
+          if (score > bestScore) bestId = FINAL_INSTALLATION_ID;
+        }
       }
     }
 
