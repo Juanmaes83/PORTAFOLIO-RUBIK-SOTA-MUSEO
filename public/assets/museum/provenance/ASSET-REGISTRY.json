@@ -1,0 +1,219 @@
+{
+  "library": {
+    "name": "Rubik Sota Museum Asset Library",
+    "version": "1.0.0",
+    "status": "APPROVED",
+    "policy": "CUSTOM HERO + CC0 WORLD + PBR REALISM + IBL/HDRI + SEMANTIC INTERACTION"
+  },
+  "assets": [
+    {
+      "asset_id": "RS-GLB-01",
+      "name": "Seating / Bench",
+      "source_strategy": "POLY_HAVEN_CC0_OR_DERIVATIVE",
+      "approved_candidates": [
+        {
+          "name": "Modular Street Seating",
+          "source": "Poly Haven",
+          "original_url": "https://polyhaven.com/a/modular_street_seating",
+          "license": "CC0",
+          "status": "APPROVED_FOR_LIBRARY"
+        },
+        {
+          "name": "Mid Century Lounge Chair",
+          "source": "Poly Haven",
+          "original_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+          "license": "CC0",
+          "status": "APPROVED_FOR_LIBRARY_SECONDARY"
+        }
+      ],
+      "semantic_role": "spatial-scale",
+      "interactive": false,
+      "status": "NOT_YET_IMPORTED"
+    },
+    {
+      "asset_id": "RS-GLB-02",
+      "name": "Track Light / Museum Spotlight",
+      "source_strategy": "CUSTOM_OWNED",
+      "semantic_role": "exhibit-light",
+      "interactive": true,
+      "target_triangles": "2000-4000",
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-03",
+      "name": "Hero Sculpture System",
+      "source_strategy": "HYBRID_APPROVED_REAL_ASSET_PLUS_CUSTOM_HERO",
+      "approved_candidates": [
+        {
+          "name": "Marble Bust 01",
+          "source": "Poly Haven",
+          "original_url": "https://polyhaven.com/a/marble_bust_01",
+          "author": "Poly Haven contributor / verify exact asset metadata at import",
+          "license": "CC0",
+          "license_url": "https://polyhaven.com/license",
+          "approx_triangles_from_research": 17000,
+          "purpose": [
+            "real museum sculpture",
+            "material and lighting benchmark",
+            "scale and silhouette benchmark",
+            "secondary sculpture if custom Rubik hero becomes primary"
+          ],
+          "status": "APPROVED_FOR_LIBRARY_NOT_YET_IMPORTED",
+          "explicit_user_approval": true
+        },
+        {
+          "name": "Rubik Sota Custom Hero Sculpture 01",
+          "source": "Rubik Sota / custom",
+          "license": "OWNED",
+          "semantic_role": "identity-hero",
+          "interactive": true,
+          "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+        }
+      ],
+      "semantic_role": "hero-sculpture",
+      "interactive": true,
+      "status": "APPROVED"
+    },
+    {
+      "asset_id": "RS-GLB-04",
+      "name": "Media Wall",
+      "source_strategy": "CUSTOM_OWNED",
+      "semantic_role": "project-media-destination",
+      "interactive": true,
+      "states": ["DORMANT", "PROXIMITY", "FOCUS", "INSPECT"],
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-05",
+      "name": "Pedestal System",
+      "source_strategy": "CUSTOM_GEOMETRY_PLUS_CC0_PBR",
+      "variants": ["P01_RECTANGULAR_STONE", "P02_CYLINDRICAL_MINERAL", "P03_SLIM_METAL_DISPLAY"],
+      "semantic_role": "display-support",
+      "interactive": false,
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-06",
+      "name": "Entrance Portal",
+      "source_strategy": "CUSTOM_OWNED",
+      "semantic_role": "museum-threshold",
+      "interactive": true,
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-07",
+      "name": "Project Frame System",
+      "source_strategy": "CUSTOM_OR_CC0_DERIVATIVE",
+      "approved_reference": {
+        "name": "Standing Picture Frame 01",
+        "source": "Poly Haven",
+        "original_url": "https://polyhaven.com/a/standing_picture_frame_01",
+        "license": "CC0",
+        "status": "APPROVED_REFERENCE"
+      },
+      "variants": ["FRAME_A_DEEP_BLACK_ALUMINIUM", "FRAME_B_FLOATING_METAL", "FRAME_C_GLASS_MEDIA_ENCLOSURE"],
+      "semantic_role": "project-display",
+      "interactive": true,
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-08",
+      "name": "Display / Object Table",
+      "source_strategy": "CUSTOM_OR_CC0_DERIVATIVE",
+      "approved_reference": {
+        "name": "Modern Coffee Table 01",
+        "source": "Poly Haven",
+        "original_url": "https://polyhaven.com/a/modern_coffee_table_01",
+        "license": "CC0",
+        "status": "APPROVED_REFERENCE"
+      },
+      "semantic_role": "project-maquette-destination",
+      "interactive": true,
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-09",
+      "name": "Signage / Plaque Family",
+      "source_strategy": "CUSTOM_OWNED",
+      "semantic_role": "museum-information",
+      "interactive": false,
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-GLB-10",
+      "name": "Final Installation",
+      "source_strategy": "CUSTOM_OWNED",
+      "semantic_role": "completion-contact-installation",
+      "interactive": true,
+      "unlock_condition": "6/6 projects explored",
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_MODELED"
+    },
+    {
+      "asset_id": "RS-HDRI-01",
+      "name": "Sculpture Exhibition",
+      "source": "Poly Haven",
+      "original_url": "https://polyhaven.com/a/sculpture_exhibition",
+      "license": "CC0",
+      "semantic_role": "primary-ibl-environment",
+      "status": "APPROVED_FOR_LIBRARY_NOT_YET_IMPORTED"
+    },
+    {
+      "asset_id": "RS-HDRI-02",
+      "name": "White Studio 01",
+      "source": "Poly Haven",
+      "original_url": "https://polyhaven.com/a/white_studio_01",
+      "license": "CC0",
+      "semantic_role": "ibl-lab-alternative",
+      "status": "APPROVED_FOR_LAB_NOT_YET_IMPORTED"
+    },
+    {
+      "asset_id": "RS-HDRI-03",
+      "name": "Monochrome Studio 02",
+      "source": "Poly Haven",
+      "original_url": "https://polyhaven.com/a/monochrome_studio_02",
+      "license": "CC0",
+      "semantic_role": "ibl-lab-alternative",
+      "status": "APPROVED_FOR_LAB_NOT_YET_IMPORTED"
+    },
+    {
+      "asset_id": "RS-PBR-WALL-01",
+      "name": "Mineral / Plaster Wall Family",
+      "source": "ambientCG",
+      "license": "CC0",
+      "semantic_role": "wall-material",
+      "status": "APPROVED_CATEGORY_SOURCE_SELECTION_PENDING"
+    },
+    {
+      "asset_id": "RS-PBR-FLOOR-01",
+      "name": "Stone / Microcement-like Floor Family",
+      "source": "ambientCG",
+      "license": "CC0",
+      "semantic_role": "floor-material",
+      "status": "APPROVED_CATEGORY_SOURCE_SELECTION_PENDING"
+    },
+    {
+      "asset_id": "RS-PBR-METAL-01",
+      "name": "Brushed / Satin Metal Family",
+      "source": "ambientCG",
+      "license": "CC0",
+      "semantic_role": "metal-material",
+      "status": "APPROVED_CATEGORY_SOURCE_SELECTION_PENDING"
+    },
+    {
+      "asset_id": "RS-PBR-METAL-02",
+      "name": "Dark Graphite Metal Family",
+      "source": "ambientCG",
+      "license": "CC0",
+      "semantic_role": "dark-metal-material",
+      "status": "APPROVED_CATEGORY_SOURCE_SELECTION_PENDING"
+    },
+    {
+      "asset_id": "RS-PBR-WOOD-01",
+      "name": "Selected Wood Family",
+      "source": "ambientCG",
+      "license": "CC0",
+      "semantic_role": "wood-material",
+      "status": "APPROVED_CATEGORY_SOURCE_SELECTION_PENDING"
+    }
+  ]
+}
