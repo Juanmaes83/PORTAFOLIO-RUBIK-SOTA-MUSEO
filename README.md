@@ -14,6 +14,7 @@ Si eres una IA, desarrollador o colaborador nuevo, lee primero:
 4. [`docs/02-ARCHITECTURE-CONTRACT.md`](./docs/02-ARCHITECTURE-CONTRACT.md)
 5. [`design/rubik-sota-museum-dna.json`](./design/rubik-sota-museum-dna.json)
 6. [`docs/03-VALIDATION-STATUS.md`](./docs/03-VALIDATION-STATUS.md)
+7. [`docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md`](./docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md) y [`public/assets/museum/`](./public/assets/museum/) antes de cualquier uplift de materiales/GLB/HDRI.
 
 No modifiques runtime antes de entender **ADN / NEURONAS / PIEL** y la regla de baseline protegida.
 
@@ -268,6 +269,8 @@ probar materialidad/iluminación premium en una única zona y una única obra an
 Expected route:
 `/museum/material-lab`
 
+La ejecución 5.2 y su recuperación visual deben usar la biblioteca aprobada de GLB/PBR/HDRI y su registro de procedencia; no introducir assets arbitrarios fuera de ese sistema.
+
 ---
 
 # PRIMARY DONORS PARA FASE 5
@@ -293,6 +296,42 @@ Piedras identificadas:
 - Media Lifecycle;
 - Entry Ritual;
 - Institutional Knowledge Layer.
+
+---
+
+# RUBIK SOTA ASSET LIBRARY — APPROVED
+
+La biblioteca GLB/PBR/HDRI es una dependencia oficial de la PIEL del museo.
+
+Fuente de verdad:
+- `docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md`
+- `public/assets/museum/README.md`
+- `public/assets/museum/provenance/ASSET-REGISTRY.json`
+- `public/assets/museum/provenance/LICENSES.md`
+- `public/assets/museum/provenance/SOURCES.md`
+
+Estrategia aprobada:
+
+```text
+CUSTOM HERO
++ CC0 WORLD
++ PBR REALISM
++ IBL / HDRI
++ SEMANTIC INTERACTION
+```
+
+Fuentes:
+- CUSTOM / OWNED para identidad crítica;
+- Poly Haven CC0 como PRIMARY externo para geometría/HDRI;
+- ambientCG CC0 como PRIMARY PBR;
+- Sketchfab CC0 como fallback selectivo;
+- CC BY solo bajo atribución controlada;
+- Khronos glTF Sample Assets para QA técnico;
+- BlenderKit solo tras verificación de licencia/redistribución.
+
+`RS-GLB-03` incluye expresamente **Poly Haven — Marble Bust 01** como asset aprobado de biblioteca, además de una futura escultura hero propia de Rubik Sota. El busto no debe eliminarse silenciosamente cuando exista el hero custom.
+
+Estado actual: selección, gobernanza y arquitectura APPROVED + VERSIONED. Los binarios externos siguen `NOT_YET_IMPORTED` hasta verificar el artefacto exacto, licencia/redistribución, optimización y validación visual.
 
 ---
 
@@ -421,6 +460,7 @@ OBSERVAR
 
 ```text
 5.1 CINEMATIC INSPECT           ✅
+ASSET LIBRARY V1               ✅ APPROVED + VERSIONED
 5.2 MATERIAL STONE              ⏭ NEXT
 5.3 SEMANTIC LANDMARK           ⏳
 5.4 ENTRY RITUAL                ⏳
