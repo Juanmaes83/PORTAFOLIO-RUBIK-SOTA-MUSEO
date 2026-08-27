@@ -1,0 +1,102 @@
+{
+  "phase": "5.2R+ PASS 2",
+  "status": "IMPLEMENTED_CANDIDATE_AWAITING_HUMAN_VALIDATION",
+  "branch": "feat/phase-5-2r-plus-premium-consolidation",
+  "objective": "Correct every visually broken asset from PASS 1 and finish the approved premium systems without changing navigation neurons.",
+  "runtime_assets": [
+    {
+      "asset_id": "RS-GLB-03",
+      "name": "Marble Bust 01",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "runtime_format": "gltf",
+      "mirror_repository": "naver/mesh-simplifier",
+      "mirror_commit": "4a7645c44b6e368de343d904f70cf866f4c5f17a",
+      "runtime_url": "https://raw.githubusercontent.com/naver/mesh-simplifier/4a7645c44b6e368de343d904f70cf866f4c5f17a/demo/assets/marble_bust/marble_bust_01_1k.gltf",
+      "role": "hero sculpture / material-light benchmark",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-GLB-01B",
+      "name": "Mid Century Lounge Chair 01",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "runtime_format": "gltf",
+      "mirror_repository": "AndreTInfante/portalgi",
+      "mirror_commit": "333eab21bcc15b298435337decc723e598363201",
+      "runtime_url": "https://raw.githubusercontent.com/AndreTInfante/portalgi/333eab21bcc15b298435337decc723e598363201/assets/models/gltf/mid_century_lounge_chair/mid_century_lounge_chair_1k.gltf",
+      "role": "clean human-scale seating replacing broken modular seating",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-HDRI-01",
+      "name": "Sculpture Exhibition 1K HDRI",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "mirror_repository": "OmiAvi/artportfolio",
+      "mirror_commit": "128fa847cbcd9cc1627e96c0756aa3b10a4a9334",
+      "role": "IBL / environment reflections",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-PBR-FLOOR-RECOVERY",
+      "name": "Herringbone Parquet 1K PBR",
+      "upstream": "Poly Haven-derived mirror",
+      "license": "CC0",
+      "maps": ["diffuse", "roughness", "normal"],
+      "role": "primary floor material",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-PBR-WALL-RECOVERY",
+      "name": "White Stucco 1K PBR",
+      "upstream": "Poly Haven-derived mirror",
+      "license": "CC0",
+      "maps": ["diffuse", "roughness", "normal"],
+      "role": "primary wall material",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    }
+  ],
+  "removed_after_visual_failure": [
+    {
+      "name": "Modern Ceiling Lamp 01",
+      "reason": "Wrong semantic role and upside-down integration in PASS 1. Removed entirely from runtime."
+    },
+    {
+      "name": "Modular Street Seating",
+      "reason": "Multi-module asset produced floating/disconnected geometry. Removed entirely from runtime."
+    },
+    {
+      "name": "Standing Picture Frame 01",
+      "reason": "Standing-frame foot/support became chaotic when scaled as wall art. Removed entirely from runtime."
+    }
+  ],
+  "authored_rubik_systems": [
+    "RS Track Light 01: rail fixture + articulated housing + lens + bound spotlight target",
+    "RS Wall Frame Family A/B/C",
+    "RS Pedestal Family P01/P02/P03",
+    "RS Media Wall V2 with housing, glass and ventilation detail",
+    "RS Display / Maquette Table V1",
+    "RS Entrance Portal V2",
+    "RS Rubik System 02 hero installation",
+    "RS Final Installation V2",
+    "Wall relief/pilaster system",
+    "Niche/backing-panel system",
+    "Ceiling zone/coffer system",
+    "Focus response: local light + plaque + emissive/material response",
+    "Contact grounding pass"
+  ],
+  "pass_2_acceptance_checks": {
+    "no_upside_down_lamps": true,
+    "no_floating_modular_seating": true,
+    "no_standing_frame_support_on_wall": true,
+    "track_fixture_and_spotlight_bound": true,
+    "three_pedestal_variants_present": true,
+    "display_table_present": true,
+    "portal_v2_present": true,
+    "final_v2_present": true,
+    "rubik_hero_v2_present": true,
+    "human_visual_validation_required": true
+  },
+  "important_note": "Runtime mirrors are pinned by commit for deterministic validation. Human visual validation remains mandatory before merge."
+}

@@ -1,0 +1,110 @@
+{
+  "version": "2.0.0",
+  "status": "APPROVED_FOR_PHASE_5_2R_VALIDATION",
+  "method": {
+    "design_dna_reference": "Juanmaes83/design-dna",
+    "principle": "machine-readable quantified visual direction; percentages are art-direction gates, not physical measurements",
+    "preserve": ["ADN", "NEURONAS", "one-gallery navigation", "focus by proximity + gaze", "cinematic inspect", "visited progress", "final installation"]
+  },
+  "surface_distribution_pct": {
+    "mineral_off_white": { "target": 60, "range": [55, 68] },
+    "dark_graphite_structure": { "target": 20, "range": [14, 24] },
+    "warm_tactile_material": { "target": 12, "range": [8, 16] },
+    "glass_or_technical": { "target": 5, "range": [2, 8] },
+    "high_attention_accent": { "target": 3, "max": 5 },
+    "pure_black_visible_area_max": 18
+  },
+  "lighting_distribution_pct": {
+    "architectural_ambient_bounce": 42,
+    "exhibit_local": 32,
+    "sculptural_accent": 16,
+    "focus_interaction_response": 10
+  },
+  "tonal_distribution_pct": {
+    "midtones": 60,
+    "highlights": 25,
+    "deep_shadows": 15
+  },
+  "detail_density_pct": {
+    "calm_surface": 68,
+    "architectural_detail": 20,
+    "authored_object_detail": 9,
+    "hero_micro_detail": 3
+  },
+  "depth_composition_pct": {
+    "foreground": 22,
+    "midground": 54,
+    "background": 24,
+    "rule": "every representative camera view should contain at least one readable foreground or near-field element, two midground anchors and one background destination"
+  },
+  "material_targets": {
+    "large_surface_material_legibility_min": 0.85,
+    "roughness_variation_presence_min": 0.7,
+    "normal_or_micro_surface_presence_min": 0.4,
+    "reflective_or_transmissive_presence_target": 0.18,
+    "emissive_reactive_presence_max": 0.1,
+    "flat_untextured_large_surface_max": 0.2
+  },
+  "perceptual_quality_targets": {
+    "material_legibility": 0.85,
+    "spatial_depth": 0.82,
+    "lighting_sculpting": 0.86,
+    "atmosphere_presence": 0.78,
+    "interaction_legibility": 0.92,
+    "architectural_authorship": 0.82,
+    "generic_threejs_demo_feeling_max": 0.15
+  },
+  "material_tokens": {
+    "floor": {
+      "family": "real wood / stone / refined architectural surface",
+      "pbr_required": true,
+      "reflection": [0.05, 0.18],
+      "roughness": [0.68, 0.86],
+      "normal_strength": [0.12, 0.3],
+      "rule": "must read as a material, never as a painted black plane"
+    },
+    "wall": {
+      "family": "warm mineral white / plaster",
+      "pbr_required": true,
+      "roughness": [0.82, 0.96],
+      "normal_strength": [0.08, 0.22]
+    },
+    "metal": {
+      "family": "graphite + restrained warm satin metal",
+      "roughness": [0.24, 0.46],
+      "metalness": [0.62, 0.9]
+    },
+    "glass": {
+      "roughness": [0.08, 0.22],
+      "opacity": [0.18, 0.38]
+    }
+  },
+  "lighting_tokens": {
+    "architectural_kelvin": [3800, 4600],
+    "exhibit_kelvin": [3000, 3700],
+    "cool_fill_kelvin": [4300, 5200],
+    "focus_intensity_gain_pct": [18, 35],
+    "rule": "exhibits must be sculpted by local light; ceiling darkness must not swallow the room"
+  },
+  "focus_language": {
+    "requirements": ["local light gain", "plaque luminance gain", "restrained halo or material shift", "crosshair/UI confirmation", "E/click prompt"],
+    "rule": "focus must be unmistakable in under one second without looking like a game selection outline"
+  },
+  "asset_strategy": {
+    "custom_owned_pct": 40,
+    "poly_haven_cc0_pct": 30,
+    "pbr_cc0_pct": 20,
+    "selective_external_pct": 10,
+    "rule": "CC0 for secondary infrastructure; custom GLB for memorable identity"
+  },
+  "forbidden": [
+    "large dead-black floor",
+    "unlit primitive sculpture as hero",
+    "flat wall color without perceptible surface response",
+    "single-light scene",
+    "uniform six-frame repetition",
+    "sci-fi neon by default",
+    "stock showroom luxury",
+    "focus state too subtle to understand"
+  ]
+}

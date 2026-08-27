@@ -1,0 +1,155 @@
+{
+  "name": "Rubik Sota Visual DNA V3 — Premium Consolidation",
+  "version": "3.0.0",
+  "status": "CANDIDATE_FOR_HUMAN_VALIDATION",
+  "mission": "Sustain premium visual quality across the complete museum, including frames where the Marble Bust is not visible.",
+  "non_negotiable": {
+    "premium_score_min": 9.0,
+    "no_parameter_below": 9.0,
+    "protected_neurons": [
+      "WASD/arrows locomotion",
+      "mouse-look",
+      "Q/R yaw",
+      "proximity + gaze focus calculation",
+      "E/click inspect",
+      "visited/progress",
+      "6/6 unlock",
+      "cinematic inspect",
+      "camera return",
+      "pointer-lock restore"
+    ]
+  },
+  "composition": {
+    "surface_distribution_percent": {
+      "mineral_off_white": [55, 68],
+      "graphite_structural": [14, 24],
+      "warm_tactile": [8, 16],
+      "glass_technical": [2, 8],
+      "high_attention_accent_max": 5
+    },
+    "pure_black_visible_area_max_percent": 12,
+    "required_depth_layers_per_hero_frame": 3,
+    "foreground_presence_required": true,
+    "flat_wall_visible_area_max_percent": 35,
+    "architectural_relief_visible_area_min_percent": 20,
+    "shadow_gap_or_joint_presence_min_percent": 8
+  },
+  "architecture": {
+    "wall_variation_interval_meters": [3, 5],
+    "required_variation_types": [
+      "relief",
+      "niche",
+      "threshold",
+      "lighting change",
+      "semantic object"
+    ],
+    "minimum_visible_authored_architecture_elements_per_hero_frame": 3,
+    "long_uninterrupted_flat_wall_forbidden": true,
+    "entry_threshold_required": true,
+    "final_installation_must_be_volumetric": true
+  },
+  "ceiling": {
+    "dead_black_area_max_percent": 12,
+    "designed_coverage_min_percent": 70,
+    "visible_physical_lighting_hardware_target_percent": 50,
+    "zones_required": [
+      "entry",
+      "main gallery",
+      "hero",
+      "transition",
+      "final"
+    ],
+    "allowed_elements": [
+      "recessed rails",
+      "real GLTF luminaires",
+      "shadow gaps",
+      "cove lighting",
+      "mineral/acoustic panels",
+      "structural bands"
+    ]
+  },
+  "assets": {
+    "primitive_only_hero_objects_percent": 0,
+    "significant_gltf_or_authored_geometry_per_hero_view_min": 3,
+    "generic_box_cylinder_exposure_max_percent": 10,
+    "real_gltf_required_families": [
+      "hero sculpture",
+      "frame system",
+      "seating",
+      "lighting hardware"
+    ],
+    "custom_identity_geometry_required": true
+  },
+  "materiality": {
+    "large_surface_material_legibility_min": 0.9,
+    "pbr_required_for_floor": true,
+    "pbr_required_for_primary_walls": true,
+    "roughness_variation_perceptible": true,
+    "normal_or_bump_required_on_primary_architectural_surfaces": true,
+    "mirror_floor_forbidden": true,
+    "texture_scale_must_read_as_physical": true
+  },
+  "lighting": {
+    "distribution_percent_target": {
+      "ambient_ibl": [35, 40],
+      "architectural": [25, 30],
+      "exhibit": [20, 25],
+      "hero_narrative": [10, 15],
+      "focus_response": [5, 10]
+    },
+    "uniform_room_lighting_forbidden": true,
+    "each_exhibit_has_local_light": true,
+    "foreground_midground_background_separation_required": true,
+    "portal_and_final_have_distinct_narrative_light": true
+  },
+  "depth_and_contact": {
+    "contact_shadow_required_for_floor_objects": true,
+    "ambient_occlusion_target": "subtle-to-moderate",
+    "floating_object_perception_allowed": false,
+    "frame_wall_separation_must_be_visible": true,
+    "hero_pedestal_contact_must_be_clear": true
+  },
+  "focus_language": {
+    "states": ["IDLE", "PROXIMITY", "FOCUS", "READY", "INSPECT"],
+    "focus_must_be_unambiguous": true,
+    "neon_outline_forbidden": true,
+    "required_focus_channels": [
+      "local light",
+      "plaque luminance",
+      "material/emissive response",
+      "crosshair/prompt"
+    ],
+    "target_legibility": 0.95
+  },
+  "identity": {
+    "rubik_specific_authored_elements_min": 3,
+    "generic_gallery_feeling_max": 0.2,
+    "required_identity_elements": [
+      "Rubik threshold/portal",
+      "Rubik hero installation",
+      "Rubik signage language",
+      "Rubik material/accent rhythm",
+      "Rubik final installation"
+    ]
+  },
+  "perceptual_scorecard": {
+    "materiality": 9,
+    "lighting": 9,
+    "depth": 9,
+    "architecture": 9,
+    "atmosphere": 9,
+    "focus_interaction": 9,
+    "asset_quality": 9,
+    "rubik_identity": 9,
+    "wow": 9,
+    "global_coherence": 9
+  },
+  "validation": {
+    "requires_ci": true,
+    "requires_exact_preview": true,
+    "requires_baseline_ab": true,
+    "requires_human_visual_validation": true,
+    "requires_fixed_camera_screenshots_for_formal_harness": true,
+    "merge_before_human_approval": false
+  }
+}
