@@ -9,6 +9,14 @@ export type ArtifactSemanticType =
 
 export type ArtifactPrimaryAction = "inspect";
 
+export type ArtifactLifecyclePolicy = {
+  preloadDistance: number;
+  unloadDistance: number;
+  previewOnFocus: boolean;
+  resetOnLeave: boolean;
+  mediaPreload: "none" | "metadata" | "full";
+};
+
 export type InteractiveArtifact = {
   id: string;
   projectId: string;
@@ -26,12 +34,24 @@ export type InteractiveArtifact = {
     focusable: boolean;
     inspectable: boolean;
   };
+  lifecycle: ArtifactLifecyclePolicy;
 };
 
 function semanticTypeFor(index: number): ArtifactSemanticType {
   if (index % 3 === 1) return "media-wall";
   if (index % 3 === 2) return "display";
   return "artwork";
+}
+
+function lifecycleFor(index: number): ArtifactLifecyclePolicy {
+  const semanticType = semanticTypeFor(index);
+  return {
+    preloadDistance: semanticType === "media-wall" ? 9.2 : 8.4,
+    unloadDistance: semanticType === "media-wall" ? 11.2 : 10.4,
+    previewOnFocus: true,
+    resetOnLeave: true,
+    mediaPreload: semanticType === "media-wall" ? "metadata" : "full",
+  };
 }
 
 export const artifactRegistry: InteractiveArtifact[] = museumProjects.map((project, index) => ({
@@ -46,6 +66,7 @@ export const artifactRegistry: InteractiveArtifact[] = museumProjects.map((proje
   },
   actions: { primary: "inspect" },
   state: { focusable: true, inspectable: true },
+  lifecycle: lifecycleFor(index),
 }));
 
 export const artifactById = new Map(artifactRegistry.map((artifact) => [artifact.id, artifact]));
