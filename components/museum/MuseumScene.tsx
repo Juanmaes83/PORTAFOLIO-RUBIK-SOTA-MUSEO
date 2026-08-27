@@ -23,6 +23,12 @@ type Props = {
   microInteractions?: boolean;
 };
 
+type PBRTextureSet = {
+  map: THREE.Texture;
+  roughnessMap: THREE.Texture;
+  normalMap: THREE.Texture;
+};
+
 const OMI_MIRROR = "https://raw.githubusercontent.com/OmiAvi/artportfolio/128fa847cbcd9cc1627e96c0756aa3b10a4a9334";
 const BUST_URL = "https://raw.githubusercontent.com/naver/mesh-simplifier/4a7645c44b6e368de343d904f70cf866f4c5f17a/demo/assets/marble_bust/marble_bust_01_1k.gltf";
 const FRAME_URL = "https://raw.githubusercontent.com/ezEngine/store-sample/182401cf1f430401e800c2ea4452816bc7d539a3/PolyHaven/standing_picture_frame_01_1k/standing_picture_frame_01_1k.gltf";
@@ -215,7 +221,7 @@ function RubikHeroInstallation() {
   </group>;
 }
 
-function WallArchitecture({ wall }: { wall: ReturnType<typeof useTexture> }) {
+function WallArchitecture({ wall }: { wall: PBRTextureSet }) {
   const reliefZ = [-12.2, -8.1, -4.0, 0.1, 4.2, 8.3, 12.3];
   return <>
     <mesh position={[-4.84, 2.55, 0]} receiveShadow><boxGeometry args={[0.22, 5.1, 30.2]} /><meshStandardMaterial {...wall} color="#f0ede6" roughness={0.92} normalScale={new THREE.Vector2(0.18, 0.18)} /></mesh>
@@ -267,8 +273,8 @@ function EntrancePortal() {
 }
 
 function PremiumArchitecture() {
-  const floor = useTexture(FLOOR);
-  const wall = useTexture(WALL);
+  const floor = useTexture(FLOOR) as PBRTextureSet;
+  const wall = useTexture(WALL) as PBRTextureSet;
   tileTexture(floor.map, 6, 11, true); tileTexture(floor.roughnessMap, 6, 11); tileTexture(floor.normalMap, 6, 11);
   tileTexture(wall.map, 3, 8, true); tileTexture(wall.roughnessMap, 3, 8); tileTexture(wall.normalMap, 3, 8);
 
