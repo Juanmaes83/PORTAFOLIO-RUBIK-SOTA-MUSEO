@@ -1,10 +1,16 @@
 # PHASE 5.2 — MATERIAL + ATMOSPHERE STONE
 
-Status: **IMPLEMENTED CANDIDATE — awaiting CI + human visual validation**
+Status: **APPROVED, MERGED AND FROZEN AS CURRENT VISUAL BASELINE**
 
 Branch: `feat/phase-5-2-material-atmosphere`
 
-Protected baseline: `main` at `45fa8499f2a020890fcf7e624ebe6848e93f1a4a`
+PR: `#7 — Phase 5.2 — Material + Atmosphere Stone`
+
+Validated head: `8e1ed4d274d9f8f38e021567a2b7f5bb85203cfc`
+
+Merged baseline: `9041cb50b7cf63563dcf76de0e20b8505af56d0a`
+
+Human visual approval: **2026-08-27**
 
 ## Mission
 
@@ -12,7 +18,7 @@ Produce a large enough visual evolution to judge perceived quality, not a one-ar
 
 Phase 5.2 transforms approximately the front 40–45% of the existing single gallery while preserving the approved rear half as a live baseline comparison.
 
-Target statement:
+Approved target statement:
 
 > This half of the museum feels like another level of product.
 
@@ -45,11 +51,11 @@ Extracted:
 Asset audit found `assets/3d/scene-final.gltf`, but it is a complete room scene rather than a clean modular museum prop. It is deliberately NOT imported into Rubik Sota because it would transfer donor architecture/identity instead of a reusable capability.
 
 ### `Juanmaes83/hyacinth.im-site`
-Used at the level of authored spatial staging only. Semantic landmark/world systems remain Phase 5.3.
+Used at the level of authored spatial staging only. Semantic landmark/world systems remain a later stone.
 
 ## Material DNA
 
-New canonical candidate:
+Canonical candidate accepted:
 
 `design/rubik-sota-material-dna.json`
 
@@ -72,14 +78,14 @@ Explicitly forbidden:
 
 ## Material token system
 
-New:
+Canonical implementation:
 
 `lib/materialTokens.ts`
 
 Presets:
 - `baseline`
 - `quiet`
-- `cinematic` — default candidate
+- `cinematic` — approved default candidate
 - `editorial`
 
 The purpose of presets is A/B art direction, not product theme switching.
@@ -93,7 +99,7 @@ Projects 01–03:
 
 Rear projects 04–06 deliberately retain the approved Phase 4 visual treatment.
 
-This creates two comparison methods:
+This creates two approved comparison methods:
 
 1. walk physically from premium front zone into approved baseline rear zone;
 2. use `/museum/material-lab` to toggle the same scene between baseline and candidate presets.
@@ -120,7 +126,7 @@ This creates two comparison methods:
 - metal accent ring;
 - restrained rear light response.
 
-All three now use the already-approved `CinematicInspectRig`.
+All three use the already-approved `CinematicInspectRig`.
 
 ## Architecture uplift
 
@@ -176,9 +182,9 @@ Controls:
 - focus microinteractions ON/OFF;
 - reset.
 
-## Protected NEURONAS
+## Protected NEURONAS — regression gate passed
 
-Must not regress:
+Preserved through the approved stone:
 - WASD/arrows;
 - Q/R 360 yaw;
 - mouse look;
@@ -192,26 +198,33 @@ Must not regress:
 - exact Cinematic Inspect return;
 - yaw/pitch resync after return.
 
-## Human visual validation protocol
+## Validation evidence
 
-1. Open `/museum`.
-2. Observe the initial front zone before moving.
-3. Inspect Aviation, AI Workspace and Fashion.
-4. Confirm the three exhibit treatments feel intentionally different.
-5. Walk toward projects 04–06 and judge the premium→baseline threshold.
-6. Open `/museum/material-lab`.
-7. From a stable camera position toggle `Baseline` ↔ `Cinematic Gallery`.
-8. Compare `Quiet` and `Editorial` only if useful.
-9. Toggle details/props.
-10. Toggle microinteractions and focus the three premium works.
-11. Repeat Cinematic Inspect + return on all three.
-12. Confirm movement/focus/progress/final behavior has not regressed.
+GitHub PR: `#7`
 
-## Merge rule
+Validated head: `8e1ed4d274d9f8f38e021567a2b7f5bb85203cfc`
 
-Do NOT merge until:
-- TypeScript passes;
-- production build passes;
-- exact preview is deployed;
-- user performs human visual validation;
-- user explicitly approves the visual stone.
+CI:
+- `Pull request verification` — success;
+- `Rubik Sota vertical slice checks` — success;
+- TypeScript — success;
+- Next.js production build — success.
+
+Exact Vercel validation deployment:
+- deployment id `dpl_4kpvT42ya3PqkL78uCc5tDX6EUuU`;
+- state `READY`;
+- routes generated: `/`, `/lab`, `/museum`, `/museum/inspect-lab`, `/museum/lab`, `/museum/material-lab`.
+
+Human validation:
+- `/museum` approved;
+- `/museum/material-lab` approved;
+- explicit user approval received on 2026-08-27.
+
+Merge:
+- PR #7 merged with merge commit `9041cb50b7cf63563dcf76de0e20b8505af56d0a`.
+
+## Freeze rule after approval
+
+`9041cb50b7cf63563dcf76de0e20b8505af56d0a` is now the protected Phase 5.2 visual baseline.
+
+Future visual work must be additive and isolated. Do not rewrite movement, Cinematic Inspect, progress, final installation, or the approved material system without demonstrated root cause and regression validation.
