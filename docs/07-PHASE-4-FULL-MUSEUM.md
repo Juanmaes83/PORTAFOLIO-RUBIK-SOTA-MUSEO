@@ -1,6 +1,12 @@
 # Phase 4 — Full 6-Project Museum + 360° keyboard yaw
 
-Baseline: `1d94bad3808e229bbe6d1816f9e802e113ae4c75`
+Status: **APPROVED + MERGED**
+
+Protected starting baseline: `1d94bad3808e229bbe6d1816f9e802e113ae4c75`
+
+PR: https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/5
+
+PR head: `3e161396cdb0a44e5717c5af597756cb8dcde702`
 
 ## Mission
 Scale the approved two-exhibit Museum Foundation into the complete six-project collection without rewriting the approved movement/focus/panel engine.
@@ -39,7 +45,7 @@ Preserved:
 ## 360° micro-improvement
 Keyboard yaw is deliberately added to the existing camera authority rather than creating a second control system.
 
-Mapping for Phase 4 validation:
+Mapping:
 - `Q` = rotate left;
 - `R` = rotate right;
 - `E` remains inspect and is never overloaded.
@@ -72,32 +78,52 @@ visitedCount == 6
 No backend or analytics is involved in this phase.
 
 ## Asset / Higgsfield rule
-No Higgsfield credits are spent before the complete interaction model passes technical and manual validation.
+No Higgsfield credits were spent before the complete interaction model passed technical and manual validation.
 
 The six Phase 4 artworks remain lightweight original procedural compositions. Real project imagery will be generated or integrated only after the interaction baseline is frozen, following `docs/05-HIGGSFIELD-ASSET-GENERATION-PROTOCOL.md` and the maximum-two-generations-per-function rule.
 
-## Acceptance gate
-- [ ] six exhibits render in one gallery;
-- [ ] all six can be focused and inspected;
-- [ ] visited state increments once per unique project;
-- [ ] progress reaches exactly `6 / 6`;
-- [ ] final installation remains dormant before `6/6`;
-- [ ] final installation activates at `6/6`;
-- [ ] About / Contact opens from final installation;
-- [ ] Q/R can rotate continuously beyond 360°;
-- [ ] mouse-look and keyboard yaw coexist;
-- [ ] W/S movement follows new facing direction;
-- [ ] A/D + arrows retain approved translation semantics;
-- [ ] E/click inspection does not regress;
-- [ ] panel close restores control;
-- [ ] TypeScript passes;
-- [ ] production build passes;
-- [ ] `/museum` manual validation passes;
-- [ ] `/museum/lab` manual validation passes.
+## Acceptance gate — FINAL
+- [x] six exhibits render in one gallery;
+- [x] all six can be focused and inspected;
+- [x] visited state increments once per unique project;
+- [x] progress reaches exactly `6 / 6`;
+- [x] final installation remains dormant before `6/6`;
+- [x] final installation activates at `6/6`;
+- [x] About / Contact opens from final installation;
+- [x] Q/R can rotate continuously beyond 360°;
+- [x] mouse-look and keyboard yaw coexist;
+- [x] W/S movement follows new facing direction;
+- [x] A/D + arrows retain approved translation semantics;
+- [x] E/click inspection does not regress;
+- [x] panel close restores control;
+- [x] TypeScript passes;
+- [x] production build passes;
+- [x] `/museum` manual validation passes;
+- [x] `/museum/lab` manual validation passes.
 
-## Explicitly deferred
+Human approval was explicitly given before merge.
+
+## Frozen capability after Phase 4
+
+The following becomes protected baseline for later phases:
+- one six-project gallery;
+- data-driven project registry;
+- movement;
+- pointer-lock mouse look;
+- keyboard 360° yaw;
+- focus;
+- E/click inspect;
+- visited/progress;
+- final installation;
+- About/Contact;
+- Movement/Focus LAB.
+
+## Explicitly deferred after Phase 4
 - final real Rubik Sota project media;
 - dedicated mobile museum phase;
+- global visual/material uplift;
+- semantic landmarks;
+- cinematic inspect (implemented later in Phase 5.1);
 - PostgreSQL;
 - attention engine;
 - API;
