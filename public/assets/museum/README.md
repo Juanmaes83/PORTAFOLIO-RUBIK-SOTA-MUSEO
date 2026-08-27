@@ -62,4 +62,4 @@ public/assets/museum/
 
 `RS-GLB-03` explicitly includes Poly Haven `Marble Bust 01` as an approved library asset in addition to the future custom Rubik Sota hero sculpture.
 
-See `docs/13-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md` for the full art direction, source hierarchy, performance pipeline and runtime architecture.
+See `docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md` for the full art direction, source hierarchy, performance pipeline and runtime architecture.
