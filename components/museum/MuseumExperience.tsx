@@ -156,7 +156,7 @@ export default function MuseumExperience({ lab = false, inspectLab = false, mate
   if (isMobile) return <MobileMuseumFallback />;
 
   const labActive = lab || inspectLab || materialLab;
-  const headerLabel = materialLab ? "MUSEUM / MATERIAL + ATMOSPHERE LAB" : inspectLab ? "MUSEUM / CINEMATIC INSPECT LAB" : "MUSEUM / COMPLETE COLLECTION";
+  const headerLabel = materialLab ? "MUSEUM / 5.2R+ PREMIUM VISUAL LAB" : inspectLab ? "MUSEUM / CINEMATIC INSPECT LAB" : "MUSEUM / COMPLETE COLLECTION";
 
   return (
     <main className={`museumExperience ${labActive ? "isLab" : ""} ${inspectLab ? "isInspectLab" : ""} ${materialLab ? "isMaterialLab" : ""}`}>
@@ -195,9 +195,9 @@ export default function MuseumExperience({ lab = false, inspectLab = false, mate
 
       {!inspectLab && materialPreset !== "baseline" ? (
         <div className="museumMaterialBadge">
-          <span>PHASE 5.2</span>
-          <strong>{MATERIAL_PRESETS[materialPreset].label}</strong>
-          <small>front gallery = premium / rear gallery = approved baseline</small>
+          <span>PHASE 5.2R+</span>
+          <strong>Premium Consolidation</strong>
+          <small>full gallery = premium candidate / baseline remains available in LAB</small>
         </div>
       ) : null}
 
@@ -262,18 +262,16 @@ export default function MuseumExperience({ lab = false, inspectLab = false, mate
       {materialLab ? (
         <aside className="museumLabPanel materialLabPanel">
           <div className="museumLabHeader">
-            <b>MATERIAL + ATMOSPHERE STONE</b>
-            <span>{`preset: ${MATERIAL_PRESETS[materialPreset].label}`}</span>
+            <b>5.2R+ / PREMIUM VISUAL CONSOLIDATION</b>
+            <span>{materialPreset === "baseline" ? "mode: approved baseline" : "mode: premium candidate"}</span>
             <span>compare from the same camera position</span>
-            <span>3 premium exhibits / rear half baseline</span>
+            <span>6 exhibits / architecture / ceiling / portal / final</span>
           </div>
           <div className="materialPresetGrid">
-            {(Object.keys(MATERIAL_PRESETS) as MaterialPresetName[]).map((name) => <button key={name} className={materialPreset === name ? "isActive" : ""} onClick={() => setMaterialPreset(name)}>{MATERIAL_PRESETS[name].label}</button>)}
+            {(["baseline", "cinematic"] as MaterialPresetName[]).map((name) => <button key={name} className={materialPreset === name ? "isActive" : ""} onClick={() => setMaterialPreset(name)}>{name === "baseline" ? "Baseline" : "5.2R+ Premium"}</button>)}
           </div>
-          <label className="materialToggle"><input type="checkbox" checked={premiumDetails} onChange={(event) => setPremiumDetails(event.target.checked)} /><span>architectural details / props</span></label>
-          <label className="materialToggle"><input type="checkbox" checked={microInteractions} onChange={(event) => setMicroInteractions(event.target.checked)} /><span>focus microinteractions</span></label>
-          <p className="materialLabNote">Walk from projects 01–03 toward projects 04–06. The threshold is deliberate: premium candidate → approved Phase 4 baseline.</p>
-          <button onClick={() => { setMaterialPreset(DEFAULT_MATERIAL_PRESET); setPremiumDetails(true); setMicroInteractions(true); }}>RESET MATERIAL STONE</button>
+          <p className="materialLabNote">Compare Baseline ↔ 5.2R+ from the same view. Inspect wall relief, ceiling zones and physical lamps, real GLTF frames/seating/bust, portal, focus language, contact grounding and the volumetric final installation.</p>
+          <button onClick={() => { setMaterialPreset(DEFAULT_MATERIAL_PRESET); setPremiumDetails(true); setMicroInteractions(true); }}>RESET TO 5.2R+</button>
         </aside>
       ) : null}
     </main>
