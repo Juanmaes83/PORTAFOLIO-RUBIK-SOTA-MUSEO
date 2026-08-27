@@ -99,7 +99,7 @@ export default function LandingContinuation() {
           <p className="eyebrow">Next chapter / The Museum</p>
           <h2>The work leaves the page.</h2>
           <p>From here the portfolio becomes spatial: projects turn into exhibits, navigation becomes a visit, and the collection becomes the interface.</p>
-          <a href="#museum">Enter the museum <span aria-hidden="true">↘</span></a>
+          <a href="/museum">Enter the museum <span aria-hidden="true">↘</span></a>
         </div>
       </section>
     </>
