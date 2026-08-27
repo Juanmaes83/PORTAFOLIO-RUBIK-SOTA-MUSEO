@@ -1,0 +1,60 @@
+{
+  "version": "5.2-material-stone-v1",
+  "status": "candidate-for-human-validation",
+  "mission": "Make approximately half of the approved museum feel like a materially authored premium space without rewriting navigation, focus, progress or cinematic inspection.",
+  "sources": [
+    "sources/01-prompt-museum-genesis.txt",
+    "sources/02-prompt-museum-evolution-analytics.txt",
+    "sources/03-analysis-video-museum-claude-abacus.md",
+    "design/rubik-sota-museum-dna.json"
+  ],
+  "approvedDonors": {
+    "galerium": ["material hierarchy", "controlled floor reflection", "work-specific lighting", "architectural depth"],
+    "3D-room-portofolio": ["environmental micro-response", "objects that feel active rather than decorative"],
+    "hyacinth.im-site": ["authored spatial staging", "landmark presence without copying circus/game aesthetics"]
+  },
+  "perceptualTarget": {
+    "statement": "This half of the museum feels like another level of product.",
+    "qualities": ["contemporary", "editorial", "cinematic", "restrained", "material", "precise", "warm-neutral", "authored"],
+    "forbidden": ["classical gold museum", "neon sci-fi", "Apple Store generic", "mirror floor", "fake HDR", "prop clutter", "game HUD", "theme-park interaction"]
+  },
+  "surfaceSystem": {
+    "wallPrimary": { "family": "soft mineral architectural white", "roughnessRange": [0.74, 0.86], "detail": "panel depth and shadow joints rather than noisy texture" },
+    "floorPrimary": { "family": "dark stone / microcement", "roughnessRange": [0.28, 0.48], "reflectionRange": [0.22, 0.45], "rule": "broad blurred reflection only; never mirror" },
+    "ceiling": { "family": "deep graphite structure", "roughnessRange": [0.55, 0.75], "detail": "rails, baffles and lighting structure" },
+    "accentMetal": { "family": "warm satin/brushed metal", "metalnessRange": [0.7, 0.85], "roughnessRange": [0.3, 0.46] },
+    "glass": { "family": "smoked museum glass", "opacityRange": [0.18, 0.32], "rule": "secondary layer, never dominant" }
+  },
+  "lightingSystem": {
+    "architectural": "low ambient + directional/rail structure to model the room",
+    "exhibit": "each premium project has local controlled warm-neutral light",
+    "interaction": "focused exhibit may increase light/emissive response by approximately 8–15 percent",
+    "rule": "light reveals form and hierarchy; it must not behave like game feedback"
+  },
+  "premiumZone": {
+    "coverage": "approximately front 40–45 percent of the single gallery",
+    "projects": ["aviation", "ai-workspace", "fashion"],
+    "treatments": {
+      "aviation": "framed hero with deep reveal, metal trim and plaque",
+      "ai-workspace": "luminous media wall with smoked-glass layer and technical plinth",
+      "fashion": "floating editorial panel with shadow gap and sculptural base"
+    }
+  },
+  "microInteractions": [
+    "focused frame warms slightly",
+    "project-specific spotlight gains restrained intensity",
+    "media wall emissive surface wakes on focus",
+    "plaque/accent line gains subtle luminance",
+    "floating panel backlight increases on focus",
+    "premium-zone architectural light creates a visible threshold"
+  ],
+  "assetPolicy": {
+    "textures": "Use PBR textures only when licensed/source-clear and when geometry/material parameters cannot provide equivalent quality. 1K/2K default; 4K only for proven hero need.",
+    "glb": "Use GLB only when it solves scale, architecture or narrative. Phase 5.2 may use lightweight native R3F geometry for bench, rail, plinth and signage when no approved licensed GLB is already available.",
+    "credits": "No Higgsfield generation without an explicit visual role and the existing max-two-generations-per-function protocol."
+  },
+  "validation": {
+    "automatic": ["TypeScript", "production build"],
+    "human": ["baseline vs premium difference is immediate", "materials feel physically coherent", "lighting adds depth", "three exhibits no longer look repeated", "cinematic inspect remains stable", "movement/focus/progress remain intact"]
+  }
+}

@@ -2,6 +2,8 @@ export type ProjectMedia =
   | { type: "image"; src?: string; alt: string; poster?: string }
   | { type: "video"; src?: string; poster?: string; alt: string };
 
+export type ExhibitTreatment = "frame" | "media-wall" | "floating-panel";
+
 export type MuseumProject = {
   id: string;
   title: string;
@@ -16,6 +18,7 @@ export type MuseumProject = {
   palette: [string, string, string];
   heroMedia?: ProjectMedia;
   cinematicInspect?: boolean;
+  exhibitTreatment?: ExhibitTreatment;
 };
 
 export type MuseumTuning = {
@@ -86,6 +89,7 @@ export const museumProjects: MuseumProject[] = [
     palette: ["#d5c2a6", "#2f3f48", "#8d5f3f"],
     heroMedia: { type: "image", alt: "Cinematic Aviation Portfolio media stage" },
     cinematicInspect: true,
+    exhibitTreatment: "frame",
   },
   {
     id: "ai-workspace",
@@ -93,12 +97,17 @@ export const museumProjects: MuseumProject[] = [
     category: "AI Product",
     description:
       "A focused workspace for human-directed AI creation, balancing speed, traceability and an interface that keeps decisions visible.",
+    longDescription:
+      "A product environment for directing AI with visible decisions, structured iteration and deliberate human authorship rather than opaque generation.",
     technologies: ["React", "TypeScript", "AI APIs"],
     role: "Product & Creative Developer",
     year: "2026",
     side: "right",
     z: 6.0,
     palette: ["#d9d2c4", "#5c6f70", "#25282a"],
+    heroMedia: { type: "image", alt: "AI Design Workspace media stage" },
+    cinematicInspect: true,
+    exhibitTreatment: "media-wall",
   },
   {
     id: "fashion",
@@ -106,12 +115,17 @@ export const museumProjects: MuseumProject[] = [
     category: "E-Commerce",
     description:
       "An editorial commerce experience where product, motion and interaction behave as one visual system instead of a conventional catalogue.",
+    longDescription:
+      "A fashion-commerce study that treats interface, product imagery, motion and spatial hierarchy as one editorial system rather than a sequence of catalogue cards.",
     technologies: ["Next.js", "WebGL", "Headless CMS"],
     role: "Experience Designer & Developer",
     year: "2026",
     side: "left",
     z: 1.6,
     palette: ["#d8c8c1", "#7f4f4b", "#29201f"],
+    heroMedia: { type: "image", alt: "Interactive Fashion Experience media stage" },
+    cinematicInspect: true,
+    exhibitTreatment: "floating-panel",
   },
   {
     id: "architecture",
