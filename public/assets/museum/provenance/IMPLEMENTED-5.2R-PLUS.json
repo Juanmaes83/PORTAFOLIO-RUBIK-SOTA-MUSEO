@@ -1,8 +1,9 @@
 {
-  "phase": "5.2R+",
+  "phase": "5.2R+ PASS 2",
   "status": "IMPLEMENTED_CANDIDATE_AWAITING_HUMAN_VALIDATION",
   "branch": "feat/phase-5-2r-plus-premium-consolidation",
-  "assets": [
+  "objective": "Correct every visually broken asset from PASS 1 and finish the approved premium systems without changing navigation neurons.",
+  "runtime_assets": [
     {
       "asset_id": "RS-GLB-03",
       "name": "Marble Bust 01",
@@ -16,39 +17,15 @@
       "implementation_status": "RUNTIME_INTEGRATED"
     },
     {
-      "asset_id": "RS-GLB-07",
-      "name": "Standing Picture Frame 01",
+      "asset_id": "RS-GLB-01B",
+      "name": "Mid Century Lounge Chair 01",
       "upstream": "Poly Haven",
       "license": "CC0",
       "runtime_format": "gltf",
-      "mirror_repository": "ezEngine/store-sample",
-      "mirror_commit": "182401cf1f430401e800c2ea4452816bc7d539a3",
-      "runtime_url": "https://raw.githubusercontent.com/ezEngine/store-sample/182401cf1f430401e800c2ea4452816bc7d539a3/PolyHaven/standing_picture_frame_01_1k/standing_picture_frame_01_1k.gltf",
-      "role": "real frame geometry / repeated exhibit family",
-      "implementation_status": "RUNTIME_INTEGRATED"
-    },
-    {
-      "asset_id": "RS-GLB-01",
-      "name": "Modular Street Seating",
-      "upstream": "Poly Haven",
-      "license": "CC0",
-      "runtime_format": "gltf",
-      "mirror_repository": "HHSOLL/DeskteriorOnline",
-      "mirror_commit": "6102359dba9fd95f599408be1873abaa86e20730",
-      "runtime_url": "https://raw.githubusercontent.com/HHSOLL/DeskteriorOnline/6102359dba9fd95f599408be1873abaa86e20730/apps/web/public/assets/models/modular_street_seating/modular_street_seating_1k.gltf",
-      "role": "human scale / seating / remove primitive bench",
-      "implementation_status": "RUNTIME_INTEGRATED"
-    },
-    {
-      "asset_id": "RS-GLB-02",
-      "name": "Modern Ceiling Lamp 01",
-      "upstream": "Poly Haven",
-      "license": "CC0",
-      "runtime_format": "gltf",
-      "mirror_repository": "mortennordbye/homelab",
-      "mirror_commit": "425bd3c97502ea9feeb83b532cbf0ac04be719bd",
-      "runtime_url": "https://raw.githubusercontent.com/mortennordbye/homelab/425bd3c97502ea9feeb83b532cbf0ac04be719bd/portfolio/public/models/fun/modern_ceiling_lamp_01/modern_ceiling_lamp_01.gltf",
-      "role": "visible physical lighting hardware / ceiling detail",
+      "mirror_repository": "AndreTInfante/portalgi",
+      "mirror_commit": "333eab21bcc15b298435337decc723e598363201",
+      "runtime_url": "https://raw.githubusercontent.com/AndreTInfante/portalgi/333eab21bcc15b298435337decc723e598363201/assets/models/gltf/mid_century_lounge_chair/mid_century_lounge_chair_1k.gltf",
+      "role": "clean human-scale seating replacing broken modular seating",
       "implementation_status": "RUNTIME_INTEGRATED"
     },
     {
@@ -80,16 +57,46 @@
       "implementation_status": "RUNTIME_INTEGRATED"
     }
   ],
-  "authored_rubik_geometry": [
-    "Entrance Portal",
+  "removed_after_visual_failure": [
+    {
+      "name": "Modern Ceiling Lamp 01",
+      "reason": "Wrong semantic role and upside-down integration in PASS 1. Removed entirely from runtime."
+    },
+    {
+      "name": "Modular Street Seating",
+      "reason": "Multi-module asset produced floating/disconnected geometry. Removed entirely from runtime."
+    },
+    {
+      "name": "Standing Picture Frame 01",
+      "reason": "Standing-frame foot/support became chaotic when scaled as wall art. Removed entirely from runtime."
+    }
+  ],
+  "authored_rubik_systems": [
+    "RS Track Light 01: rail fixture + articulated housing + lens + bound spotlight target",
+    "RS Wall Frame Family A/B/C",
+    "RS Pedestal Family P01/P02/P03",
+    "RS Media Wall V2 with housing, glass and ventilation detail",
+    "RS Display / Maquette Table V1",
+    "RS Entrance Portal V2",
+    "RS Rubik System 02 hero installation",
+    "RS Final Installation V2",
     "Wall relief/pilaster system",
     "Niche/backing-panel system",
     "Ceiling zone/coffer system",
-    "Rubik System 01 hero installation",
-    "Volumetric Final Installation",
-    "Media Wall family",
-    "Floating Panel family",
-    "Pedestal family"
+    "Focus response: local light + plaque + emissive/material response",
+    "Contact grounding pass"
   ],
-  "important_note": "Runtime mirrors are pinned by commit for deterministic validation. Production may later vendor optimized binaries into the repository after checksum and redistribution review."
+  "pass_2_acceptance_checks": {
+    "no_upside_down_lamps": true,
+    "no_floating_modular_seating": true,
+    "no_standing_frame_support_on_wall": true,
+    "track_fixture_and_spotlight_bound": true,
+    "three_pedestal_variants_present": true,
+    "display_table_present": true,
+    "portal_v2_present": true,
+    "final_v2_present": true,
+    "rubik_hero_v2_present": true,
+    "human_visual_validation_required": true
+  },
+  "important_note": "Runtime mirrors are pinned by commit for deterministic validation. Human visual validation remains mandatory before merge."
 }
