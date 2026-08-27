@@ -1,9 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import SemanticLifecycleLayer from "@/components/museum/SemanticLifecycleLayer";
 import { artifactRegistry, type InteractiveArtifact } from "@/lib/artifacts";
+import {
+  primeProjectMedia,
+  releasePrimedMedia,
+  resolveArtifactLifecycleState,
+  shouldReleaseArtifactMedia,
+  type ArtifactLifecycleSnapshot,
+  type PrimedMedia,
+} from "@/lib/mediaLifecycle";
 import {
   FINAL_INSTALLATION_ID,
   FINAL_INSTALLATION_POSITION,
@@ -53,6 +62,10 @@ export default function FirstPersonRig({
   const wasPausedRef = useRef(paused);
   const raycasterRef = useRef(new THREE.Raycaster());
   const pointerRef = useRef(new THREE.Vector2());
+  const lifecycleRef = useRef<ArtifactLifecycleSnapshot>({});
+  const primedMediaRef = useRef(new Map<string, PrimedMedia>());
+  const inspectingProjectRef = useRef<string | null>(null);
+  const [lifecycleStates, setLifecycleStates] = useState<ArtifactLifecycleSnapshot>({});
 
   const activeArtifacts = useMemo(() => {
     const projectIds = new Set(projects.map((project) => project.id));
@@ -62,6 +75,40 @@ export default function FirstPersonRig({
     () => new Map(activeArtifacts.map((artifact) => [artifact.id, artifact])),
     [activeArtifacts],
   );
+  const projectById = useMemo(
+    () => new Map(projects.map((project) => [project.id, project])),
+    [projects],
+  );
+
+  const setLifecycleState = (projectId: string, state: ArtifactLifecycleSnapshot[string]) => {
+    if (lifecycleRef.current[projectId] === state) return false;
+    lifecycleRef.current = { ...lifecycleRef.current, [projectId]: state };
+    return true;
+  };
+
+  const primeMediaFor = (artifact: InteractiveArtifact) => {
+    if (primedMediaRef.current.has(artifact.projectId)) return;
+    const project = projectById.get(artifact.projectId);
+    const primed = primeProjectMedia(project?.heroMedia);
+    if (primed) primedMediaRef.current.set(artifact.projectId, primed);
+  };
+
+  const releaseMediaFor = (projectId: string) => {
+    const primed = primedMediaRef.current.get(projectId);
+    if (!primed) return;
+    releasePrimedMedia(primed);
+    primedMediaRef.current.delete(projectId);
+  };
+
+  const triggerInspect = (projectId: string) => {
+    inspectingProjectRef.current = projectId;
+    if (setLifecycleState(projectId, "inspect")) {
+      setLifecycleStates(lifecycleRef.current);
+    }
+    const artifact = activeArtifacts.find((candidate) => candidate.projectId === projectId);
+    if (artifact) primeMediaFor(artifact);
+    onInspect(projectId);
+  };
 
   const resolveArtifactHit = (ndc: THREE.Vector2): InteractiveArtifact | null => {
     const raycaster = raycasterRef.current;
@@ -85,7 +132,7 @@ export default function FirstPersonRig({
     camera.rotation.set(0, 0, 0);
     yawRef.current = 0;
     pitchRef.current = 0;
-  }, [camera]);
+  }, [camera, tuning.cameraHeight]);
 
   useEffect(() => {
     if (camera instanceof THREE.PerspectiveCamera) {
@@ -114,7 +161,7 @@ export default function FirstPersonRig({
       }
       if (event.code === "KeyE" && focusedId) {
         event.preventDefault();
-        onInspect(focusedId);
+        triggerInspect(focusedId);
       }
     };
 
@@ -134,7 +181,7 @@ export default function FirstPersonRig({
       if (paused) return;
       if (document.pointerLockElement === canvas) {
         const artifact = resolveArtifactHit(CENTER);
-        if (artifact?.state.inspectable) onInspect(artifact.projectId);
+        if (artifact?.state.inspectable) triggerInspect(artifact.projectId);
         return;
       }
 
@@ -146,7 +193,7 @@ export default function FirstPersonRig({
       const artifact = resolveArtifactHit(pointerRef.current);
       if (artifact?.state.inspectable) {
         onFocusChange(artifact.projectId);
-        onInspect(artifact.projectId);
+        triggerInspect(artifact.projectId);
         return;
       }
       canvas.requestPointerLock?.();
@@ -167,7 +214,7 @@ export default function FirstPersonRig({
       document.removeEventListener("pointerlockchange", onPointerLockChange);
       canvas.removeEventListener("click", onCanvasClick);
     };
-  }, [camera, focusedId, gl, onFocusChange, onInspect, onLockChange, onMovementStarted, paused, scene, tuning.interactionDistance, tuning.mouseSensitivity, activeArtifactById]);
+  }, [activeArtifactById, activeArtifacts, camera, focusedId, gl, onFocusChange, onInspect, onLockChange, onMovementStarted, paused, projectById, scene, tuning.interactionDistance, tuning.mouseSensitivity]);
 
   useEffect(() => {
     if (paused && document.pointerLockElement === gl.domElement) {
@@ -187,9 +234,15 @@ export default function FirstPersonRig({
       camera.rotation.x = pitchRef.current;
       velocityRef.current.set(0, 0, 0);
       keysRef.current.clear();
+      inspectingProjectRef.current = null;
     }
     wasPausedRef.current = paused;
   }, [camera, paused]);
+
+  useEffect(() => () => {
+    primedMediaRef.current.forEach((media) => releasePrimedMedia(media));
+    primedMediaRef.current.clear();
+  }, []);
 
   useFrame((_, rawDelta) => {
     if (paused) return;
@@ -244,6 +297,24 @@ export default function FirstPersonRig({
       }
     }
 
+    let lifecycleChanged = false;
+    for (const artifact of activeArtifacts) {
+      const [x, y, z] = artifact.interaction.anchor;
+      const distance = camera.position.distanceTo(new THREE.Vector3(x, y, z));
+      const state = resolveArtifactLifecycleState({
+        artifact,
+        distance,
+        focused: bestId === artifact.projectId,
+        inspecting: inspectingProjectRef.current === artifact.projectId,
+      });
+      if (state !== "dormant") primeMediaFor(artifact);
+      if (shouldReleaseArtifactMedia(artifact, distance) && state === "dormant") {
+        releaseMediaFor(artifact.projectId);
+      }
+      if (setLifecycleState(artifact.projectId, state)) lifecycleChanged = true;
+    }
+    if (lifecycleChanged) setLifecycleStates(lifecycleRef.current);
+
     if (!bestId && finalUnlocked) {
       focusDirectionRef.current.set(
         FINAL_INSTALLATION_POSITION.x - camera.position.x,
@@ -266,25 +337,28 @@ export default function FirstPersonRig({
   });
 
   return (
-    <group name="semantic-artifact-interaction-layer">
-      {activeArtifacts.map((artifact) => {
-        const [x, y, z] = artifact.interaction.anchor;
-        const [width, height] = artifact.interaction.surfaceSize;
-        const project = projects.find((candidate) => candidate.id === artifact.projectId);
-        const rotationY = project?.side === "left" ? Math.PI / 2 : -Math.PI / 2;
-        return (
-          <mesh
-            key={artifact.id}
-            position={[x, y, z]}
-            rotation={[0, rotationY, 0]}
-            userData={{ semanticArtifactId: artifact.id, semanticProjectId: artifact.projectId, semanticType: artifact.semanticType }}
-            renderOrder={-100}
-          >
-            <planeGeometry args={[width, height]} />
-            <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
-          </mesh>
-        );
-      })}
+    <group name="semantic-artifact-authority">
+      <SemanticLifecycleLayer artifacts={activeArtifacts} projects={projects} states={lifecycleStates} />
+      <group name="semantic-artifact-interaction-layer">
+        {activeArtifacts.map((artifact) => {
+          const [x, y, z] = artifact.interaction.anchor;
+          const [width, height] = artifact.interaction.surfaceSize;
+          const project = projectById.get(artifact.projectId);
+          const rotationY = project?.side === "left" ? Math.PI / 2 : -Math.PI / 2;
+          return (
+            <mesh
+              key={artifact.id}
+              position={[x, y, z]}
+              rotation={[0, rotationY, 0]}
+              userData={{ semanticArtifactId: artifact.id, semanticProjectId: artifact.projectId, semanticType: artifact.semanticType }}
+              renderOrder={-100}
+            >
+              <planeGeometry args={[width, height]} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
+            </mesh>
+          );
+        })}
+      </group>
     </group>
   );
 }
