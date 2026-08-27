@@ -48,6 +48,7 @@ export default function FirstPersonRig({
   const movementStartedRef = useRef(false);
   const yawRef = useRef(0);
   const pitchRef = useRef(0);
+  const wasPausedRef = useRef(paused);
 
   useEffect(() => {
     camera.rotation.order = "YXZ";
@@ -151,6 +152,20 @@ export default function FirstPersonRig({
     }
   }, [gl, paused]);
 
+  useEffect(() => {
+    if (wasPausedRef.current && !paused) {
+      const restored = new THREE.Euler().setFromQuaternion(camera.quaternion, "YXZ");
+      yawRef.current = restored.y;
+      pitchRef.current = THREE.MathUtils.clamp(restored.x, -Math.PI * 0.42, Math.PI * 0.42);
+      camera.rotation.order = "YXZ";
+      camera.rotation.y = yawRef.current;
+      camera.rotation.x = pitchRef.current;
+      velocityRef.current.set(0, 0, 0);
+      keysRef.current.clear();
+    }
+    wasPausedRef.current = paused;
+  }, [camera, paused]);
+
   useFrame((_, rawDelta) => {
     if (paused) return;
     const delta = Math.min(rawDelta, 0.05);
@@ -186,16 +201,8 @@ export default function FirstPersonRig({
     velocityRef.current.lerp(desiredRef.current, alpha);
 
     camera.position.addScaledVector(velocityRef.current, delta);
-    camera.position.x = THREE.MathUtils.clamp(
-      camera.position.x,
-      GALLERY_BOUNDS.minX,
-      GALLERY_BOUNDS.maxX,
-    );
-    camera.position.z = THREE.MathUtils.clamp(
-      camera.position.z,
-      GALLERY_BOUNDS.minZ,
-      GALLERY_BOUNDS.maxZ,
-    );
+    camera.position.x = THREE.MathUtils.clamp(camera.position.x, GALLERY_BOUNDS.minX, GALLERY_BOUNDS.maxX);
+    camera.position.z = THREE.MathUtils.clamp(camera.position.z, GALLERY_BOUNDS.minZ, GALLERY_BOUNDS.maxZ);
     camera.position.y = tuning.cameraHeight;
 
     camera.getWorldDirection(cameraDirectionRef.current).normalize();
