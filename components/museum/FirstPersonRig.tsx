@@ -51,7 +51,14 @@ export default function FirstPersonRig({
     camera.rotation.set(0, 0, 0);
     yawRef.current = 0;
     pitchRef.current = 0;
-  }, [camera, tuning.cameraHeight]);
+  }, [camera]);
+
+  useEffect(() => {
+    if (camera instanceof THREE.PerspectiveCamera) {
+      camera.fov = tuning.fov;
+      camera.updateProjectionMatrix();
+    }
+  }, [camera, tuning.fov]);
 
   useEffect(() => {
     const canvas = gl.domElement;
