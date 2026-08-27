@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { artifactRegistry, type InteractiveArtifact } from "@/lib/artifacts";
 import {
   FINAL_INSTALLATION_ID,
   FINAL_INSTALLATION_POSITION,
@@ -24,6 +25,7 @@ type Props = {
 };
 
 const UP = new THREE.Vector3(0, 1, 0);
+const CENTER = new THREE.Vector2(0, 0);
 
 export default function FirstPersonRig({
   projects,
@@ -36,7 +38,7 @@ export default function FirstPersonRig({
   onMovementStarted,
   onLockChange,
 }: Props) {
-  const { camera, gl } = useThree();
+  const { camera, gl, scene } = useThree();
   const keysRef = useRef(new Set<string>());
   const velocityRef = useRef(new THREE.Vector3());
   const forwardRef = useRef(new THREE.Vector3());
@@ -49,6 +51,33 @@ export default function FirstPersonRig({
   const yawRef = useRef(0);
   const pitchRef = useRef(0);
   const wasPausedRef = useRef(paused);
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const pointerRef = useRef(new THREE.Vector2());
+
+  const activeArtifacts = useMemo(() => {
+    const projectIds = new Set(projects.map((project) => project.id));
+    return artifactRegistry.filter((artifact) => projectIds.has(artifact.projectId));
+  }, [projects]);
+  const activeArtifactById = useMemo(
+    () => new Map(activeArtifacts.map((artifact) => [artifact.id, artifact])),
+    [activeArtifacts],
+  );
+
+  const resolveArtifactHit = (ndc: THREE.Vector2): InteractiveArtifact | null => {
+    const raycaster = raycasterRef.current;
+    raycaster.setFromCamera(ndc, camera);
+    const hits = raycaster.intersectObjects(scene.children, true);
+    for (const hit of hits) {
+      const artifactId = hit.object.userData.semanticArtifactId as string | undefined;
+      if (!artifactId) continue;
+      const artifact = activeArtifactById.get(artifactId);
+      if (!artifact || !artifact.state.focusable) continue;
+      const anchor = artifact.interaction.anchor;
+      const distance = camera.position.distanceTo(new THREE.Vector3(anchor[0], anchor[1], anchor[2]));
+      if (distance <= Math.min(tuning.interactionDistance, artifact.interaction.radius) + 0.35) return artifact;
+    }
+    return null;
+  };
 
   useEffect(() => {
     camera.rotation.order = "YXZ";
@@ -68,21 +97,13 @@ export default function FirstPersonRig({
   useEffect(() => {
     const canvas = gl.domElement;
     const controlKeys = new Set([
-      "KeyW",
-      "KeyA",
-      "KeyS",
-      "KeyD",
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "KeyQ",
-      "KeyR",
+      "KeyW", "KeyA", "KeyS", "KeyD",
+      "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+      "KeyQ", "KeyR",
     ]);
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (paused) return;
-
       if (controlKeys.has(event.code)) {
         event.preventDefault();
         keysRef.current.add(event.code);
@@ -91,43 +112,47 @@ export default function FirstPersonRig({
           onMovementStarted();
         }
       }
-
       if (event.code === "KeyE" && focusedId) {
         event.preventDefault();
         onInspect(focusedId);
       }
     };
 
-    const onKeyUp = (event: KeyboardEvent) => {
-      keysRef.current.delete(event.code);
-    };
+    const onKeyUp = (event: KeyboardEvent) => keysRef.current.delete(event.code);
 
     const onMouseMove = (event: MouseEvent) => {
       if (paused || document.pointerLockElement !== canvas) return;
       const sensitivity = 0.0018 * tuning.mouseSensitivity;
       yawRef.current -= event.movementX * sensitivity;
       pitchRef.current -= event.movementY * sensitivity;
-      pitchRef.current = THREE.MathUtils.clamp(
-        pitchRef.current,
-        -Math.PI * 0.42,
-        Math.PI * 0.42,
-      );
+      pitchRef.current = THREE.MathUtils.clamp(pitchRef.current, -Math.PI * 0.42, Math.PI * 0.42);
       camera.rotation.y = yawRef.current;
       camera.rotation.x = pitchRef.current;
     };
 
-    const onCanvasClick = () => {
+    const onCanvasClick = (event: MouseEvent) => {
       if (paused) return;
       if (document.pointerLockElement === canvas) {
-        if (focusedId) onInspect(focusedId);
+        const artifact = resolveArtifactHit(CENTER);
+        if (artifact?.state.inspectable) onInspect(artifact.projectId);
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      pointerRef.current.set(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1,
+      );
+      const artifact = resolveArtifactHit(pointerRef.current);
+      if (artifact?.state.inspectable) {
+        onFocusChange(artifact.projectId);
+        onInspect(artifact.projectId);
         return;
       }
       canvas.requestPointerLock?.();
     };
 
-    const onPointerLockChange = () => {
-      onLockChange(document.pointerLockElement === canvas);
-    };
+    const onPointerLockChange = () => onLockChange(document.pointerLockElement === canvas);
 
     window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
@@ -142,7 +167,7 @@ export default function FirstPersonRig({
       document.removeEventListener("pointerlockchange", onPointerLockChange);
       canvas.removeEventListener("click", onCanvasClick);
     };
-  }, [camera, focusedId, gl, onInspect, onLockChange, onMovementStarted, paused, tuning.mouseSensitivity]);
+  }, [camera, focusedId, gl, onFocusChange, onInspect, onLockChange, onMovementStarted, paused, scene, tuning.interactionDistance, tuning.mouseSensitivity, activeArtifactById]);
 
   useEffect(() => {
     if (paused && document.pointerLockElement === gl.domElement) {
@@ -171,8 +196,7 @@ export default function FirstPersonRig({
     const delta = Math.min(rawDelta, 0.05);
     const keys = keysRef.current;
 
-    const keyboardTurnInput =
-      (keys.has("KeyR") ? 1 : 0) - (keys.has("KeyQ") ? 1 : 0);
+    const keyboardTurnInput = (keys.has("KeyR") ? 1 : 0) - (keys.has("KeyQ") ? 1 : 0);
     if (keyboardTurnInput !== 0) {
       yawRef.current -= keyboardTurnInput * tuning.keyboardTurnSpeed * delta;
       camera.rotation.y = yawRef.current;
@@ -196,7 +220,6 @@ export default function FirstPersonRig({
     desiredRef.current.addScaledVector(rightRef.current, strafeInput);
     if (desiredRef.current.lengthSq() > 1) desiredRef.current.normalize();
     desiredRef.current.multiplyScalar(tuning.moveSpeed);
-
     const alpha = 1 - Math.exp(-tuning.damping * delta);
     velocityRef.current.lerp(desiredRef.current, alpha);
 
@@ -205,31 +228,23 @@ export default function FirstPersonRig({
     camera.position.z = THREE.MathUtils.clamp(camera.position.z, GALLERY_BOUNDS.minZ, GALLERY_BOUNDS.maxZ);
     camera.position.y = tuning.cameraHeight;
 
-    camera.getWorldDirection(cameraDirectionRef.current).normalize();
-
     let bestId: string | null = null;
-    let bestScore = -Infinity;
-
-    for (const project of projects) {
-      const projectX = project.side === "left" ? -4.42 : 4.42;
-      focusDirectionRef.current.set(
-        projectX - camera.position.x,
-        1.72 - camera.position.y,
-        project.z - camera.position.z,
-      );
+    const rayArtifact = resolveArtifactHit(CENTER);
+    if (rayArtifact) {
+      const [x, y, z] = rayArtifact.interaction.anchor;
+      focusDirectionRef.current.set(x - camera.position.x, y - camera.position.y, z - camera.position.z);
       const distance = focusDirectionRef.current.length();
-      if (distance > tuning.interactionDistance || distance < 0.001) continue;
-      focusDirectionRef.current.normalize();
-      const facing = cameraDirectionRef.current.dot(focusDirectionRef.current);
-      if (facing < tuning.facingThreshold) continue;
-      const score = facing * 2 - distance * 0.06;
-      if (score > bestScore) {
-        bestScore = score;
-        bestId = project.id;
+      if (distance > 0.001) {
+        focusDirectionRef.current.normalize();
+        camera.getWorldDirection(cameraDirectionRef.current).normalize();
+        const facing = cameraDirectionRef.current.dot(focusDirectionRef.current);
+        if (facing >= Math.min(tuning.facingThreshold, rayArtifact.interaction.facingThreshold)) {
+          bestId = rayArtifact.projectId;
+        }
       }
     }
 
-    if (finalUnlocked) {
+    if (!bestId && finalUnlocked) {
       focusDirectionRef.current.set(
         FINAL_INSTALLATION_POSITION.x - camera.position.x,
         FINAL_INSTALLATION_POSITION.y - camera.position.y,
@@ -238,11 +253,9 @@ export default function FirstPersonRig({
       const distance = focusDirectionRef.current.length();
       if (distance <= tuning.interactionDistance + 1.25 && distance > 0.001) {
         focusDirectionRef.current.normalize();
+        camera.getWorldDirection(cameraDirectionRef.current).normalize();
         const facing = cameraDirectionRef.current.dot(focusDirectionRef.current);
-        if (facing >= tuning.facingThreshold - 0.08) {
-          const score = facing * 2.2 - distance * 0.05;
-          if (score > bestScore) bestId = FINAL_INSTALLATION_ID;
-        }
+        if (facing >= tuning.facingThreshold - 0.08) bestId = FINAL_INSTALLATION_ID;
       }
     }
 
@@ -252,5 +265,26 @@ export default function FirstPersonRig({
     }
   });
 
-  return null;
+  return (
+    <group name="semantic-artifact-interaction-layer">
+      {activeArtifacts.map((artifact) => {
+        const [x, y, z] = artifact.interaction.anchor;
+        const [width, height] = artifact.interaction.surfaceSize;
+        const project = projects.find((candidate) => candidate.id === artifact.projectId);
+        const rotationY = project?.side === "left" ? Math.PI / 2 : -Math.PI / 2;
+        return (
+          <mesh
+            key={artifact.id}
+            position={[x, y, z]}
+            rotation={[0, rotationY, 0]}
+            userData={{ semanticArtifactId: artifact.id, semanticProjectId: artifact.projectId, semanticType: artifact.semanticType }}
+            renderOrder={-100}
+          >
+            <planeGeometry args={[width, height]} />
+            <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
 }
