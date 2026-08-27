@@ -9,12 +9,13 @@ Este repositorio es la base oficial de **RUBIK SOTA — PORTFOLIO MUSEUM**.
 Si eres una IA, desarrollador o colaborador nuevo, lee primero:
 
 1. [`AI-START-HERE.md`](./AI-START-HERE.md)
-2. [`docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`](./docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md)
-3. las tres fuentes en `/sources`;
-4. [`docs/02-ARCHITECTURE-CONTRACT.md`](./docs/02-ARCHITECTURE-CONTRACT.md)
-5. [`design/rubik-sota-museum-dna.json`](./design/rubik-sota-museum-dna.json)
-6. [`docs/03-VALIDATION-STATUS.md`](./docs/03-VALIDATION-STATUS.md)
-7. [`docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md`](./docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md) y [`public/assets/museum/`](./public/assets/museum/) antes de cualquier uplift de materiales/GLB/HDRI.
+2. [`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`](./docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md) — **estado operativo actual**
+3. [`docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`](./docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md) — reconstrucción/histórico
+4. las tres fuentes en `/sources`;
+5. [`docs/02-ARCHITECTURE-CONTRACT.md`](./docs/02-ARCHITECTURE-CONTRACT.md)
+6. [`design/rubik-sota-museum-dna.json`](./design/rubik-sota-museum-dna.json)
+7. [`docs/03-VALIDATION-STATUS.md`](./docs/03-VALIDATION-STATUS.md)
+8. [`docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md`](./docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md) y [`public/assets/museum/`](./public/assets/museum/) antes de cualquier uplift de materiales/GLB/HDRI.
 
 No modifiques runtime antes de entender **ADN / NEURONAS / PIEL** y la regla de baseline protegida.
 
@@ -37,7 +38,7 @@ TRANSITION / ENTER THE MUSEUM
         ↓
 PROJECT EXPLORATION
         ↓
-CINEMATIC / STANDARD PROJECT INSPECTION
+CINEMATIC PROJECT INSPECTION
         ↓
 PROGRESS 0/6 → 6/6
         ↓
@@ -130,7 +131,7 @@ No negociable:
 - validación humana.
 
 ## NEURONAS
-Motor aprobado:
+Motor aprobado actualmente:
 - scroll authority;
 - video scrub;
 - camera;
@@ -138,11 +139,14 @@ Motor aprobado:
 - bounds;
 - mouse-look;
 - Q/R keyboard yaw;
-- focus;
+- semantic focus/raycast;
+- direct artwork click;
+- `InteractiveArtifact` registry;
 - project state;
 - visited/progress;
 - cinematic inspect;
 - pointer-lock restore;
+- Media Lifecycle `dormant → preload → preview → inspect → reset/release`;
 - future analytics/API/persistence.
 
 ## PIEL
@@ -152,7 +156,7 @@ Reemplazable/evolutiva:
 - materiales;
 - iluminación;
 - arquitectura visual;
-- project supports;
+- project supports / semantic landmarks;
 - composición;
 - UI;
 - transiciones;
@@ -164,112 +168,117 @@ La PIEL puede cambiar sin destruir ADN ni NEURONAS.
 
 # ESTADO REAL — 27 AUG 2026
 
+Current `main`:
+
+`32d554fca07254010829bfc8d712be86879b20ce`
+
+No hay PRs abiertas en el momento de esta actualización. La auditoría de ramas confirma que las ramas feature retenidas están **0 commits ahead de `main`**; no existe trabajo aprobado varado fuera de `main`.
+
+Fuente exacta de topología:
+
+[`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`](./docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md)
+
 ## FASE 1 — Foundation / First Vertical Slice
 **APPROVED + MERGED**
 
-PR #1:
-https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/1
+PR #1.
 
-Incluye:
-- Asset Inventory;
-- Pear audit;
-- Design DNA;
-- Architecture Contract;
-- ScrollFilm;
-- normalized master scroll progress;
-- reversible media/copy timeline;
-- `/lab`;
-- explicit missing-media proxy.
+Incluye Asset Inventory, Pear audit, Design DNA, Architecture Contract, ScrollFilm, normalized master scroll progress, reversible media/copy timeline, `/lab` y explicit missing-media proxy.
 
 ## FASE 2 — Cinematic Landing
 **APPROVED + MERGED**
 
-PR #2:
-https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/2
+PR #2.
 
-Incluye:
-- LandingContinuation;
-- Practice / Work / System chapters;
-- disciplines statement;
-- final Museum portal;
-- desktop/mobile composition;
-- reduced-motion fallback.
-
-Nota: su arquitectura está aprobada, pero su PIEL visual final todavía debe subir de nivel en el uplift posterior.
+Arquitectura/narrativa aprobada. Su PIEL visual final sigue pendiente del uplift posterior.
 
 ## FASE 3 — Museum Foundation
 **APPROVED + MERGED**
 
-PR #3:
-https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/3
+PR #3.
 
-Incluye:
-- `/museum`;
-- `/museum/lab`;
-- one-gallery R3F scene;
-- WASD/arrows;
-- pointer-lock mouse-look;
-- bounds;
-- focus distance + facing;
-- E/click inspect;
-- panel pause/restore;
-- two-project validation slice;
-- mobile 2D foundation.
+Incluye `/museum`, `/museum/lab`, one-gallery R3F scene, WASD/arrows, pointer-lock mouse-look, bounds, focus, E/click inspect y mobile 2D foundation.
 
 ## FASE 4 — Full 6-Project Museum + 360° keyboard yaw
 **APPROVED + MERGED**
 
-PR #5:
-https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/5
+PR #5.
 
-Incluye:
-- 6 data-driven projects;
-- visited Set;
-- 0/6 progress;
-- final installation dormant → active at 6/6;
-- About/Contact;
-- Q/R continuous yaw;
-- mouse + keyboard sharing same yaw authority;
-- turn-speed tuning in Museum LAB.
+Incluye seis proyectos data-driven, visited Set, 0/6 progress, final unlock, About/Contact y Q/R continuous yaw.
 
 ## FASE 5 — Visual + Navigation Uplift
 **IN PROGRESS**
 
 ### 5.1 — Cinematic Inspect Stone
-**APPROVED + MERGED**
+**APPROVED + MERGED** — PR #6
 
-PR #6:
-https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/6
+Incluye `CinematicInspectRig`, exact pose capture, glide-in/out, `ProjectMediaStage`, exact camera return, yaw/pitch resync y `/museum/inspect-lab`.
 
-Merge:
-`01cc75d4f5660413e2392ef6c4ebd99944f75439`
+### 5.2 — Material + Atmosphere Stone
+**APPROVED + MERGED** — PR #7
+
+Incluye Material/Light stone y `/museum/material-lab`.
+
+### 5.2R / 5.2R+ — Visual Recovery + Premium Consolidation
+**APPROVED + MERGED** — PR #9
+
+PASS 2 consolidó:
+- PBR/IBL/HDRI;
+- premium architecture/ceiling;
+- corrected track lighting;
+- clean seating;
+- RS Wall Frame family;
+- RS Pedestal family;
+- Media Wall V2;
+- Display / Maquette Table V1;
+- Entrance Portal V2;
+- Rubik System 02;
+- Final Installation V2.
+
+### 5.3A — Semantic Artifacts + Direct Artwork Click
+**APPROVED + MERGED** — PR #10
 
 Incluye:
-- `CinematicInspectRig`;
-- pilot `aviation`;
-- exact camera pose capture;
-- glide-in;
-- quaternion slerp;
-- `ProjectMediaStage`;
-- image/video-ready contract;
-- glide-out;
-- exact return;
-- yaw/pitch resync;
-- key/velocity reset;
-- `/museum/inspect-lab`.
+- `InteractiveArtifact`;
+- explicit world anchors;
+- semantic interaction surfaces independent from PIEL;
+- center-camera raycast;
+- direct pointer click;
+- E/click → actual artifact → Cinematic Inspect;
+- `/museum/artifact-lab`.
 
-Validado manualmente por el usuario antes del merge.
+### 5.3B — Media Lifecycle + Semantic Landmark Behavior
+**APPROVED + MERGED** — PR #11
 
-### 5.2 — Material Stone
-**NEXT — NOT IMPLEMENTED**
+Incluye:
 
-Objetivo:
-probar materialidad/iluminación premium en una única zona y una única obra antes de propagarla al museo completo.
+```text
+DORMANT
+→ PRELOAD
+→ PREVIEW
+→ INSPECT
+→ RESET / RELEASE
+```
 
-Expected route:
-`/museum/material-lab`
+Añade resource priming/release y `/museum/lifecycle-lab` sin inventar media real inexistente.
 
-La ejecución 5.2 y su recuperación visual deben usar la biblioteca aprobada de GLB/PBR/HDRI y su registro de procedencia; no introducir assets arbitrarios fuera de ese sistema.
+### 5.3 — Semantic Landmark Stone / visual pilot
+**NEXT**
+
+5.3A y 5.3B prepararon las neuronas. Falta demostrar un verdadero destino espacial diferente.
+
+Pilot seleccionado:
+
+```text
+Immersive Architecture Studio
+→ MAQUETTE / OBJECT TABLE
+```
+
+Expected LAB:
+
+`/museum/landmark-lab`
+
+Regla: **un solo landmark primero**. No propagar a los seis antes de validación humana.
 
 ---
 
@@ -287,30 +296,16 @@ Leer:
 
 No clonar motores enteros. Extraer capacidades compatibles como piedras.
 
-Piedras identificadas:
-- Cinematic Inspect — Galerium;
-- Material/Light System — Galerium;
-- Semantic Landmarks — Hyacinth;
-- Object Micro-interactions — 3D Room;
-- Project Media Stage;
-- Media Lifecycle;
-- Entry Ritual;
-- Institutional Knowledge Layer.
-
 ---
 
-# RUBIK SOTA ASSET LIBRARY — APPROVED
-
-La biblioteca GLB/PBR/HDRI es una dependencia oficial de la PIEL del museo.
+# RUBIK SOTA ASSET LIBRARY
 
 Fuente de verdad:
-- `docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md`
-- `public/assets/museum/README.md`
-- `public/assets/museum/provenance/ASSET-REGISTRY.json`
-- `public/assets/museum/provenance/LICENSES.md`
-- `public/assets/museum/provenance/SOURCES.md`
+- `docs/14-RUBIK-SOTA-ASSET-LIBRARY-MASTER.md`;
+- `public/assets/museum/README.md`;
+- `public/assets/museum/provenance/*`.
 
-Estrategia aprobada:
+Estrategia:
 
 ```text
 CUSTOM HERO
@@ -320,34 +315,26 @@ CUSTOM HERO
 + SEMANTIC INTERACTION
 ```
 
-Fuentes:
-- CUSTOM / OWNED para identidad crítica;
-- Poly Haven CC0 como PRIMARY externo para geometría/HDRI;
-- ambientCG CC0 como PRIMARY PBR;
-- Sketchfab CC0 como fallback selectivo;
-- CC BY solo bajo atribución controlada;
-- Khronos glTF Sample Assets para QA técnico;
-- BlenderKit solo tras verificación de licencia/redistribución.
-
-`RS-GLB-03` incluye expresamente **Poly Haven — Marble Bust 01** como asset aprobado de biblioteca, además de una futura escultura hero propia de Rubik Sota. El busto no debe eliminarse silenciosamente cuando exista el hero custom.
-
-Estado actual: selección, gobernanza y arquitectura APPROVED + VERSIONED. Los binarios externos siguen `NOT_YET_IMPORTED` hasta verificar el artefacto exacto, licencia/redistribución, optimización y validación visual.
-
 ---
 
-# WIKIPEDIA / WIKIMEDIA
+# LEGACY / KNOWLEDGE LAYERS
 
-La capacidad de Galerium para enriquecer obras con información cultural externa NO se descarta.
+Legacy Museum archaeology and future semantic/knowledge connections are documented in:
 
-Está documentada para un futuro modo institucional en:
+`docs/15-LEGACY-MUSEUM-DONOR-SEMANTIC-KNOWLEDGE-ARCHAEOLOGY.md`
+
+Wikipedia/Wikidata/Wikimedia remains future institutional enrichment only:
 
 `docs/10-INSTITUTIONAL-KNOWLEDGE-LAYER-WIKIPEDIA-WIKIMEDIA.md`
 
-Regla:
-- contenido de curador/cliente = PRIMARY;
-- Wikipedia/Wikidata/Wikimedia = enrichment/fallback.
+Rule:
 
-No está implementada aún en runtime.
+```text
+CURATOR / CLIENT CONTENT = PRIMARY
+EXTERNAL KNOWLEDGE = ENRICHMENT / FALLBACK
+```
+
+No está implementado en runtime.
 
 ---
 
@@ -355,22 +342,7 @@ No está implementada aún en runtime.
 
 No es prioridad inmediata.
 
-Se reutilizarán paneles existentes de Escaparates Pro siempre que su auditoría confirme compatibilidad.
-
-Debe soportar:
-- texto;
-- imagen;
-- vídeo;
-- poster;
-- preview;
-- save;
-- publish;
-- orden;
-- metadata;
-- exhibit/landmark type;
-- museum placement.
-
-La intención es una única fuente de contenido para Landing + Museum + ProjectMediaStage.
+La intención sigue siendo una única fuente de contenido para Landing + Museum + ProjectMediaStage, reutilizando capacidad existente de Escaparates Pro si la auditoría confirma compatibilidad.
 
 ---
 
@@ -383,13 +355,13 @@ Arrows    approved translation
 Q         turn left
 R         turn right
 Mouse     look
-E / click inspect
+E / click inspect semantic artifact
 Esc       release / close by state
 ```
 
-Focus = distance + camera-facing threshold.
+Focus authority actual = semantic raycast + interaction distance/facing constraints.
 
-Pilot cinematic inspection:
+Cinematic inspection:
 
 ```text
 FREE
@@ -399,9 +371,9 @@ FREE
 → FREE
 ```
 
-Cuando vuelve FREE:
+Al volver a FREE:
 - pose restaurada;
-- yaw/pitch derivados de quaternion restaurado;
+- yaw/pitch resynchronizados;
 - velocity = 0;
 - held keys cleared.
 
@@ -413,9 +385,7 @@ Ruta canónica:
 
 `public/media/rubik-sota-master.mp4`
 
-El asset de producción no debe asumirse existente hasta que aparezca realmente en el repo.
-
-La proxy actual es instrumento de desarrollo, no vídeo final.
+No asumir que existe hasta que el asset real esté en el repo. La proxy actual es instrumento de desarrollo.
 
 ---
 
@@ -427,12 +397,14 @@ Automatizable:
 - install;
 - TypeScript;
 - build;
+- vertical slice;
 - data/API tests cuando existan.
 
 Manual/browser:
 - scroll feel;
 - camera comfort;
-- focus quality;
+- focus/raycast quality;
+- lifecycle behavior;
 - materiality;
 - lighting;
 - choreography;
@@ -456,25 +428,31 @@ OBSERVAR
 
 ---
 
-# ROADMAP DESDE AQUÍ
+# ROADMAP DESDE CURRENT MAIN
 
 ```text
-5.1 CINEMATIC INSPECT           ✅
-ASSET LIBRARY V1               ✅ APPROVED + VERSIONED
-5.2 MATERIAL STONE              ⏭ NEXT
-5.3 SEMANTIC LANDMARK           ⏳
-5.4 ENTRY RITUAL                ⏳
-5B  PROPAGATE APPROVED STONES   ⏳
-LANDING VISUAL UPLIFT            ⏳
-REAL PROJECT MEDIA               ⏳
-PREMIUM MOBILE                   ⏳
-AUTHOR MODE / CMS                ⏳
-INSTITUTIONAL KNOWLEDGE          ⏳
-BACKEND / ANALYTICS / DASHBOARD  ⏳
-FINAL REGRESSION / HARNESS       ⏳
-PRODUCTION                       ⏳
+5.1 CINEMATIC INSPECT                         ✅ MERGED
+5.2 MATERIAL / ATMOSPHERE                     ✅ MERGED
+5.2R / 5.2R+ VISUAL RECOVERY + PASS 2         ✅ MERGED
+5.3A SEMANTIC ARTIFACTS + DIRECT CLICK         ✅ MERGED
+5.3B MEDIA LIFECYCLE                           ✅ MERGED
+5.3 SEMANTIC LANDMARK — MAQUETTE PILOT         ⏭ NEXT
+5.4 ENTRY RITUAL                               ⏳
+5B PROPAGATE APPROVED STONES                   ⏳
+LANDING VISUAL UPLIFT                           ⏳
+REAL PROJECT MEDIA                              ⏳
+PREMIUM MOBILE                                  ⏳
+AUTHOR MODE / CMS                               ⏳
+INSTITUTIONAL KNOWLEDGE                         ⏳
+BACKEND / ANALYTICS / DASHBOARD                 ⏳
+FINAL REGRESSION / HARNESS                      ⏳
+PRODUCTION                                      ⏳
 ```
 
-Para reconstrucción completa, no continuar desde este README únicamente. Leer:
+Para estado operativo y ramas, leer primero:
+
+**`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`**
+
+Para reconstrucción completa/histórica:
 
 **`docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`**

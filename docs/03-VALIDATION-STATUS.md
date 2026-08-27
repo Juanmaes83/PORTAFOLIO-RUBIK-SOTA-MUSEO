@@ -1,51 +1,169 @@
 # 03 — Validation Status
 
-## Verified
+Status: **CURRENT THROUGH PHASE 5.3B**  
+Date: **2026-08-27**
+
+For current branch topology and the next operational stone, also read:
+
+`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`
+
+---
+
+## Verified / approved
+
+### Foundation through Phase 4
 
 - repository asset inventory;
 - three sources of truth present;
 - Pear public reference audit completed;
-- Design DNA v1 created from documented schema;
+- Design DNA created;
 - architecture contract frozen;
 - first scroll/video slice implemented;
 - `/lab` route implemented;
-- missing video handled explicitly;
-- scroll loop corrected so it is not recreated on every progress render;
-- media proxy layering corrected;
+- missing landing video handled explicitly;
 - Phase 4 full six-project museum approved and merged;
 - 360° keyboard yaw approved;
 - six-project visited state and 0/6 progress approved;
-- final installation unlock and About / Contact approved;
-- Phase 5.1 Cinematic Inspect Stone approved by human visual validation on 2026-08-27;
-- `aviation` pilot cinematic inspect approved;
-- glide-in / inspect / glide-out camera choreography approved;
+- final installation unlock and About / Contact approved.
+
+### Phase 5.1 — Cinematic Inspect
+
+**APPROVED + MERGED**
+
+- `CinematicInspectRig` approved;
+- glide-in / inspect / glide-out choreography approved;
 - exact return to captured camera pose approved;
 - FirstPersonRig yaw/pitch resynchronization approved;
-- ProjectMediaStage shell approved for the pilot;
+- `ProjectMediaStage` contract approved;
 - `/museum/inspect-lab` approved;
-- Phase 5.1 CI TypeScript and production build passed;
-- Phase 5.1 Vercel human preview validated and approved;
-- Phase 5.2 Material + Atmosphere Stone approved by human visual validation on 2026-08-27;
-- premium front gallery zone for projects 01–03 approved;
-- three exhibit treatments approved: framed hero, media wall, floating panel;
-- controlled reflective floor, panelled mineral walls, graphite ceiling, rails and local exhibit lighting approved;
-- restrained focus microinteractions approved;
-- `/museum/material-lab` A/B validation route approved;
-- Phase 5.2 CI TypeScript and production build passed;
-- exact Vercel deployment for PR #7 reached READY and generated `/museum` + `/museum/material-lab`;
-- PR #7 merged successfully.
+- TypeScript + production build passed;
+- human browser validation completed.
+
+PR #6.
+
+### Phase 5.2 — Material + Atmosphere Stone
+
+**APPROVED + MERGED**
+
+- premium material/atmosphere stone approved;
+- controlled floor reflection;
+- wall/structure material hierarchy;
+- local exhibit lighting;
+- restrained focus response;
+- `/museum/material-lab` approved;
+- TypeScript + production build passed;
+- PR #7 merged.
+
+### Phase 5.2R / 5.2R+ — Visual Recovery + Premium Consolidation
+
+**APPROVED + MERGED**
+
+PASS 2 corrected three visual integration defects at root:
+- removed upside-down decorative lamp misuse;
+- removed broken modular seating integration;
+- removed standing picture frame misuse and enlarged stand/support.
+
+Approved PASS 2 includes:
+- RS Track Light 01 authored fixture + spotlight binding;
+- clean lounge-chair GLTF seating;
+- RS Wall Frame A/B/C;
+- RS Pedestal P01/P02/P03;
+- Media Wall V2;
+- Display / Maquette Table V1;
+- Entrance Portal V2;
+- Rubik System 02;
+- Final Installation V2;
+- PBR floor/walls + IBL/HDRI;
+- contact grounding and local exhibit lighting.
+
+PR #9 approved head:
+
+`8a90b342ad06c5ad135d9b0fe212d8e5d68cecdc`
+
+Merge commit:
+
+`9d6184add57a154e30b8c3c9451830ac161abe29`
+
+### Phase 5.3A — Semantic Artifacts + Direct Artwork Click
+
+**APPROVED + MERGED**
+
+Validated:
+- `InteractiveArtifact` contract;
+- explicit world anchors;
+- semantic interaction surfaces independent from PIEL geometry;
+- center-camera raycast;
+- direct pointer click;
+- E/click action routed to the real semantic artifact;
+- all six projects use Cinematic Inspect;
+- exact camera return preserved;
+- `/museum/artifact-lab` implemented;
+- production build + TypeScript passed;
+- exact Vercel preview reached READY;
+- human validation approved.
+
+PR #10 approved head:
+
+`c2a75111c37ea93bafef02ad3265b19b239e0e3d`
+
+Merge commit:
+
+`42af1a1476c40eaeda6d350778660aa285331de1`
+
+### Phase 5.3B — Media Lifecycle + Semantic Landmark Behavior
+
+**APPROVED + MERGED**
+
+Validated lifecycle:
+
+```text
+DORMANT
+→ PRELOAD
+→ PREVIEW
+→ INSPECT
+→ RESET / RELEASE
+```
+
+Validated:
+- lifecycle policy per artifact;
+- resource priming/release contract;
+- semantic visual response independent from PIEL geometry;
+- state authority wired into `FirstPersonRig`;
+- no fake project media invented;
+- `/museum/lifecycle-lab` implemented;
+- donor behavior grounded in `3D-room-portofolio` media pause/play/close patterns;
+- GitHub Actions `Pull request verification` success;
+- GitHub Actions `Rubik Sota vertical slice checks` success;
+- exact Vercel preview READY;
+- human validation approved.
+
+PR #11 approved head:
+
+`f72cae67095383891bc91562ac5b5be1b29d1460`
+
+Current `main` merge commit:
+
+`32d554fca07254010829bfc8d712be86879b20ce`
+
+---
 
 ## Current approved baseline
 
-Phase 5.2 merge SHA:
+Current operational baseline is:
 
-`9041cb50b7cf63563dcf76de0e20b8505af56d0a`
+`main @ 32d554fca07254010829bfc8d712be86879b20ce`
 
-Post-merge documentation commit:
+It contains all approved runtime work through Phase 5.3B.
 
-`58371f55902d5bc286cd0ac4791528716d3cf2ef`
+There are currently **no open pull requests**.
 
-This baseline includes Phase 5.1 Cinematic Inspect and the approved Phase 5.2 premium material/atmosphere stone.
+Branch audit confirms all retained feature branches are **0 commits ahead of `main`**. Therefore no approved implementation is stranded outside `main`.
+
+See exact branch table:
+
+`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`
+
+---
 
 ## Automated gate
 
@@ -53,66 +171,101 @@ Every implementation phase must pass:
 
 - dependency install;
 - TypeScript typecheck;
-- Next.js production build.
+- Next.js production build;
+- vertical-slice checks where applicable.
 
-Automated success is necessary but not sufficient. Visual/browser validation remains required for experiential changes before freeze/merge.
+Automated success is necessary but not sufficient.
 
-## Phase 5.2 evidence
+Required human/browser validation remains mandatory for:
+- camera feel;
+- focus quality;
+- click targeting;
+- lifecycle response;
+- materiality;
+- lighting;
+- choreography;
+- exact inspect return;
+- spatial legibility;
+- overall premium perception.
 
-PR: `#7 — Phase 5.2 — Material + Atmosphere Stone`
-
-Validated head:
-
-`8e1ed4d274d9f8f38e021567a2b7f5bb85203cfc`
-
-GitHub Actions:
-- `Pull request verification` — success;
-- `Rubik Sota vertical slice checks` — success.
-
-Exact Vercel validation deployment:
-
-`dpl_4kpvT42ya3PqkL78uCc5tDX6EUuU`
-
-State: `READY`.
-
-Generated routes included:
-- `/museum`;
-- `/museum/material-lab`;
-- `/museum/inspect-lab`;
-- `/museum/lab`.
-
-Human visual approval: **2026-08-27**.
+---
 
 ## Next validation target
 
-Do not reinterpret the next stone as permission to rewrite the approved gallery.
+The next target is **the remaining visual proof of Phase 5.3 Semantic Landmark Stone**, not Phase 5.4 yet.
 
-The protected Phase 5.2 baseline must remain intact while the next visual/navigation capability is isolated and validated. Any propagation beyond projects 01–03 must preserve:
-- the accepted Material DNA;
-- movement/pointer lock;
-- Cinematic Inspect exact return;
-- focus semantics;
-- 0/6 progress and visited state;
-- final installation / About-Contact;
-- material-lab comparison capability while visual propagation remains under development.
+5.3A and 5.3B prepared the semantic and lifecycle neurons. The next stone must prove that one project can become a truly distinct spatial destination.
+
+Pilot:
+
+`architecture` — **Immersive Architecture Studio**
+
+Target representation:
+
+`MAQUETTE / OBJECT TABLE`
+
+Expected LAB:
+
+`/museum/landmark-lab`
+
+The pilot must prove:
+1. it reads as architecture before click;
+2. it is no longer another framed rectangle;
+3. it does not block circulation;
+4. focus/raycast use its real landmark anchor;
+5. lifecycle states remain restrained and legible;
+6. E/click opens the correct project;
+7. Cinematic Inspect frames correctly;
+8. exact camera return remains intact;
+9. 0/6 → 6/6 remains intact;
+10. museum remains one coherent authored world.
+
+Do not propagate to all six projects before human approval.
+
+---
+
+## Protected neurons
+
+Do not rewrite without demonstrated root cause:
+- WASD/arrows movement;
+- mouse-look;
+- Q/R yaw;
+- bounds;
+- semantic raycast/direct click;
+- one focus authority;
+- visited/progress;
+- 6/6 final unlock;
+- `CinematicInspectRig`;
+- exact return;
+- pointer-lock restore;
+- Media Lifecycle state authority;
+- mobile fallback.
+
+---
 
 ## Still not final
 
-These remain outside the current approved baseline or are later roadmap work:
+These remain later roadmap work:
 
+- first true Phase 5.3 semantic landmark visual pilot;
+- Phase 5.4 Entry Ritual;
+- Phase 5B propagation of approved stones;
 - production master landing video in `public/media/rubik-sota-master.mp4`;
-- final six-project real media/content;
-- semantic landmark propagation;
-- full museum material propagation beyond the approved 01–03 premium stone;
-- entry ritual;
-- complete landing visual uplift;
-- dedicated premium mobile museum;
-- Escaparates Pro authoring/CMS integration;
-- Wikipedia/Wikidata/Wikimedia institutional layer;
-- backend, analytics and dashboard.
+- real final media/content for six projects;
+- landing visual uplift;
+- premium mobile museum;
+- Author Mode / CMS;
+- Wikipedia/Wikidata/Wikimedia institutional knowledge layer;
+- backend / analytics / dashboard;
+- final regression / harness;
+- production freeze.
+
+---
 
 ## Blocking landing asset
 
-`public/media/rubik-sota-master.mp4` is not yet in GitHub.
+Canonical expected path:
 
-The current landing visual proxy remains a development instrument, not a production replacement.
+`public/media/rubik-sota-master.mp4`
+
+Until a real production asset exists in the repository, the current landing proxy remains a development instrument and must not be presented as final footage.

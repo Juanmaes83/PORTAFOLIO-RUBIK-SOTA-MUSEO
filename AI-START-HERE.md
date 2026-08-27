@@ -31,8 +31,7 @@ Product invariants that must survive every redesign:
 - cinematic editorial entrance;
 - museum as spatial interface;
 - one principal gallery, not a maze;
-- focus by proximity + gaze;
-- E/click inspection;
+- semantic focus and inspection;
 - six-project collection;
 - visited progress;
 - final installation / About / Contact;
@@ -40,7 +39,7 @@ Product invariants that must survive every redesign:
 - visual/manual validation before approval.
 
 ### NEURONAS
-Approved logic/state systems:
+Approved logic/state systems now include:
 - scroll authority;
 - video scrub;
 - camera;
@@ -48,12 +47,15 @@ Approved logic/state systems:
 - bounds;
 - mouse-look;
 - keyboard yaw;
-- focus;
+- semantic focus/raycast;
+- direct artwork click;
+- `InteractiveArtifact` registry;
 - inspection;
 - visited state;
 - progress;
 - cinematic inspection camera;
-- pointer-lock restoration.
+- pointer-lock restoration;
+- Media Lifecycle `dormant → preload → preview → inspect → reset/release`.
 
 ### PIEL
 Replaceable visual layer:
@@ -77,130 +79,133 @@ Read these first:
 2. `sources/02-prompt-museum-evolution-analytics.txt`
 3. `sources/03-analysis-video-museum-claude-abacus.md`
 4. `README.md`
-5. `docs/02-ARCHITECTURE-CONTRACT.md`
-6. `design/rubik-sota-museum-dna.json`
-7. `docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`
+5. `docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md` — current operational truth
+6. `docs/02-ARCHITECTURE-CONTRACT.md`
+7. `design/rubik-sota-museum-dna.json`
 8. `docs/03-VALIDATION-STATUS.md`
+9. `docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md` — historical reconstruction manual
 
 Then read phase-specific documentation.
 
-## 4. Phase history
+## 4. Current baseline
 
-### Phase 1 — Foundation / first vertical slice — APPROVED + MERGED
-PR #1: https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/1
+Current approved `main`:
 
-Built:
-- source freeze;
-- asset inventory;
-- Pear editorial audit;
-- Design DNA;
-- architecture contract;
-- Next.js/React scaffold;
-- ScrollFilm;
-- normalized scroll authority;
-- reversible video timeline;
-- editorial cues;
-- `/lab`;
-- missing-media proxy rather than invented production media.
+`32d554fca07254010829bfc8d712be86879b20ce`
 
-Primary docs:
-- `docs/00-ASSET-INVENTORY.md`
-- `docs/01-PEAR-AUDIT.md`
-- `docs/02-ARCHITECTURE-CONTRACT.md`
+Meaning:
 
-### Phase 2 — Cinematic landing — APPROVED + MERGED
-PR #2: https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/2
+> Phase 5.3B Media Lifecycle + Semantic Landmark Behavior merged.
 
-Built:
-- preserved Phase 1 ScrollFilm;
-- three-chapter editorial continuation;
-- disciplines statement;
-- final museum portal;
-- desktop/mobile composition;
-- reduced-motion fallback.
+There are currently no open PRs at the documented state.
 
-Primary doc:
-- `docs/04-LANDING-CINEMATIC-PHASE-2.md`
+A branch audit confirms all retained feature branches are **0 commits ahead of `main`**. No approved runtime work is stranded outside `main`.
 
-### Phase 3 — Museum Foundation — APPROVED + MERGED
-PR #3: https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/3
+See:
 
-Built:
-- `/museum`;
-- `/museum/lab`;
-- Three.js + React Three Fiber + drei;
-- one gallery;
-- WASD/arrows;
-- pointer-lock mouse-look;
-- lightweight bounds;
-- focus by distance + camera facing;
-- E/click inspect;
-- project panel;
-- camera pause/restore;
-- two test exhibits;
-- mobile 2D foundation fallback.
+`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`
 
-Primary doc:
-- `docs/06-MUSEUM-FOUNDATION-PHASE-3.md`
+## 5. Phase history
 
-### Phase 4 — Full Museum + keyboard 360° — APPROVED + MERGED
-PR #5: https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/5
+### Phase 1 — Foundation / first vertical slice
+**APPROVED + MERGED** — PR #1
+
+Built source freeze, asset inventory, Pear audit, Design DNA, architecture contract, ScrollFilm, normalized scroll authority, reversible timeline, `/lab`, and explicit missing-media fallback.
+
+### Phase 2 — Cinematic landing
+**APPROVED + MERGED** — PR #2
+
+Built LandingContinuation, editorial chapters, museum portal, desktop/mobile composition and reduced-motion fallback. Structural/narrative baseline approved; final visual uplift remains later work.
+
+### Phase 3 — Museum Foundation
+**APPROVED + MERGED** — PR #3
+
+Built `/museum`, `/museum/lab`, R3F gallery, WASD/arrows, pointer-lock mouse-look, bounds, focus, E/click inspection, panel pause/restore and mobile 2D foundation.
+
+### Phase 4 — Full Museum + keyboard 360°
+**APPROVED + MERGED** — PR #5
+
+Built six data-driven projects, visited Set, 0/6 progress, final unlock, About/Contact and Q/R continuous yaw.
+
+### Phase 5.1 — Cinematic Inspect Stone
+**APPROVED + MERGED** — PR #6
+
+Built `CinematicInspectRig`, exact pose capture, glide-in/out, `ProjectMediaStage`, exact return, yaw/pitch resync and `/museum/inspect-lab`.
+
+### Phase 5.2 — Material + Atmosphere Stone
+**APPROVED + MERGED** — PR #7
+
+Built material/light validation stone and `/museum/material-lab`.
+
+### Phase 5.2R / 5.2R+ — Visual Recovery + Premium Consolidation
+**APPROVED + MERGED** — PR #9
+
+PASS 2 corrected failed asset integrations and established the current premium scene baseline including PBR/IBL/HDRI, corrected track lighting, clean seating, frame family, pedestal family, Media Wall V2, Display Table, Entrance Portal V2, Rubik System 02 and Final Installation V2.
+
+### Phase 5.3A — Semantic Artifacts + Direct Artwork Click
+**APPROVED + MERGED** — PR #10
 
 Built:
-- 2 → 6 data-driven projects;
-- visited Set;
-- `0/6` progress;
-- final installation dormant before completion;
-- final installation active at `6/6`;
-- About / Contact;
-- continuous keyboard yaw with Q/R;
-- mouse and keyboard share one yaw authority;
-- keyboard-turn tuning in `/museum/lab`.
+- `InteractiveArtifact` registry;
+- explicit world anchors;
+- semantic interaction surfaces independent from PIEL;
+- center-camera raycast;
+- direct pointer click;
+- E/click routing to actual semantic artifact;
+- Cinematic Inspect across all six projects;
+- `/museum/artifact-lab`.
 
-Primary doc:
-- `docs/07-PHASE-4-FULL-MUSEUM.md`
-
-### Phase 5 — Visual + Navigation Uplift — IN PROGRESS
-Phase 5 is intentionally built as isolated reusable stones.
-
-#### Phase 5.1 — Cinematic Inspect Stone — APPROVED + MERGED
-PR #6: https://github.com/Juanmaes83/PORTAFOLIO-RUBIK-SOTA-MUSEO/pull/6
+### Phase 5.3B — Media Lifecycle + Semantic Landmark Behavior
+**APPROVED + MERGED** — PR #11
 
 Built:
-- `CinematicInspectRig`;
-- one pilot project (`aviation`);
-- exact camera pose capture;
-- camera glide-in;
-- quaternion slerp;
-- `ProjectMediaStage`;
-- text/image/video-ready media contract;
-- glide-out;
-- exact camera return;
-- yaw/pitch resynchronization before free controls resume;
-- `/museum/inspect-lab`;
-- five projects remain old Phase 4 inspection for A/B comparison.
 
-Primary docs:
-- `docs/11-PHASE-5.1-CINEMATIC-INSPECT-PLAN.md`
-- `docs/12-PHASE-5.1-IMPLEMENTATION-STATUS.md`
+```text
+DORMANT
+→ PRELOAD
+→ PREVIEW
+→ INSPECT
+→ RESET / RELEASE
+```
 
-#### Phase 5.2 — Material Stone — NEXT
-Do not execute until explicitly approved.
+Includes lifecycle policy per artifact, resource priming/release contract and `/museum/lifecycle-lab` without inventing missing real media.
 
-Goal:
-- prove a premium Rubik Sota material/light system on ONE museum zone and ONE project before propagating globally.
+## 6. Next official stone
 
-Expected LAB:
-- `/museum/material-lab`
+The next step is **NOT Phase 5.4 yet**.
 
-Primary donor:
-- `Juanmaes83/galerium`
+The broader Phase 5.3 Semantic Landmark Stone still needs its visual proof:
 
-Do not copy Galerium's classical/gold identity. Extract its hierarchy of architectural materials, controlled reflections, ambient light, work-specific light and spatial depth.
+> replace one generic project treatment with one genuinely distinct spatial destination.
 
-## 5. Approved donor archaeology for Phase 5
+Selected pilot:
 
-Only these three donor repositories are approved for this uplift:
+```text
+architecture / Immersive Architecture Studio
+→ MAQUETTE / OBJECT TABLE
+```
+
+Expected route:
+
+`/museum/landmark-lab`
+
+Rules:
+- one landmark first;
+- explicit semantic type, not index-derived type;
+- project leaves the wall;
+- reuse current `InteractiveArtifact`;
+- reuse 5.3B lifecycle;
+- reuse current focus/raycast authority;
+- reuse `CinematicInspectRig`;
+- no CMS;
+- no Wikipedia/Wikidata/Wikimedia;
+- no new room;
+- no gamification;
+- no propagation to all six before human validation.
+
+## 7. Approved donor archaeology for Phase 5
+
+Only these three donor repositories are approved:
 
 1. https://github.com/Juanmaes83/3D-room-portofolio
 2. https://github.com/Juanmaes83/hyacinth.im-site
@@ -210,54 +215,37 @@ Read:
 - `docs/08-VISUAL-NAVIGATION-UPLIFT-REPO-MAP.md`
 - `docs/09-ARCHAEOLOGY-THREE-PRIMARY-DONORS.md`
 
-Important extracted stones:
-- Cinematic Inspect Camera — Galerium;
-- Material / Light System — Galerium;
-- Semantic Landmarks — Hyacinth;
-- Object micro-interactions — 3D Room;
-- Project Media Stage — Galerium + Hyacinth;
-- Media lifecycle / lazy loading — all three;
-- Entry ritual — Galerium + Hyacinth;
-- institutional knowledge enrichment — Galerium.
+Extract capabilities as stones. Do not clone entire engines.
 
-Do not clone entire donor engines.
+Key roles:
+- Galerium → cinematic inspect, material/light, entry ritual;
+- Hyacinth → semantic landmarks, environmental information architecture, target grammar;
+- 3D Room → object micro-interactions, media lifecycle behavior.
 
-## 6. Institutional future capability
+## 8. Legacy / knowledge future
 
-Wikipedia/Wikimedia from Galerium is deliberately retained as a future institutional capability for museums/galleries.
+Legacy Museum semantic/knowledge archaeology is preserved in:
 
-Read:
-- `docs/10-INSTITUTIONAL-KNOWLEDGE-LAYER-WIKIPEDIA-WIKIMEDIA.md`
+`docs/15-LEGACY-MUSEUM-DONOR-SEMANTIC-KNOWLEDGE-ARCHAEOLOGY.md`
 
-Rule:
-- curator/client content is PRIMARY;
-- Wikipedia/Wikidata/Wikimedia are enrichment/fallback;
-- external data must never overwrite authoritative curatorial content.
+Wikipedia/Wikidata/Wikimedia remains future institutional enrichment only:
 
-## 7. Future authoring / CMS requirement
+`docs/10-INSTITUTIONAL-KNOWLEDGE-LAYER-WIKIPEDIA-WIKIMEDIA.md`
 
-A future Author Mode will integrate/reuse panels from Escaparates Pro.
+Authority rule:
 
-Required content types:
-- title;
-- text;
-- category;
-- role;
-- year;
-- technologies;
-- image;
-- video;
-- poster;
-- preview;
-- save;
-- publish;
-- ordering;
-- landmark/exhibit type;
-- museum placement.
+```text
+CURATOR / CLIENT CONTENT = PRIMARY
+EXTERNAL KNOWLEDGE = ENRICHMENT / FALLBACK
+```
 
-Do NOT rebuild this CMS prematurely. The current priority is visual/navigation quality.
+## 9. Future authoring / CMS
 
-## 8. Core runtime files
+Do not build prematurely.
+
+Future Author Mode should reuse compatible Escaparates Pro panel capability and feed one content source into Landing + Museum + ProjectMediaStage.
+
+## 10. Core runtime files
 
 Landing:
 - `app/page.tsx`
@@ -271,16 +259,17 @@ Museum:
 - `app/museum/page.tsx`
 - `app/museum/lab/page.tsx`
 - `app/museum/inspect-lab/page.tsx`
+- `app/museum/artifact-lab/page.tsx`
+- `app/museum/lifecycle-lab/page.tsx`
 - `components/museum/MuseumExperience.tsx`
 - `components/museum/FirstPersonRig.tsx`
 - `components/museum/MuseumScene.tsx`
 - `components/museum/CinematicInspectRig.tsx`
 - `components/museum/ProjectMediaStage.tsx`
 - `lib/museum.ts`
-- `app/museum/museum.css`
-- `app/museum/phase4.css`
+- `lib/artifacts.ts`
 
-## 9. Current interaction contract
+## 11. Current interaction contract
 
 Desktop:
 - W/S = forward/back;
@@ -289,84 +278,100 @@ Desktop:
 - Q = turn left;
 - R = turn right;
 - mouse = look;
-- E or click = inspect focused target;
+- E or click = inspect actual semantic artifact;
 - Esc = release/close depending state.
 
-Focus:
-- must pass distance threshold;
-- must pass camera-facing threshold;
-- one focus authority drives highlight + prompt + inspect eligibility.
+Focus authority:
+- semantic interaction surface hit;
+- interaction distance;
+- facing threshold;
+- one authority drives highlight + prompt + inspect eligibility.
 
-Inspection 5.1 pilot:
+Inspection:
+
 `FREE → GLIDE_IN → INSPECT → GLIDE_OUT → FREE`
 
 When free control returns:
-- camera pose has been restored;
-- yaw/pitch refs are derived again from camera quaternion;
-- velocity is zeroed;
-- held keys are cleared.
+- exact pose restored;
+- yaw/pitch refs derived from restored quaternion;
+- velocity zeroed;
+- held keys cleared.
 
-## 10. Validation philosophy
+## 12. Validation philosophy
 
 Never approve from code alone.
 
 Automated gates:
-- install;
+- dependency install;
 - TypeScript;
 - production build;
+- vertical slice;
 - unit/data contracts when added.
 
 Human/browser gates:
 - visual quality;
 - scroll feel;
 - camera comfort;
-- focus behavior;
+- focus/raycast behavior;
+- lifecycle quality;
 - transition quality;
 - lighting/materiality;
-- no post-inspection camera snap;
+- exact inspect return;
+- spatial legibility;
 - overall premium perception.
 
 Method:
+
 `OBSERVE → MEASURE → ISOLATE → UNDERSTAND → FIX ROOT → INTEGRATE WITHOUT DEGRADING → VISUALLY VALIDATE → DOCUMENT → REUSE`
 
 Failure record:
+
 `SYMPTOM → HYPOTHESIS → TEST → ROOT CAUSE → SOLUTION → REGRESSION → VALIDATION → LESSON`
 
-## 11. Reconstruction rule
+## 13. Reconstruction rule
 
-If rebuilding from zero, DO NOT jump directly to the current final code.
+Do not jump directly to current final code when rebuilding.
 
-Rebuild in the original dependency order:
-
+Rebuild dependency order:
 1. sources + architecture contract;
 2. scroll authority + LAB;
 3. cinematic landing;
-4. museum foundation with 2 exhibits;
-5. manual validation;
-6. scale to 6 projects;
-7. progress + final installation;
-8. keyboard yaw;
-9. manual validation;
-10. cinematic inspect on one pilot;
-11. manual validation;
-12. then continue Phase 5 stones.
+4. museum foundation with two exhibits;
+5. validation;
+6. six projects + progress/final;
+7. cinematic inspect;
+8. material/light stone;
+9. premium visual consolidation;
+10. semantic artifact authority;
+11. media lifecycle;
+12. first true semantic landmark pilot;
+13. validate every stone before propagation.
 
-Each approved phase becomes the protected baseline for the next.
+## 14. Roadmap from current main
 
-## 12. Current state
+```text
+5.1 CINEMATIC INSPECT                         ✅ MERGED
+5.2 MATERIAL / ATMOSPHERE                     ✅ MERGED
+5.2R / 5.2R+ VISUAL RECOVERY + PASS 2         ✅ MERGED
+5.3A SEMANTIC ARTIFACTS + DIRECT CLICK         ✅ MERGED
+5.3B MEDIA LIFECYCLE                           ✅ MERGED
+5.3 SEMANTIC LANDMARK — MAQUETTE PILOT         ⏭ NEXT
+5.4 ENTRY RITUAL                               ⏳
+5B PROPAGATE APPROVED STONES                   ⏳
+LANDING VISUAL UPLIFT                           ⏳
+REAL PROJECT MEDIA                              ⏳
+PREMIUM MOBILE                                  ⏳
+AUTHOR MODE / CMS                               ⏳
+INSTITUTIONAL KNOWLEDGE                         ⏳
+BACKEND / ANALYTICS / DASHBOARD                 ⏳
+FINAL REGRESSION / HARNESS                      ⏳
+PRODUCTION                                      ⏳
+```
 
-Current state after Phase 5.1:
-- Phases 1–4: approved + merged;
-- Phase 5.1: approved + merged;
-- Phase 5.2 Material Stone: next planned execution;
-- full landing visual uplift: still pending;
-- full semantic museum worldbuilding: pending;
-- real Rubik Sota project media: pending;
-- final mobile museum: pending;
-- CMS/Author Mode: pending;
-- institutional Wikipedia/Wikimedia layer: documented, not implemented;
-- backend/analytics/dashboard: pending.
+For current status first read:
 
-For full reconstruction details, continue with:
+`docs/18-CURRENT-ROADMAP-AND-BRANCH-STATE.md`
+
+For full historical reconstruction details continue with:
 
 `docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`
