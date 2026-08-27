@@ -16,8 +16,13 @@ import {
   type MuseumProject,
   type MuseumTuning,
 } from "@/lib/museum";
+import {
+  DEFAULT_MATERIAL_PRESET,
+  MATERIAL_PRESETS,
+  type MaterialPresetName,
+} from "@/lib/materialTokens";
 
-type Props = { lab?: boolean; inspectLab?: boolean };
+type Props = { lab?: boolean; inspectLab?: boolean; materialLab?: boolean };
 
 function RangeControl({ label, value, min, max, step, onChange }: {
   label: string; value: number; min: number; max: number; step: number; onChange: (value: number) => void;
@@ -36,9 +41,7 @@ function MobileMuseumFallback() {
       <a href="/" className="museumBackLink">← Portfolio</a>
       <p className="museumKicker">Rubik Sota / Museum</p>
       <h1>Six projects. One collection.</h1>
-      <p className="museumMobileIntro">
-        The full first-person museum is designed for keyboard and mouse. Mobile remains an intentional 2D collection foundation until its dedicated roadmap phase.
-      </p>
+      <p className="museumMobileIntro">The full first-person museum is designed for keyboard and mouse. Mobile remains an intentional 2D collection foundation until its dedicated roadmap phase.</p>
       <div className="museumMobileProjects">
         {museumProjects.map((project, index) => (
           <article key={project.id}>
@@ -52,7 +55,7 @@ function MobileMuseumFallback() {
   );
 }
 
-export default function MuseumExperience({ lab = false, inspectLab = false }: Props) {
+export default function MuseumExperience({ lab = false, inspectLab = false, materialLab = false }: Props) {
   const [tuning, setTuning] = useState<MuseumTuning>(DEFAULT_MUSEUM_TUNING);
   const [inspectTuning, setInspectTuning] = useState<InspectTuning>(DEFAULT_INSPECT_TUNING);
   const [inspectPhase, setInspectPhase] = useState<InspectPhase>("idle");
@@ -63,6 +66,9 @@ export default function MuseumExperience({ lab = false, inspectLab = false }: Pr
   const [locked, setLocked] = useState(false);
   const [instructionsVisible, setInstructionsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [materialPreset, setMaterialPreset] = useState<MaterialPresetName>(DEFAULT_MATERIAL_PRESET);
+  const [premiumDetails, setPremiumDetails] = useState(true);
+  const [microInteractions, setMicroInteractions] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const activeProjects = useMemo(
@@ -144,50 +150,40 @@ export default function MuseumExperience({ lab = false, inspectLab = false }: Pr
     return () => window.removeEventListener("keydown", onEscape);
   }, [cinematicProject, closePanel, inspectPhase, selectedId]);
 
-  const updateTuning = <K extends keyof MuseumTuning>(key: K, value: MuseumTuning[K]) => {
-    setTuning((current) => ({ ...current, [key]: value }));
-  };
-  const updateInspectTuning = <K extends keyof InspectTuning>(key: K, value: InspectTuning[K]) => {
-    setInspectTuning((current) => ({ ...current, [key]: value }));
-  };
+  const updateTuning = <K extends keyof MuseumTuning>(key: K, value: MuseumTuning[K]) => setTuning((current) => ({ ...current, [key]: value }));
+  const updateInspectTuning = <K extends keyof InspectTuning>(key: K, value: InspectTuning[K]) => setInspectTuning((current) => ({ ...current, [key]: value }));
 
   if (isMobile) return <MobileMuseumFallback />;
 
+  const labActive = lab || inspectLab || materialLab;
+  const headerLabel = materialLab ? "MUSEUM / MATERIAL + ATMOSPHERE LAB" : inspectLab ? "MUSEUM / CINEMATIC INSPECT LAB" : "MUSEUM / COMPLETE COLLECTION";
+
   return (
-    <main className={`museumExperience ${lab || inspectLab ? "isLab" : ""} ${inspectLab ? "isInspectLab" : ""}`}>
+    <main className={`museumExperience ${labActive ? "isLab" : ""} ${inspectLab ? "isInspectLab" : ""} ${materialLab ? "isMaterialLab" : ""}`}>
       <Canvas
         className="museumCanvas"
+        shadows
         camera={{ position: [0, tuning.cameraHeight, 11.8], fov: tuning.fov, near: 0.1, far: 80 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-        onCreated={({ gl }) => { canvasRef.current = gl.domElement; }}
+        onCreated={({ gl }) => { canvasRef.current = gl.domElement; gl.toneMapping = 4; gl.toneMappingExposure = materialPreset === "baseline" ? 1 : 1.08; }}
       >
-        <MuseumScene projects={activeProjects} focusedId={focusedId} finalUnlocked={finalUnlocked} />
-        <FirstPersonRig
+        <MuseumScene
           projects={activeProjects}
-          tuning={tuning}
-          paused={controlsPaused}
           focusedId={focusedId}
           finalUnlocked={finalUnlocked}
-          onFocusChange={setFocusedId}
-          onInspect={inspectProject}
-          onMovementStarted={() => setInstructionsVisible(false)}
-          onLockChange={setLocked}
+          materialPreset={materialPreset}
+          premiumDetails={premiumDetails}
+          microInteractions={microInteractions}
         />
-        <CinematicInspectRig
-          project={cinematicProject}
-          phase={inspectPhase}
-          tuning={inspectTuning}
-          onProgress={setInspectProgress}
-          onReachedInspect={() => setInspectPhase("inspect")}
-          onReturned={completeReturn}
-        />
+        <FirstPersonRig projects={activeProjects} tuning={tuning} paused={controlsPaused} focusedId={focusedId} finalUnlocked={finalUnlocked} onFocusChange={setFocusedId} onInspect={inspectProject} onMovementStarted={() => setInstructionsVisible(false)} onLockChange={setLocked} />
+        <CinematicInspectRig project={cinematicProject} phase={inspectPhase} tuning={inspectTuning} onProgress={setInspectProgress} onReachedInspect={() => setInspectPhase("inspect")} onReturned={completeReturn} />
       </Canvas>
 
       <header className="museumHudTop">
         <a href="/" className="museumWordmark">RUBIK SOTA</a>
-        <span>{inspectLab ? "MUSEUM / CINEMATIC INSPECT LAB" : "MUSEUM / COMPLETE COLLECTION"}</span>
-        <a href={inspectLab ? "/museum" : lab ? "/museum" : "/museum/lab"}>{inspectLab || lab ? "EXPERIENCE" : "MOVEMENT LAB"}</a>
+        <span>{headerLabel}</span>
+        <a href={labActive ? "/museum" : "/museum/material-lab"}>{labActive ? "EXPERIENCE" : "MATERIAL LAB"}</a>
       </header>
 
       {!inspectLab ? (
@@ -197,16 +193,20 @@ export default function MuseumExperience({ lab = false, inspectLab = false }: Pr
         </div>
       ) : null}
 
+      {!inspectLab && materialPreset !== "baseline" ? (
+        <div className="museumMaterialBadge">
+          <span>PHASE 5.2</span>
+          <strong>{MATERIAL_PRESETS[materialPreset].label}</strong>
+          <small>front gallery = premium / rear gallery = approved baseline</small>
+        </div>
+      ) : null}
+
       <div className={`museumCrosshair ${focusedProject || focusedFinal ? "hasFocus" : ""}`} aria-hidden="true"><i /></div>
 
       {instructionsVisible && inspectPhase === "idle" ? (
         <div className="museumInstructions">
           <b>{locked ? "EXPLORE" : "CLICK TO ENTER"}</b>
-          <span>WASD / arrows to move</span>
-          <span>Q / R to rotate 360°</span>
-          <span>Mouse to look</span>
-          <span>E or click to inspect</span>
-          <span>Esc to release</span>
+          <span>WASD / arrows to move</span><span>Q / R to rotate 360°</span><span>Mouse to look</span><span>E or click to inspect</span><span>Esc to release</span>
         </div>
       ) : null}
 
@@ -221,34 +221,17 @@ export default function MuseumExperience({ lab = false, inspectLab = false }: Pr
       ) : null}
 
       {focusedFinal && !contactOpen ? (
-        <button className="museumFocusPrompt museumFinalPrompt" onClick={() => inspectProject(FINAL_INSTALLATION_ID)}>
-          <small>COLLECTION COMPLETE</small><strong>About / Contact</strong><span>PRESS E / CLICK TO OPEN</span>
-        </button>
+        <button className="museumFocusPrompt museumFinalPrompt" onClick={() => inspectProject(FINAL_INSTALLATION_ID)}><small>COLLECTION COMPLETE</small><strong>About / Contact</strong><span>PRESS E / CLICK TO OPEN</span></button>
       ) : null}
 
-      {cinematicProject && inspectPhase !== "idle" ? (
-        <ProjectMediaStage
-          project={cinematicProject}
-          phase={inspectPhase}
-          transitionProgress={inspectProgress}
-          revealAt={inspectTuning.revealAt}
-          onClose={() => setInspectPhase("glide-out")}
-        />
-      ) : null}
-
+      {cinematicProject && inspectPhase !== "idle" ? <ProjectMediaStage project={cinematicProject} phase={inspectPhase} transitionProgress={inspectProgress} revealAt={inspectTuning.revealAt} onClose={() => setInspectPhase("glide-out")} /> : null}
       {selectedProject && !selectedProject.cinematicInspect ? <ProjectPanel project={selectedProject} explored={visitedIds.has(selectedProject.id)} onClose={closePanel} /> : null}
       {contactOpen ? <ContactPanel onClose={closePanel} /> : null}
-
       {finalUnlocked ? <div className="museumUnlockNotice">THE FINAL INSTALLATION IS NOW ACTIVE</div> : null}
 
       {lab ? (
         <aside className="museumLabPanel">
-          <div className="museumLabHeader">
-            <b>MOVEMENT / FOCUS LAB</b>
-            <span>{focusedId ? `focus: ${focusedId}` : "focus: none"}</span>
-            <span>{locked ? "pointer: locked" : "pointer: released"}</span>
-            <span>{`visited: ${visitedCount}/${museumProjects.length}`}</span>
-          </div>
+          <div className="museumLabHeader"><b>MOVEMENT / FOCUS LAB</b><span>{focusedId ? `focus: ${focusedId}` : "focus: none"}</span><span>{locked ? "pointer: locked" : "pointer: released"}</span><span>{`visited: ${visitedCount}/${museumProjects.length}`}</span></div>
           <RangeControl label="move speed" value={tuning.moveSpeed} min={2} max={7} step={0.1} onChange={(value) => updateTuning("moveSpeed", value)} />
           <RangeControl label="damping" value={tuning.damping} min={2} max={16} step={0.1} onChange={(value) => updateTuning("damping", value)} />
           <RangeControl label="mouse" value={tuning.mouseSensitivity} min={0.25} max={1.6} step={0.05} onChange={(value) => updateTuning("mouseSensitivity", value)} />
@@ -263,12 +246,7 @@ export default function MuseumExperience({ lab = false, inspectLab = false }: Pr
 
       {inspectLab ? (
         <aside className="museumLabPanel inspectLabPanel">
-          <div className="museumLabHeader">
-            <b>CINEMATIC INSPECT STONE</b>
-            <span>{`phase: ${inspectPhase}`}</span>
-            <span>{`transition: ${Math.round(inspectProgress * 100)}%`}</span>
-            <span>{locked ? "pointer: locked" : "pointer: released"}</span>
-          </div>
+          <div className="museumLabHeader"><b>CINEMATIC INSPECT STONE</b><span>{`phase: ${inspectPhase}`}</span><span>{`transition: ${Math.round(inspectProgress * 100)}%`}</span><span>{locked ? "pointer: locked" : "pointer: released"}</span></div>
           <RangeControl label="glide in" value={inspectTuning.durationIn} min={0.35} max={1.8} step={0.05} onChange={(value) => updateInspectTuning("durationIn", value)} />
           <RangeControl label="glide out" value={inspectTuning.durationOut} min={0.3} max={1.6} step={0.05} onChange={(value) => updateInspectTuning("durationOut", value)} />
           <RangeControl label="distance" value={inspectTuning.distance} min={1.5} max={4.2} step={0.05} onChange={(value) => updateInspectTuning("distance", value)} />
@@ -278,6 +256,24 @@ export default function MuseumExperience({ lab = false, inspectLab = false }: Pr
           <button disabled={Boolean(selectedProject)} onClick={() => inspectProject(CINEMATIC_INSPECT_PILOT_ID)}>ENTER INSPECT</button>
           <button disabled={inspectPhase !== "inspect"} onClick={() => setInspectPhase("glide-out")}>EXIT INSPECT</button>
           <button disabled={Boolean(selectedProject)} onClick={() => setInspectTuning(DEFAULT_INSPECT_TUNING)}>RESET TUNING</button>
+        </aside>
+      ) : null}
+
+      {materialLab ? (
+        <aside className="museumLabPanel materialLabPanel">
+          <div className="museumLabHeader">
+            <b>MATERIAL + ATMOSPHERE STONE</b>
+            <span>{`preset: ${MATERIAL_PRESETS[materialPreset].label}`}</span>
+            <span>compare from the same camera position</span>
+            <span>3 premium exhibits / rear half baseline</span>
+          </div>
+          <div className="materialPresetGrid">
+            {(Object.keys(MATERIAL_PRESETS) as MaterialPresetName[]).map((name) => <button key={name} className={materialPreset === name ? "isActive" : ""} onClick={() => setMaterialPreset(name)}>{MATERIAL_PRESETS[name].label}</button>)}
+          </div>
+          <label className="materialToggle"><input type="checkbox" checked={premiumDetails} onChange={(event) => setPremiumDetails(event.target.checked)} /><span>architectural details / props</span></label>
+          <label className="materialToggle"><input type="checkbox" checked={microInteractions} onChange={(event) => setMicroInteractions(event.target.checked)} /><span>focus microinteractions</span></label>
+          <p className="materialLabNote">Walk from projects 01–03 toward projects 04–06. The threshold is deliberate: premium candidate → approved Phase 4 baseline.</p>
+          <button onClick={() => { setMaterialPreset(DEFAULT_MATERIAL_PRESET); setPremiumDetails(true); setMicroInteractions(true); }}>RESET MATERIAL STONE</button>
         </aside>
       ) : null}
     </main>
@@ -292,11 +288,7 @@ function ProjectPanel({ project, explored, onClose }: { project: MuseumProject; 
         <p className="museumKicker">{project.category} / {project.year} / {explored ? "Explored" : "New"}</p>
         <h2 id={`project-${project.id}`}>{project.title}</h2>
         <p className="museumProjectDescription">{project.description}</p>
-        <dl>
-          <div><dt>Role</dt><dd>{project.role}</dd></div>
-          <div><dt>Technology</dt><dd>{project.technologies.join(" · ")}</dd></div>
-          <div><dt>Year</dt><dd>{project.year}</dd></div>
-        </dl>
+        <dl><div><dt>Role</dt><dd>{project.role}</dd></div><div><dt>Technology</dt><dd>{project.technologies.join(" · ")}</dd></div><div><dt>Year</dt><dd>{project.year}</dd></div></dl>
         <button className="museumViewProject" type="button">VIEW PROJECT</button>
         <p className="museumPanelHint">Close to return directly to museum controls.</p>
       </article>
@@ -312,11 +304,7 @@ function ContactPanel({ onClose }: { onClose: () => void }) {
         <p className="museumKicker">Rubik Sota / Complete Collection</p>
         <h2 id="museum-contact-title">The visit ends. The conversation begins.</h2>
         <p className="museumProjectDescription">Creative direction, brand systems, digital experiences, motion and interactive worlds brought together as one authored practice.</p>
-        <dl>
-          <div><dt>Practice</dt><dd>Creative Direction · Digital Experience · Interactive Worlds</dd></div>
-          <div><dt>Collection</dt><dd>6 / 6 projects explored</dd></div>
-          <div><dt>Next</dt><dd>Contact route to be connected to the final Rubik Sota identity layer.</dd></div>
-        </dl>
+        <dl><div><dt>Practice</dt><dd>Creative Direction · Digital Experience · Interactive Worlds</dd></div><div><dt>Collection</dt><dd>6 / 6 projects explored</dd></div><div><dt>Next</dt><dd>Contact route to be connected to the final Rubik Sota identity layer.</dd></div></dl>
         <button className="museumViewProject" type="button">START A CONVERSATION</button>
       </article>
     </div>
