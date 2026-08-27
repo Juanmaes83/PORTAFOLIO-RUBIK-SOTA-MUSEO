@@ -1,0 +1,95 @@
+{
+  "phase": "5.2R+",
+  "status": "IMPLEMENTED_CANDIDATE_AWAITING_HUMAN_VALIDATION",
+  "branch": "feat/phase-5-2r-plus-premium-consolidation",
+  "assets": [
+    {
+      "asset_id": "RS-GLB-03",
+      "name": "Marble Bust 01",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "runtime_format": "gltf",
+      "mirror_repository": "naver/mesh-simplifier",
+      "mirror_commit": "4a7645c44b6e368de343d904f70cf866f4c5f17a",
+      "runtime_url": "https://raw.githubusercontent.com/naver/mesh-simplifier/4a7645c44b6e368de343d904f70cf866f4c5f17a/demo/assets/marble_bust/marble_bust_01_1k.gltf",
+      "role": "hero sculpture / material-light benchmark",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-GLB-07",
+      "name": "Standing Picture Frame 01",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "runtime_format": "gltf",
+      "mirror_repository": "ezEngine/store-sample",
+      "mirror_commit": "182401cf1f430401e800c2ea4452816bc7d539a3",
+      "runtime_url": "https://raw.githubusercontent.com/ezEngine/store-sample/182401cf1f430401e800c2ea4452816bc7d539a3/PolyHaven/standing_picture_frame_01_1k/standing_picture_frame_01_1k.gltf",
+      "role": "real frame geometry / repeated exhibit family",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-GLB-01",
+      "name": "Modular Street Seating",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "runtime_format": "gltf",
+      "mirror_repository": "HHSOLL/DeskteriorOnline",
+      "mirror_commit": "6102359dba9fd95f599408be1873abaa86e20730",
+      "runtime_url": "https://raw.githubusercontent.com/HHSOLL/DeskteriorOnline/6102359dba9fd95f599408be1873abaa86e20730/apps/web/public/assets/models/modular_street_seating/modular_street_seating_1k.gltf",
+      "role": "human scale / seating / remove primitive bench",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-GLB-02",
+      "name": "Modern Ceiling Lamp 01",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "runtime_format": "gltf",
+      "mirror_repository": "mortennordbye/homelab",
+      "mirror_commit": "425bd3c97502ea9feeb83b532cbf0ac04be719bd",
+      "runtime_url": "https://raw.githubusercontent.com/mortennordbye/homelab/425bd3c97502ea9feeb83b532cbf0ac04be719bd/portfolio/public/models/fun/modern_ceiling_lamp_01/modern_ceiling_lamp_01.gltf",
+      "role": "visible physical lighting hardware / ceiling detail",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-HDRI-01",
+      "name": "Sculpture Exhibition 1K HDRI",
+      "upstream": "Poly Haven",
+      "license": "CC0",
+      "mirror_repository": "OmiAvi/artportfolio",
+      "mirror_commit": "128fa847cbcd9cc1627e96c0756aa3b10a4a9334",
+      "role": "IBL / environment reflections",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-PBR-FLOOR-RECOVERY",
+      "name": "Herringbone Parquet 1K PBR",
+      "upstream": "Poly Haven-derived mirror",
+      "license": "CC0",
+      "maps": ["diffuse", "roughness", "normal"],
+      "role": "primary floor material",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    },
+    {
+      "asset_id": "RS-PBR-WALL-RECOVERY",
+      "name": "White Stucco 1K PBR",
+      "upstream": "Poly Haven-derived mirror",
+      "license": "CC0",
+      "maps": ["diffuse", "roughness", "normal"],
+      "role": "primary wall material",
+      "implementation_status": "RUNTIME_INTEGRATED"
+    }
+  ],
+  "authored_rubik_geometry": [
+    "Entrance Portal",
+    "Wall relief/pilaster system",
+    "Niche/backing-panel system",
+    "Ceiling zone/coffer system",
+    "Rubik System 01 hero installation",
+    "Volumetric Final Installation",
+    "Media Wall family",
+    "Floating Panel family",
+    "Pedestal family"
+  ],
+  "important_note": "Runtime mirrors are pinned by commit for deterministic validation. Production may later vendor optimized binaries into the repository after checksum and redistribution review."
+}
