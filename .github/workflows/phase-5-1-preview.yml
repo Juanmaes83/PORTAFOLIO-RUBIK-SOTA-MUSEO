@@ -1,0 +1,68 @@
+name: Phase 5.1 Preview Deploy
+
+on:
+  push:
+    branches:
+      - feat/phase-5-1-cinematic-inspect
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check Vercel token
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "VERCEL_TOKEN secret is not configured in this repository."
+            exit 78
+          fi
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Link preview project
+        run: |
+          mkdir -p .vercel
+          printf '{"orgId":"team_hLhdb3M9MviTIysXD9whFF2c","projectId":"prj_J0FzGp8vgQMDfxfLFqsN4KW5BvHm"}' > .vercel/project.json
+
+      - name: Pull preview environment
+        run: vercel pull --yes --environment=preview --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Build Vercel output
+        run: vercel build --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy preview
+        id: deploy
+        shell: bash
+        run: |
+          URL=$(vercel deploy --prebuilt --token="${{ secrets.VERCEL_TOKEN }}")
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Preview URL: $URL"
+
+      - name: Comment PR with preview
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = '${{ steps.deploy.outputs.url }}';
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 6,
+              body: `Phase 5.1 exact Vercel preview: ${url}\n\nMuseum: ${url}/museum\nInspect LAB: ${url}/museum/inspect-lab`
+            });

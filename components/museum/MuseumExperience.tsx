@@ -2,17 +2,22 @@
 
 import { Canvas } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import CinematicInspectRig, { type InspectPhase } from "@/components/museum/CinematicInspectRig";
 import FirstPersonRig from "@/components/museum/FirstPersonRig";
 import MuseumScene from "@/components/museum/MuseumScene";
+import ProjectMediaStage from "@/components/museum/ProjectMediaStage";
 import {
+  CINEMATIC_INSPECT_PILOT_ID,
+  DEFAULT_INSPECT_TUNING,
   DEFAULT_MUSEUM_TUNING,
   FINAL_INSTALLATION_ID,
   museumProjects,
+  type InspectTuning,
   type MuseumProject,
   type MuseumTuning,
 } from "@/lib/museum";
 
-type Props = { lab?: boolean };
+type Props = { lab?: boolean; inspectLab?: boolean };
 
 function RangeControl({ label, value, min, max, step, onChange }: {
   label: string; value: number; min: number; max: number; step: number; onChange: (value: number) => void;
@@ -47,8 +52,11 @@ function MobileMuseumFallback() {
   );
 }
 
-export default function MuseumExperience({ lab = false }: Props) {
+export default function MuseumExperience({ lab = false, inspectLab = false }: Props) {
   const [tuning, setTuning] = useState<MuseumTuning>(DEFAULT_MUSEUM_TUNING);
+  const [inspectTuning, setInspectTuning] = useState<InspectTuning>(DEFAULT_INSPECT_TUNING);
+  const [inspectPhase, setInspectPhase] = useState<InspectPhase>("idle");
+  const [inspectProgress, setInspectProgress] = useState(0);
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [visitedIds, setVisitedIds] = useState<Set<string>>(() => new Set());
@@ -57,16 +65,39 @@ export default function MuseumExperience({ lab = false }: Props) {
   const [isMobile, setIsMobile] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  const activeProjects = useMemo(
+    () => inspectLab ? museumProjects.filter((project) => project.id === CINEMATIC_INSPECT_PILOT_ID) : museumProjects,
+    [inspectLab],
+  );
   const visitedCount = visitedIds.size;
-  const finalUnlocked = visitedCount === museumProjects.length;
+  const finalUnlocked = !inspectLab && visitedCount === museumProjects.length;
   const contactOpen = selectedId === FINAL_INSTALLATION_ID;
-  const focusedProject = useMemo(() => museumProjects.find((project) => project.id === focusedId) ?? null, [focusedId]);
+  const focusedProject = useMemo(() => activeProjects.find((project) => project.id === focusedId) ?? null, [activeProjects, focusedId]);
   const selectedProject = useMemo(() => museumProjects.find((project) => project.id === selectedId) ?? null, [selectedId]);
+  const cinematicProject = selectedProject?.cinematicInspect ? selectedProject : null;
   const focusedFinal = focusedId === FINAL_INSTALLATION_ID && finalUnlocked;
+  const controlsPaused = Boolean(selectedProject) || contactOpen || inspectPhase !== "idle";
+
+  const restorePointerLock = useCallback(() => {
+    requestAnimationFrame(() => canvasRef.current?.requestPointerLock?.());
+  }, []);
 
   const closePanel = useCallback(() => {
+    if (cinematicProject && inspectPhase !== "idle") {
+      if (inspectPhase === "inspect") setInspectPhase("glide-out");
+      return;
+    }
     setSelectedId(null);
-    requestAnimationFrame(() => canvasRef.current?.requestPointerLock?.());
+    restorePointerLock();
+  }, [cinematicProject, inspectPhase, restorePointerLock]);
+
+  const markVisited = useCallback((projectId: string) => {
+    setVisitedIds((current) => {
+      if (current.has(projectId)) return current;
+      const next = new Set(current);
+      next.add(projectId);
+      return next;
+    });
   }, []);
 
   const inspectProject = useCallback((projectId: string) => {
@@ -74,15 +105,22 @@ export default function MuseumExperience({ lab = false }: Props) {
       if (finalUnlocked) setSelectedId(FINAL_INSTALLATION_ID);
       return;
     }
-    if (!museumProjects.some((project) => project.id === projectId)) return;
-    setVisitedIds((current) => {
-      if (current.has(projectId)) return current;
-      const next = new Set(current);
-      next.add(projectId);
-      return next;
-    });
+    const project = museumProjects.find((candidate) => candidate.id === projectId);
+    if (!project) return;
+    markVisited(projectId);
     setSelectedId(projectId);
-  }, [finalUnlocked]);
+    if (project.cinematicInspect) {
+      setInspectProgress(0);
+      setInspectPhase("glide-in");
+    }
+  }, [finalUnlocked, markVisited]);
+
+  const completeReturn = useCallback(() => {
+    setInspectPhase("idle");
+    setInspectProgress(0);
+    setSelectedId(null);
+    restorePointerLock();
+  }, [restorePointerLock]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 820px), (pointer: coarse)");
@@ -94,20 +132,29 @@ export default function MuseumExperience({ lab = false }: Props) {
 
   useEffect(() => {
     const onEscape = (event: KeyboardEvent) => {
-      if (event.code === "Escape" && selectedId) closePanel();
+      if (event.code !== "Escape" || !selectedId) return;
+      if (cinematicProject && inspectPhase === "inspect") {
+        event.preventDefault();
+        setInspectPhase("glide-out");
+        return;
+      }
+      if (!cinematicProject) closePanel();
     };
     window.addEventListener("keydown", onEscape);
     return () => window.removeEventListener("keydown", onEscape);
-  }, [closePanel, selectedId]);
+  }, [cinematicProject, closePanel, inspectPhase, selectedId]);
 
   const updateTuning = <K extends keyof MuseumTuning>(key: K, value: MuseumTuning[K]) => {
     setTuning((current) => ({ ...current, [key]: value }));
+  };
+  const updateInspectTuning = <K extends keyof InspectTuning>(key: K, value: InspectTuning[K]) => {
+    setInspectTuning((current) => ({ ...current, [key]: value }));
   };
 
   if (isMobile) return <MobileMuseumFallback />;
 
   return (
-    <main className={`museumExperience ${lab ? "isLab" : ""}`}>
+    <main className={`museumExperience ${lab || inspectLab ? "isLab" : ""} ${inspectLab ? "isInspectLab" : ""}`}>
       <Canvas
         className="museumCanvas"
         camera={{ position: [0, tuning.cameraHeight, 11.8], fov: tuning.fov, near: 0.1, far: 80 }}
@@ -115,11 +162,11 @@ export default function MuseumExperience({ lab = false }: Props) {
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         onCreated={({ gl }) => { canvasRef.current = gl.domElement; }}
       >
-        <MuseumScene projects={museumProjects} focusedId={focusedId} finalUnlocked={finalUnlocked} />
+        <MuseumScene projects={activeProjects} focusedId={focusedId} finalUnlocked={finalUnlocked} />
         <FirstPersonRig
-          projects={museumProjects}
+          projects={activeProjects}
           tuning={tuning}
-          paused={Boolean(selectedProject) || contactOpen}
+          paused={controlsPaused}
           focusedId={focusedId}
           finalUnlocked={finalUnlocked}
           onFocusChange={setFocusedId}
@@ -127,22 +174,32 @@ export default function MuseumExperience({ lab = false }: Props) {
           onMovementStarted={() => setInstructionsVisible(false)}
           onLockChange={setLocked}
         />
+        <CinematicInspectRig
+          project={cinematicProject}
+          phase={inspectPhase}
+          tuning={inspectTuning}
+          onProgress={setInspectProgress}
+          onReachedInspect={() => setInspectPhase("inspect")}
+          onReturned={completeReturn}
+        />
       </Canvas>
 
       <header className="museumHudTop">
         <a href="/" className="museumWordmark">RUBIK SOTA</a>
-        <span>MUSEUM / COMPLETE COLLECTION</span>
-        <a href={lab ? "/museum" : "/museum/lab"}>{lab ? "EXPERIENCE" : "MOVEMENT LAB"}</a>
+        <span>{inspectLab ? "MUSEUM / CINEMATIC INSPECT LAB" : "MUSEUM / COMPLETE COLLECTION"}</span>
+        <a href={inspectLab ? "/museum" : lab ? "/museum" : "/museum/lab"}>{inspectLab || lab ? "EXPERIENCE" : "MOVEMENT LAB"}</a>
       </header>
 
-      <div className="museumProgress" aria-live="polite">
-        <span>PROJECTS EXPLORED</span><strong>{visitedCount} / {museumProjects.length}</strong>
-        <i><b style={{ transform: `scaleX(${visitedCount / museumProjects.length})` }} /></i>
-      </div>
+      {!inspectLab ? (
+        <div className="museumProgress" aria-live="polite">
+          <span>PROJECTS EXPLORED</span><strong>{visitedCount} / {museumProjects.length}</strong>
+          <i><b style={{ transform: `scaleX(${visitedCount / museumProjects.length})` }} /></i>
+        </div>
+      ) : null}
 
       <div className={`museumCrosshair ${focusedProject || focusedFinal ? "hasFocus" : ""}`} aria-hidden="true"><i /></div>
 
-      {instructionsVisible ? (
+      {instructionsVisible && inspectPhase === "idle" ? (
         <div className="museumInstructions">
           <b>{locked ? "EXPLORE" : "CLICK TO ENTER"}</b>
           <span>WASD / arrows to move</span>
@@ -153,13 +210,13 @@ export default function MuseumExperience({ lab = false }: Props) {
         </div>
       ) : null}
 
-      {!locked && !selectedProject && !contactOpen ? <div className="museumResumeHint">CLICK THE GALLERY TO CONTROL CAMERA</div> : null}
+      {!locked && !selectedProject && !contactOpen && inspectPhase === "idle" ? <div className="museumResumeHint">CLICK THE GALLERY TO CONTROL CAMERA</div> : null}
 
-      {focusedProject && !selectedProject && !contactOpen ? (
+      {focusedProject && !selectedProject && inspectPhase === "idle" ? (
         <button className="museumFocusPrompt" onClick={() => inspectProject(focusedProject.id)}>
           <small>{visitedIds.has(focusedProject.id) ? "EXPLORED" : focusedProject.category}</small>
           <strong>{focusedProject.title}</strong>
-          <span>PRESS E / CLICK TO INSPECT</span>
+          <span>{focusedProject.cinematicInspect ? "PRESS E / CLICK — CINEMATIC INSPECT" : "PRESS E / CLICK TO INSPECT"}</span>
         </button>
       ) : null}
 
@@ -169,7 +226,17 @@ export default function MuseumExperience({ lab = false }: Props) {
         </button>
       ) : null}
 
-      {selectedProject ? <ProjectPanel project={selectedProject} explored={visitedIds.has(selectedProject.id)} onClose={closePanel} /> : null}
+      {cinematicProject && inspectPhase !== "idle" ? (
+        <ProjectMediaStage
+          project={cinematicProject}
+          phase={inspectPhase}
+          transitionProgress={inspectProgress}
+          revealAt={inspectTuning.revealAt}
+          onClose={() => setInspectPhase("glide-out")}
+        />
+      ) : null}
+
+      {selectedProject && !selectedProject.cinematicInspect ? <ProjectPanel project={selectedProject} explored={visitedIds.has(selectedProject.id)} onClose={closePanel} /> : null}
       {contactOpen ? <ContactPanel onClose={closePanel} /> : null}
 
       {finalUnlocked ? <div className="museumUnlockNotice">THE FINAL INSTALLATION IS NOW ACTIVE</div> : null}
@@ -191,6 +258,26 @@ export default function MuseumExperience({ lab = false }: Props) {
           <RangeControl label="focus distance" value={tuning.interactionDistance} min={2.5} max={8} step={0.1} onChange={(value) => updateTuning("interactionDistance", value)} />
           <RangeControl label="facing threshold" value={tuning.facingThreshold} min={0.55} max={0.98} step={0.01} onChange={(value) => updateTuning("facingThreshold", value)} />
           <button onClick={() => setTuning(DEFAULT_MUSEUM_TUNING)}>RESET TUNING</button>
+        </aside>
+      ) : null}
+
+      {inspectLab ? (
+        <aside className="museumLabPanel inspectLabPanel">
+          <div className="museumLabHeader">
+            <b>CINEMATIC INSPECT STONE</b>
+            <span>{`phase: ${inspectPhase}`}</span>
+            <span>{`transition: ${Math.round(inspectProgress * 100)}%`}</span>
+            <span>{locked ? "pointer: locked" : "pointer: released"}</span>
+          </div>
+          <RangeControl label="glide in" value={inspectTuning.durationIn} min={0.35} max={1.8} step={0.05} onChange={(value) => updateInspectTuning("durationIn", value)} />
+          <RangeControl label="glide out" value={inspectTuning.durationOut} min={0.3} max={1.6} step={0.05} onChange={(value) => updateInspectTuning("durationOut", value)} />
+          <RangeControl label="distance" value={inspectTuning.distance} min={1.5} max={4.2} step={0.05} onChange={(value) => updateInspectTuning("distance", value)} />
+          <RangeControl label="height offset" value={inspectTuning.heightOffset} min={-0.6} max={0.8} step={0.02} onChange={(value) => updateInspectTuning("heightOffset", value)} />
+          <RangeControl label="side offset" value={inspectTuning.sideOffset} min={-1.2} max={1.2} step={0.02} onChange={(value) => updateInspectTuning("sideOffset", value)} />
+          <RangeControl label="content reveal" value={inspectTuning.revealAt} min={0.25} max={0.95} step={0.01} onChange={(value) => updateInspectTuning("revealAt", value)} />
+          <button disabled={Boolean(selectedProject)} onClick={() => inspectProject(CINEMATIC_INSPECT_PILOT_ID)}>ENTER INSPECT</button>
+          <button disabled={inspectPhase !== "inspect"} onClick={() => setInspectPhase("glide-out")}>EXIT INSPECT</button>
+          <button disabled={Boolean(selectedProject)} onClick={() => setInspectTuning(DEFAULT_INSPECT_TUNING)}>RESET TUNING</button>
         </aside>
       ) : null}
     </main>

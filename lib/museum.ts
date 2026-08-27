@@ -1,14 +1,21 @@
+export type ProjectMedia =
+  | { type: "image"; src?: string; alt: string; poster?: string }
+  | { type: "video"; src?: string; poster?: string; alt: string };
+
 export type MuseumProject = {
   id: string;
   title: string;
   category: string;
   description: string;
+  longDescription?: string;
   technologies: string[];
   role: string;
   year: string;
   side: "left" | "right";
   z: number;
   palette: [string, string, string];
+  heroMedia?: ProjectMedia;
+  cinematicInspect?: boolean;
 };
 
 export type MuseumTuning = {
@@ -22,6 +29,15 @@ export type MuseumTuning = {
   keyboardTurnSpeed: number;
 };
 
+export type InspectTuning = {
+  durationIn: number;
+  durationOut: number;
+  distance: number;
+  heightOffset: number;
+  sideOffset: number;
+  revealAt: number;
+};
+
 export const DEFAULT_MUSEUM_TUNING: MuseumTuning = {
   moveSpeed: 4.2,
   damping: 8.5,
@@ -33,6 +49,15 @@ export const DEFAULT_MUSEUM_TUNING: MuseumTuning = {
   keyboardTurnSpeed: 1.65,
 };
 
+export const DEFAULT_INSPECT_TUNING: InspectTuning = {
+  durationIn: 0.9,
+  durationOut: 0.72,
+  distance: 2.35,
+  heightOffset: 0.06,
+  sideOffset: 0,
+  revealAt: 0.62,
+};
+
 export const GALLERY_BOUNDS = {
   minX: -4.0,
   maxX: 4.0,
@@ -42,6 +67,7 @@ export const GALLERY_BOUNDS = {
 
 export const FINAL_INSTALLATION_ID = "final-installation";
 export const FINAL_INSTALLATION_POSITION = { x: 0, y: 1.9, z: -14.55 };
+export const CINEMATIC_INSPECT_PILOT_ID = "aviation";
 
 export const museumProjects: MuseumProject[] = [
   {
@@ -50,12 +76,16 @@ export const museumProjects: MuseumProject[] = [
     category: "Creative Development",
     description:
       "A cinematic digital portfolio where atmosphere, motion and spatial storytelling shape the way the work is discovered.",
+    longDescription:
+      "A study in authored digital movement: editorial pacing, atmospheric composition and spatial navigation are treated as one continuous experience rather than separate interface layers.",
     technologies: ["Next.js", "Three.js", "GSAP"],
     role: "Creative Developer",
     year: "2026",
     side: "left",
     z: 8.0,
     palette: ["#d5c2a6", "#2f3f48", "#8d5f3f"],
+    heroMedia: { type: "image", alt: "Cinematic Aviation Portfolio media stage" },
+    cinematicInspect: true,
   },
   {
     id: "ai-workspace",
