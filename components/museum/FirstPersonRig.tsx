@@ -343,18 +343,22 @@ export default function FirstPersonRig({
         {activeArtifacts.map((artifact) => {
           const [x, y, z] = artifact.interaction.anchor;
           const [width, height] = artifact.interaction.surfaceSize;
-          const project = projectById.get(artifact.projectId);
-          const rotationY = project?.side === "left" ? Math.PI / 2 : -Math.PI / 2;
+          const [rx, ry, rz] = artifact.interaction.surfaceRotation;
           return (
             <mesh
               key={artifact.id}
               position={[x, y, z]}
-              rotation={[0, rotationY, 0]}
-              userData={{ semanticArtifactId: artifact.id, semanticProjectId: artifact.projectId, semanticType: artifact.semanticType }}
+              rotation={[rx, ry, rz]}
+              userData={{
+                semanticArtifactId: artifact.id,
+                semanticProjectId: artifact.projectId,
+                semanticType: artifact.semanticType,
+                semanticLandmarkType: artifact.landmarkType,
+              }}
               renderOrder={-100}
             >
               <planeGeometry args={[width, height]} />
-              <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} />
+              <meshBasicMaterial transparent opacity={0} depthWrite={false} colorWrite={false} side={THREE.DoubleSide} />
             </mesh>
           );
         })}
