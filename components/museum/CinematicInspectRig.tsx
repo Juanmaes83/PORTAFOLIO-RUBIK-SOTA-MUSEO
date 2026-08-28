@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { getArtifactForProject } from "@/lib/artifacts";
 import type { InspectTuning, MuseumProject } from "@/lib/museum";
 
 export type InspectPhase = "idle" | "glide-in" | "inspect" | "glide-out";
@@ -28,11 +29,15 @@ function easeInOutCubic(t: number) {
 }
 
 function projectCenter(project: MuseumProject) {
+  const artifact = getArtifactForProject(project.id);
+  if (artifact?.inspectPose) return new THREE.Vector3(...artifact.inspectPose.center);
   const x = project.side === "left" ? -4.62 : 4.62;
   return new THREE.Vector3(x, 1.75, project.z);
 }
 
 function projectNormal(project: MuseumProject) {
+  const artifact = getArtifactForProject(project.id);
+  if (artifact?.inspectPose) return new THREE.Vector3(...artifact.inspectPose.normal).normalize();
   return new THREE.Vector3(project.side === "left" ? 1 : -1, 0, 0);
 }
 
@@ -82,14 +87,15 @@ export default function CinematicInspectRig({
         quaternion: origin.quaternion.clone(),
       };
 
+      const artifactPose = getArtifactForProject(project.id)?.inspectPose;
       scratch.center.copy(projectCenter(project));
       scratch.normal.copy(projectNormal(project));
       scratch.right.crossVectors(UP, scratch.normal).normalize();
       scratch.position
         .copy(scratch.center)
-        .addScaledVector(scratch.normal, tuning.distance)
-        .addScaledVector(scratch.right, tuning.sideOffset);
-      scratch.position.y += tuning.heightOffset;
+        .addScaledVector(scratch.normal, artifactPose?.distance ?? tuning.distance)
+        .addScaledVector(scratch.right, artifactPose?.sideOffset ?? tuning.sideOffset);
+      scratch.position.y += artifactPose?.heightOffset ?? tuning.heightOffset;
       scratch.look.lookAt(scratch.position, scratch.center, UP);
       scratch.quaternion.setFromRotationMatrix(scratch.look);
 
