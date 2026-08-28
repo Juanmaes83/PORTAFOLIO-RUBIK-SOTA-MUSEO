@@ -20,6 +20,42 @@ function stateStrength(state: ArtifactLifecycleState) {
   return 0;
 }
 
+function ObjectTableSignal({ artifact, state }: Pick<SignalProps, "artifact" | "state">) {
+  const groupRef = useRef<THREE.Group>(null);
+  const lightRef = useRef<THREE.PointLight>(null);
+  const targetStrength = stateStrength(state);
+  const [x, , z] = artifact.interaction.anchor;
+
+  useFrame(({ clock }, delta) => {
+    const group = groupRef.current;
+    const light = lightRef.current;
+    if (!group || !light) return;
+    const alpha = 1 - Math.exp(-7 * Math.min(delta, 0.05));
+    const pulse = state === "preview" ? 0.985 + Math.sin(clock.elapsedTime * 1.7) * 0.015 : 1;
+    group.scale.x = THREE.MathUtils.lerp(group.scale.x, 1 + targetStrength * 0.015 * pulse, alpha);
+    group.scale.z = THREE.MathUtils.lerp(group.scale.z, 1 + targetStrength * 0.015 * pulse, alpha);
+    light.intensity = THREE.MathUtils.lerp(light.intensity, targetStrength * 3.2, alpha);
+  });
+
+  if (state === "dormant") return null;
+
+  return (
+    <group ref={groupRef} position={[x, 0.055, z]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} renderOrder={-2}>
+        <planeGeometry args={[3.45, 2.2]} />
+        <meshBasicMaterial
+          color="#c7a36f"
+          transparent
+          opacity={state === "inspect" ? 0.08 : state === "preview" ? 0.05 : 0.014}
+          toneMapped={false}
+          depthWrite={false}
+        />
+      </mesh>
+      <pointLight ref={lightRef} position={[0, 1.35, 0.15]} intensity={0} distance={4.6} color="#e7c08c" />
+    </group>
+  );
+}
+
 function LifecycleSignal({ artifact, project, state }: SignalProps) {
   const groupRef = useRef<THREE.Group>(null);
   const lightRef = useRef<THREE.PointLight>(null);
@@ -91,12 +127,16 @@ export default function SemanticLifecycleLayer({
       {artifacts.map((artifact) => {
         const project = projects.find((candidate) => candidate.id === artifact.projectId);
         if (!project) return null;
+        const state = states[artifact.projectId] ?? "dormant";
+        if (artifact.landmarkType === "object-table") {
+          return <ObjectTableSignal key={artifact.id} artifact={artifact} state={state} />;
+        }
         return (
           <LifecycleSignal
             key={artifact.id}
             artifact={artifact}
             project={project}
-            state={states[artifact.projectId] ?? "dormant"}
+            state={state}
           />
         );
       })}
