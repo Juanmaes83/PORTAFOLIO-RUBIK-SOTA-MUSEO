@@ -11,6 +11,7 @@ import {
   useTexture,
 } from "@react-three/drei";
 import * as THREE from "three";
+import ArchitectureMaquetteLandmark from "@/components/museum/landmarks/ArchitectureMaquetteLandmark";
 import { FINAL_INSTALLATION_ID, type MuseumProject } from "@/lib/museum";
 import { DEFAULT_MATERIAL_PRESET, MATERIAL_PRESETS, type MaterialPresetName } from "@/lib/materialTokens";
 
@@ -283,6 +284,7 @@ function CeilingArchitecture({ projects, focusedId }: { projects: MuseumProject[
     </group>)}
     {[-2.75, 2.75].map((x) => <mesh key={x} position={[x, 4.68, 0]}><boxGeometry args={[0.11, 0.1, 28.4]} /><meshStandardMaterial color="#151716" roughness={0.28} metalness={0.72} /></mesh>)}
     {projects.map((project) => {
+      if (project.id === "architecture") return null;
       const side = project.side;
       const x = side === "left" ? -2.75 : 2.75;
       return <TrackLightFixture key={`fixture-${project.id}`} x={x} z={project.z} side={side} focused={focusedId === project.id} />;
@@ -364,7 +366,9 @@ function FinalInstallation({ unlocked, focused, premium }: { unlocked: boolean; 
 function RecoveryScene({ projects, focusedId, finalUnlocked }: Props) {
   return <Suspense fallback={null}>
     <PremiumArchitecture projects={projects} focusedId={focusedId} />
-    {projects.map((project, index) => <Exhibit key={project.id} project={project} focused={focusedId === project.id} index={index} />)}
+    {projects.map((project, index) => project.id === "architecture"
+      ? <ArchitectureMaquetteLandmark key={project.id} project={project} focused={focusedId === project.id} />
+      : <Exhibit key={project.id} project={project} focused={focusedId === project.id} index={index} />)}
     <FinalInstallation unlocked={finalUnlocked} focused={focusedId === FINAL_INSTALLATION_ID} premium />
   </Suspense>;
 }
