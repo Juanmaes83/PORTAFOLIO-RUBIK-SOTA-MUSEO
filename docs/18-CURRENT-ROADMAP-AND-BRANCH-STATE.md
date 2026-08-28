@@ -1,23 +1,27 @@
 # 18 — CURRENT ROADMAP AND BRANCH STATE
 
 Status: **CURRENT OPERATIONAL SOURCE OF TRUTH**  
-Date: **2026-08-27**
+Date: **2026-08-28**
 
-This document records the current merged baseline, branch topology and the next Phase 5 stone. It complements the historical reconstruction manual in `docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`.
+This document records the current merged baseline, branch topology and the next approved roadmap improvements. It complements the historical reconstruction manual in `docs/13-MASTER-REBUILD-FROM-ZERO-PHASES-1-5.md`.
 
 ---
 
 # 1. CURRENT MAIN BASELINE
 
-Current `main`:
+Current `main` includes the approved **Phase 5.3 Semantic Landmark Pilot** and the subsequent documentation decision that records Audio + Conversational Guide as the next improvements.
 
-`32d554fca07254010829bfc8d712be86879b20ce`
+Latest implementation merge relevant to runtime:
+
+`5b69d398b50ce6c086f342f5103389ceb8c1dce4`
 
 Commit meaning:
 
-> Merge Phase 5.3B media lifecycle and semantic landmark behavior.
+> Merge Phase 5.3 Semantic Landmark Pilot — Architecture Maquette / Object Table.
 
-There are currently **no open pull requests**.
+Latest documentation commit:
+
+`c410e7d33eded1ee519ffb06f717f08dc89fe6f5`
 
 Approved Phase 5 chain now present in `main`:
 
@@ -28,9 +32,10 @@ Approved Phase 5 chain now present in `main`:
 → 5.2R+ PREMIUM VISUAL CONSOLIDATION / PASS 2
 → 5.3A SEMANTIC ARTIFACTS + DIRECT ARTWORK CLICK
 → 5.3B MEDIA LIFECYCLE + SEMANTIC LANDMARK BEHAVIOR
+→ 5.3 SEMANTIC LANDMARK PILOT — ARCHITECTURE MAQUETTE
 ```
 
-Important: 5.3A and 5.3B are enabling neurons inside the broader **Phase 5.3 Semantic Landmark Stone**. The Phase 5.3 visual landmark pilot is not yet complete.
+Phase 5.3 is now a real approved visual stone, not only enabling neurons.
 
 ---
 
@@ -46,32 +51,34 @@ Important: 5.3A and 5.3B are enabling neurons inside the broader **Phase 5.3 Sem
   - merge commit: `42af1a1476c40eaeda6d350778660aa285331de1`
 - Phase 5.3B Media Lifecycle + Semantic Landmark Behavior — PR #11 — merged.
   - approved head: `f72cae67095383891bc91562ac5b5be1b29d1460`
-  - merge commit / current main: `32d554fca07254010829bfc8d712be86879b20ce`
+  - merge commit: `32d554fca07254010829bfc8d712be86879b20ce`
+- Phase 5.3 Semantic Landmark Pilot — PR #13 — merged.
+  - approved head before merge: `7fdc58f4b2d8884d96555d9abb76f870c2c5dd2b`
+  - merge commit: `5b69d398b50ce6c086f342f5103389ceb8c1dce4`
+  - pilot: `architecture` → **MAQUETTE / OBJECT TABLE**
 
 ---
 
-# 3. BRANCH TOPOLOGY AUDIT
+# 3. BRANCH TOPOLOGY PRINCIPLE
 
-Audit against current `main` on 2026-08-27:
+The operating rule remains:
 
-| Branch | Ahead of main | Behind main | Meaning |
-|---|---:|---:|---|
-| `feat/full-museum-phase4` | 0 | 68 | historical, fully absorbed |
-| `feat/landing-cinematic-v2` | 0 | 90 | historical, fully absorbed |
-| `feat/museum-foundation-v1` | 0 | 76 | historical, fully absorbed |
-| `feat/pear-scroll-museum-v1` | 0 | 98 | historical, fully absorbed |
-| `feat/phase-5-1-cinematic-inspect` | 0 | 53 | historical, fully absorbed |
-| `feat/phase-5-2-material-atmosphere` | 0 | 37 | historical, fully absorbed |
-| `feat/phase-5-2r-visual-recovery` | 0 | 22 | historical comparison stone, fully contained by main |
-| `feat/phase-5-2r-plus-premium-consolidation` | 0 | 15 | approved PASS 2 branch, fully contained by main |
-| `feat/phase-5-3a-semantic-artifacts` | 0 | 10 | approved 5.3A branch, fully contained by main |
-| `feat/phase-5-3b-media-lifecycle` | 0 | 1 | approved 5.3B head; one merge commit behind main |
+```text
+CURRENT MAIN
+→ ONE FEATURE BRANCH
+→ LAB / IMPLEMENTATION
+→ CI
+→ EXACT PREVIEW
+→ HUMAN APPROVAL
+→ MERGE TO MAIN
+→ VERIFY BRANCH IS 0 AHEAD
+```
 
-Conclusion:
+Do not stack several unmerged feature branches unless an explicit dependency requires it.
 
-> **There are no feature branches ahead of `main`. No approved runtime work is stranded outside `main`.**
+Historical branches may remain for archaeology/comparison but must not be interpreted as newer truth simply because they remain visible.
 
-The repository has several retained historical branches, but they are not divergent active development lines. They may be kept temporarily as archaeology/comparison references or deleted later as branch hygiene. Do not merge them again.
+`main` + this document + `docs/03-VALIDATION-STATUS.md` define current operational truth.
 
 ---
 
@@ -131,79 +138,118 @@ DORMANT
 
 Adds resource ownership and behavior ready for real media without inventing missing sources.
 
----
+## 5.3 — Semantic Landmark Pilot
+**APPROVED + MERGED**
 
-# 5. NEXT OFFICIAL STONE
-
-The next work is **not Phase 5.4 yet**.
-
-The canonical roadmap defines Phase 5.3 as:
-
-> Replace one generic framed-project treatment with one distinct spatial destination. Do one landmark first.
-
-5.3A and 5.3B prepared the neurons; the missing proof is the **first true spatial landmark**.
-
-## Pilot selected
-
-`architecture` — **Immersive Architecture Studio**
-
-Current generic representation:
-
-```text
-PROJECT
-→ WALL TREATMENT / FRAME
-```
-
-Target semantic landmark:
+Pilot:
 
 ```text
 IMMERSIVE ARCHITECTURE STUDIO
 → MAQUETTE / OBJECT TABLE
 ```
 
-Why this pilot:
-- category is `3D Website`;
-- technologies include React Three Fiber / Three.js;
-- architectural content is semantically legible as a physical maquette;
-- it proves that a project can leave the wall without changing navigation architecture.
-
-## Planned stone
-
-Expected route:
-
-`/museum/landmark-lab`
-
-Implementation principles:
-- one landmark only;
-- explicit semantic type, not index-derived type;
-- physical object table / maquette;
-- center/semi-center spatial anchor;
-- reuse existing `InteractiveArtifact`;
-- reuse 5.3B lifecycle;
-- reuse existing focus authority;
-- reuse `CinematicInspectRig`;
-- project-specific inspect pose only where required;
-- no CMS;
-- no Wikipedia/Wikidata/Wikimedia;
-- no new room;
-- no gamification;
-- no propagation to all six before human validation.
-
-Acceptance:
-1. reads as architecture before click;
-2. is not another framed rectangle;
-3. does not block circulation;
-4. focus/raycast use the true landmark anchor;
-5. lifecycle states are visible but restrained;
-6. E/click opens the correct project;
-7. Cinematic Inspect frames correctly;
-8. exact return remains intact;
-9. progress 0/6 → 6/6 remains intact;
-10. museum remains one coherent authored world.
+Approved proof:
+- one project leaves the wall;
+- semantic type is explicit rather than index-derived;
+- spatial anchor is independent from wall side;
+- interaction surface can be horizontal;
+- existing focus/raycast authority is reused;
+- existing lifecycle authority is reused;
+- Cinematic Inspect supports an optional landmark-specific pose;
+- Architecture reads as a distinct spatial destination before click;
+- the other five projects remain unpropagated until a later explicit decision.
 
 ---
 
-# 6. ROADMAP FROM CURRENT MAIN
+# 5. NEXT APPROVED PRODUCT IMPROVEMENTS
+
+Two new improvements are now approved **as roadmap items only**. They are not implemented yet.
+
+Full architecture and gates are frozen in:
+
+`docs/20-NEXT-IMPROVEMENTS-AUDIO-AND-CONVERSATIONAL-GUIDE.md`
+
+## 5.3D — Museum Audio System
+**APPROVED AS NEXT IMPROVEMENT / NOT IMPLEMENTED**
+
+Goal:
+
+Create one central audio authority supporting mutually exclusive user modes:
+
+```text
+SILENCE
+or
+AUDIOGUIDE
+or
+MUSIC
+or
+RADIO
+```
+
+Core principles:
+- only one active user mode at a time;
+- `MuseumAudioController` owns museum audio;
+- guide/project voice ducks background audio;
+- Cinematic Inspect media may temporarily take priority;
+- no scattered uncontrolled `<audio>` elements;
+- explicit silence/mute always available;
+- first validation route: `/museum/audio-lab`.
+
+## 5.3E — Conversational Museum Guide Pilot
+**APPROVED AS NEXT IMPROVEMENT / NOT IMPLEMENTED**
+
+Goal:
+
+Add a contextual museum guide/avatar that can answer questions based on real museum state instead of behaving like a generic chatbot.
+
+Minimum context:
+- focused artifact;
+- current project/landmark;
+- visitor position;
+- visited projects;
+- progress;
+- inspect state;
+- approved project/museum knowledge.
+
+First pilot principles:
+- fixed or semi-fixed avatar;
+- text questions first;
+- contextual answers;
+- voice output through `MuseumAudioController`;
+- restrained premium avatar presentation;
+- no autonomous walking NPC in the first stone;
+- first validation route: `/museum/guide-lab`.
+
+Future expansions such as voice input, museum commands, destination guidance and autonomous locomotion remain deferred until the pilot proves value.
+
+---
+
+# 6. IMPORTANT DEPENDENCY BETWEEN AUDIO AND GUIDE
+
+The guide must not create a parallel sound system.
+
+Required architecture:
+
+```text
+MuseumGuideController
+        ↓ speech request
+MuseumAudioController
+        ↓
+duck ambient
+play guide voice
+restore ambient
+```
+
+Therefore the recommended execution order is:
+
+```text
+FIRST  → MUSEUM AUDIO SYSTEM
+SECOND → CONVERSATIONAL MUSEUM GUIDE PILOT
+```
+
+---
+
+# 7. ROADMAP FROM CURRENT MAIN
 
 ```text
 5.1 CINEMATIC INSPECT                         ✅ MERGED
@@ -211,7 +257,11 @@ Acceptance:
 5.2R / 5.2R+ VISUAL RECOVERY + PASS 2         ✅ MERGED
 5.3A SEMANTIC ARTIFACTS + DIRECT CLICK         ✅ MERGED
 5.3B MEDIA LIFECYCLE                           ✅ MERGED
-5.3 SEMANTIC LANDMARK — MAQUETTE PILOT         ⏭ NEXT
+5.3 SEMANTIC LANDMARK — MAQUETTE PILOT         ✅ MERGED
+
+5.3D MUSEUM AUDIO SYSTEM                       ⏭ APPROVED NEXT / NOT IMPLEMENTED
+5.3E CONVERSATIONAL MUSEUM GUIDE PILOT         ⏭ APPROVED NEXT / NOT IMPLEMENTED
+
 5.4 ENTRY RITUAL                               ⏳
 5B PROPAGATE APPROVED STONES                   ⏳
 LANDING VISUAL UPLIFT                           ⏳
@@ -224,25 +274,19 @@ FINAL REGRESSION / HARNESS                      ⏳
 PRODUCTION                                      ⏳
 ```
 
+Important: adding 5.3D and 5.3E to the roadmap does not automatically authorize their runtime implementation. Each must receive an explicit implementation-plan approval before code changes.
+
 ---
 
-# 7. BRANCH HYGIENE RULE FROM NOW ON
+# 8. CURRENT DECISION FREEZE
 
-For every new capability:
+As of 2026-08-28:
 
 ```text
-CURRENT MAIN
-→ ONE FEATURE BRANCH
-→ LAB / IMPLEMENTATION
-→ CI
-→ EXACT PREVIEW
-→ HUMAN APPROVAL
-→ MERGE TO MAIN
-→ VERIFY BRANCH IS 0 AHEAD
+SEMANTIC LANDMARK PILOT            APPROVED + MERGED
+MUSEUM AUDIO SYSTEM                APPROVED AS NEXT IMPROVEMENT / NOT IMPLEMENTED
+CONVERSATIONAL MUSEUM GUIDE        APPROVED AS NEXT IMPROVEMENT / NOT IMPLEMENTED
+FULL AUTONOMOUS WALKING GUIDE      DEFERRED
 ```
 
-Do not stack several unmerged feature branches unless an explicit dependency requires it.
-
-Historical branches must never be treated as newer truth simply because their names remain visible.
-
-`main` + this document + `docs/03-VALIDATION-STATUS.md` define current operational truth.
+Do not interpret future audio/guide documentation as evidence that runtime work already exists.
